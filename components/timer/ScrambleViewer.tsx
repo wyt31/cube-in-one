@@ -1,55 +1,63 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
-import { getPuzzle, type PuzzleId } from "@/lib/timer-types";
+import { useEffect, useMemo, type CSSProperties } from "react";
+import { CUBING_EVENT_ID } from "@/lib/scramble";
+import type { TimerEvent } from "@/lib/timer-types";
 
 // ============================================================================
 // Bottom-Right scramble viewer — always visible (no toggle).
 // Renders a <twisty-player> with the current scramble applied so the user
 // can preview the scrambled state.
 //
-// Layout: fixed compact size (120×90) sitting in the bottom-right corner of
-// the timer page, stacked under the History Flow.
-//
-// cubing/twisty is a heavy client-only module; we register the custom
-// element inside a useEffect and gate the actual <twisty-player> render on
-// a `mounted` flag so the SSR pass never emits the element.
+// Sized as a compact fixed preview (120×90) so it sits snugly in the
+// bottom-right corner without crowding the central Scramble banner.
 //
 // The <twisty-player> JSX intrinsic element is declared globally in
 // components/CubeImage.tsx.
 // ============================================================================
 
 export interface ScrambleViewerProps {
-  puzzle: PuzzleId;
+  puzzle: TimerEvent;
   scramble: string;
 }
 
-export default function ScrambleViewer({ puzzle, scramble }: ScrambleViewerProps) {
-  const [mounted, setMounted] = useState(false);
-
-  // Register the custom element client-side only. The dynamic import is
-  // invoked from inside an effect so it never runs during SSR.
+export default function ScrambleViewer({
+  puzzle,
+  scramble,
+}: ScrambleViewerProps) {
+  // Register the custom element client-side only.
   useEffect(() => {
-    let cancelled = false;
-    import("cubing/twisty")
-      .then(() => {
-        if (!cancelled) setMounted(true);
-      })
-      .catch((e) => console.error("cubing/twisty load failed", e));
-    return () => {
-      cancelled = true;
-    };
+    import("cubing/twisty");
   }, []);
 
-  const cubingEvent = getPuzzle(puzzle).cubingEvent;
+  // Map our friendly TimerEvent to the puzzle id twisty-player expects.
+  // twisty-player uses the same puzzle id as cubing.js events for NxN cubes
+  // ("3x3x3", "4x4x4", ...) and the WCA event id for the rest.
+  const puzzleId = useMemo(() => {
+    switch (puzzle) {
+      case "2x2x2":
+      case "3x3x3":
+      case "4x4x4":
+      case "5x5x5":
+      case "6x6x6":
+      case "7x7x7":
+        return puzzle; // twisty-player accepts "3x3x3" etc.
+      case "3x3x3 OH":
+      case "3x3x3 BF":
+        return "3x3x3";
+      default:
+        // clock / megaminx / pyraminx / skewb / sq1 — reuse cubing event id.
+        return CUBING_EVENT_ID[puzzle];
+    }
+  }, [puzzle]);
 
   return (
-    <div className="h-[90px] w-[120px] flex-shrink-0 overflow-hidden rounded-xl border border-[#E8E8E4] bg-white p-0.5">
-      {mounted && scramble ? (
+    <div className="h-[90px] w-[120px] flex-shrink-0 overflow-hidden rounded-xl border border-[#E8E8E4] bg-white/70 p-1 shadow-[0_1px_3px_rgba(0,0,0,0.04)] backdrop-blur-sm">
+      {scramble ? (
         <twisty-player
-          puzzle={cubingEvent}
+          puzzle={puzzleId}
           alg={scramble}
-          visualization="2D"
+          visualization="3D"
           background="none"
           control-panel="none"
           style={
@@ -61,8 +69,8 @@ export default function ScrambleViewer({ puzzle, scramble }: ScrambleViewerProps
           }
         />
       ) : (
-        <div className="flex h-full w-full items-center justify-center text-[0.55rem] uppercase tracking-[0.2em] text-[#BBB]">
-          {scramble ? "Loading…" : "—"}
+        <div className="flex h-full w-full items-center justify-center text-center text-[0.55rem] uppercase tracking-[0.15em] text-[#BBB]">
+          No scramble
         </div>
       )}
     </div>

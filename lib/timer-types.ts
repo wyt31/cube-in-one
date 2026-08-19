@@ -4,45 +4,52 @@
 // single, stable contract without circular dependencies.
 // ============================================================================
 
-/** Puzzle event identifiers supported by the timer (UI labels = cubing IDs). */
-export type PuzzleId =
+/**
+ * WCA-style puzzle/event identifiers supported by the timer.
+ *
+ * These friendly names are what the UI shows and what the DB stores. They are
+ * translated to cubing.js event IDs ("222", "333oh", "minigsm", ...) inside
+ * lib/scramble.ts so the rest of the app never has to know the wire format.
+ */
+export type TimerEvent =
   | "2x2x2"
   | "3x3x3"
   | "4x4x4"
   | "5x5x5"
   | "6x6x6"
   | "7x7x7"
-  | "3x3x3OH"
-  | "3x3x3BF"
-  | "clock"
-  | "megaminx"
-  | "pyraminx"
-  | "skewb"
-  | "sq1";
+  | "3x3x3 OH"
+  | "3x3x3 BF"
+  | "Clock"
+  | "Megaminx"
+  | "Pyraminx"
+  | "Skewb"
+  | "Square-1";
 
 /**
- * Backwards-compatible alias. Existing solves only stored 2x2x2..5x5x5, but
- * the DB indexes `event` as a plain string, so the superset is safe.
+ * Generation/training mode.
+ *
+ * `WCA` produces a standard WCA random scramble for the event. The other
+ * modes are "专项" (case-specific drill) modes — the Filter Cases capsule is
+ * only shown when mode !== "WCA". Case-specific scramble generation is a future
+ * enhancement (see lib/scramble.ts); for now the filter just scopes which
+ * algorithm cases are counted/exposed.
  */
-export type TimerEvent = PuzzleId;
-
-/** Mode IDs. "WCA" is always available; others are specialized training modes. */
-export type ModeId =
-  // 2x2x2 specialized
+export type TimerMode =
+  // generic
+  | "WCA"
+  // 2x2 专项 modes
   | "CLL"
   | "EG1"
   | "EG2"
+  | "TCLL"
   | "TCLL+"
   | "TCLL-"
-  | "TCLL"
   | "LS"
-  | "No Bar"
-  // 3x3x3 specialized
+  // 3x3 专项 modes
   | "OLL"
   | "PLL"
-  | "LL"
-  // Default
-  | "WCA";
+  | "LL";
 
 /** Penalty codes — mirror WCA rules. */
 //   0   = clean
@@ -80,100 +87,4 @@ export function formatTime(ms: number | null): string {
   return minutes > 0
     ? `${minutes}:${pad(seconds)}.${pad(centis)}`
     : `${seconds}.${pad(centis)}`;
-}
-
-// ============================================================================
-// Puzzle / Mode configuration
-// ============================================================================
-
-export interface PuzzleOption {
-  id: PuzzleId;
-  label: string; // displayed in the puzzle capsule
-  cubingEvent: string; // cubing.js event ID for randomScrambleForEvent
-  /** Hint used by the preview viewer. "other" falls back to twisty 3D. */
-  previewPuzzle:
-    | "2x2"
-    | "3x3"
-    | "4x4"
-    | "5x5"
-    | "6x6"
-    | "7x7"
-    | "other";
-}
-
-export interface ModeOption {
-  id: ModeId;
-  label: string;
-  /** Total cases for this training mode. 0 means no Filter Cases pill. */
-  totalCases: number;
-}
-
-export const PUZZLES: PuzzleOption[] = [
-  { id: "2x2x2",    label: "2x2x2",    cubingEvent: "2x2x2",    previewPuzzle: "2x2" },
-  { id: "3x3x3",    label: "3x3x3",    cubingEvent: "3x3x3",    previewPuzzle: "3x3" },
-  { id: "4x4x4",    label: "4x4x4",    cubingEvent: "4x4x4",    previewPuzzle: "4x4" },
-  { id: "5x5x5",    label: "5x5x5",    cubingEvent: "5x5x5",    previewPuzzle: "5x5" },
-  { id: "6x6x6",    label: "6x6x6",    cubingEvent: "6x6x6",    previewPuzzle: "6x6" },
-  { id: "7x7x7",    label: "7x7x7",    cubingEvent: "7x7x7",    previewPuzzle: "7x7" },
-  { id: "3x3x3OH",  label: "3x3x3OH",  cubingEvent: "3x3x3oh",  previewPuzzle: "3x3" },
-  { id: "3x3x3BF",  label: "3x3x3BF",  cubingEvent: "3x3x3bld", previewPuzzle: "3x3" },
-  { id: "clock",    label: "Clock",    cubingEvent: "clock",    previewPuzzle: "other" },
-  { id: "megaminx", label: "Megaminx", cubingEvent: "megaminx", previewPuzzle: "other" },
-  { id: "pyraminx", label: "Pyraminx", cubingEvent: "pyraminx", previewPuzzle: "other" },
-  { id: "skewb",    label: "Skewb",    cubingEvent: "skewb",    previewPuzzle: "other" },
-  { id: "sq1",      label: "sq1",      cubingEvent: "sq1",      previewPuzzle: "other" },
-];
-
-const WCA_MODE: ModeOption = { id: "WCA", label: "WCA", totalCases: 0 };
-
-export const MODES_BY_PUZZLE: Record<PuzzleId, ModeOption[]> = {
-  "2x2x2": [
-    WCA_MODE,
-    { id: "CLL",    label: "CLL",    totalCases: 42 },
-    { id: "EG1",    label: "EG1",    totalCases: 40 },
-    { id: "EG2",    label: "EG2",    totalCases: 40 },
-    { id: "TCLL+",  label: "TCLL+",  totalCases: 54 },
-    { id: "TCLL-",  label: "TCLL-",  totalCases: 54 },
-    { id: "TCLL",   label: "TCLL",   totalCases: 54 },
-    { id: "LS",     label: "LS",     totalCases: 27 },
-    { id: "No Bar", label: "No Bar", totalCases: 50 },
-  ],
-  "3x3x3": [
-    WCA_MODE,
-    { id: "OLL", label: "OLL", totalCases: 57 },
-    { id: "PLL", label: "PLL", totalCases: 21 },
-    { id: "LL",  label: "LL",  totalCases: 78 },
-  ],
-  "4x4x4":   [WCA_MODE],
-  "5x5x5":   [WCA_MODE],
-  "6x6x6":   [WCA_MODE],
-  "7x7x7":   [WCA_MODE],
-  "3x3x3OH": [WCA_MODE],
-  "3x3x3BF": [WCA_MODE],
-  "clock":     [WCA_MODE],
-  "megaminx":  [WCA_MODE],
-  "pyraminx": [WCA_MODE],
-  "skewb":    [WCA_MODE],
-  "sq1":      [WCA_MODE],
-};
-
-/** Returns true if the mode has a case-filter UI (i.e. is a specialized mode). */
-export function isSpecializedMode(mode: ModeId): boolean {
-  return mode !== "WCA";
-}
-
-/** Get puzzle option by ID (defensive: falls back to 3x3x3). */
-export function getPuzzle(id: PuzzleId): PuzzleOption {
-  return PUZZLES.find((p) => p.id === id) ?? PUZZLES[1];
-}
-
-/** Get modes available for a given puzzle. */
-export function getModes(puzzle: PuzzleId): ModeOption[] {
-  return MODES_BY_PUZZLE[puzzle] ?? [WCA_MODE];
-}
-
-/** Get a mode option by ID for a given puzzle (defensive: falls back to WCA). */
-export function getMode(puzzle: PuzzleId, modeId: ModeId): ModeOption {
-  const modes = getModes(puzzle);
-  return modes.find((m) => m.id === modeId) ?? WCA_MODE;
 }

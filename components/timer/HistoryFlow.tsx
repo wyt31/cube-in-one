@@ -4,9 +4,8 @@ import { formatTime, type Solve } from "@/lib/timer-types";
 
 // ============================================================================
 // History Flow — vertical stream of the most recent solves.
-// Renders up to `maxItems` rows (newest on top) in a compact single-line
-// format and applies a vertical gradient mask at the bottom so the list
-// fades smoothly.
+// Renders up to `maxItems` rows (newest on top), single-line, compact
+// (text-xs/sm). Each row shows the time plus a +2 / DNF badge.
 //
 // Clicking a row opens the SolveDetailModal for that solve (handled by the
 // parent via onSelect).
@@ -26,17 +25,10 @@ export default function HistoryFlow({
   const slice = solves.slice(0, maxItems);
 
   return (
-    <div className="relative w-44">
-      <ul
-        className="flex max-h-32 flex-col gap-1 overflow-hidden pr-1"
-        style={{
-          maskImage: "linear-gradient(to bottom, #000 60%, transparent 100%)",
-          WebkitMaskImage:
-            "linear-gradient(to bottom, #000 60%, transparent 100%)",
-        }}
-      >
+    <div className="w-44">
+      <ul className="flex flex-col gap-1 overflow-hidden pr-1">
         {slice.length === 0 ? (
-          <li className="py-2 text-right text-[0.6rem] uppercase tracking-[0.2em] text-[#BBB]">
+          <li className="py-2 text-right text-[0.55rem] uppercase tracking-[0.2em] text-[#BBB]">
             No solves yet
           </li>
         ) : (
@@ -50,18 +42,23 @@ export default function HistoryFlow({
                 <button
                   type="button"
                   onClick={() => onSelect(s)}
-                  className="flex w-full items-center justify-end gap-2 rounded-md px-2 py-1 text-right transition-colors hover:bg-[#2C2C2C]/[0.04]"
+                  className="flex w-full items-center justify-end gap-2 whitespace-nowrap rounded-md px-2 py-1 text-right transition-colors hover:bg-[#2C2C2C]/[0.04]"
                 >
-                  <span className="text-[0.55rem] uppercase tracking-[0.15em] text-[#BBB] tabular-nums">
-                    #{solves.length - idx}
-                  </span>
                   <span className="font-[family-name:var(--font-geist-mono)] text-xs tabular-nums tracking-wide text-[#2C2C2C]">
                     {timeStr}
-                    {s.penalty === 2 && (
-                      <span className="ml-1 text-[0.55rem] uppercase tracking-wider text-[#A0A09A]">
-                        +2
-                      </span>
-                    )}
+                  </span>
+                  {s.penalty === 2 && (
+                    <span className="text-[0.5rem] font-semibold uppercase tracking-wider text-[#C44]">
+                      +2
+                    </span>
+                  )}
+                  {s.penalty === -1 && (
+                    <span className="text-[0.5rem] font-semibold uppercase tracking-wider text-[#C44]">
+                      DNF
+                    </span>
+                  )}
+                  <span className="text-[0.5rem] uppercase tracking-[0.1em] text-[#C0C0BB]">
+                    #{solves.length - idx}
                   </span>
                 </button>
               </li>

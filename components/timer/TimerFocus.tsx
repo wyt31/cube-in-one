@@ -65,21 +65,21 @@ export interface TimerFocusProps {
 }
 
 // Helper: translate phase -> tailwind color state.
-// Idle/running/stopped use high-contrast near-black so the giant `00.00`
-// digits are always legible; ready/inspecting keep a calm status tint so
-// the user can still tell at a glance which state they're in.
-function phaseColor(p: Phase): string {
+// Resting/idle and running digits use a high-contrast near-black so the big
+// "00.00" is always prominent; only the special states use colour.
+function phaseColor(p: Phase, penalty: Penalty): string {
   switch (p) {
     case "ready":
     case "ready2":
-      return "text-[#5E8C5E]"; // calm green (state signal)
+      return "text-emerald-600"; // calm green
     case "inspecting":
-      return "text-[#9A8628]"; // amber (state signal)
-    case "running":
+      return penalty === 2 ? "text-red-600" : "text-amber-600"; // amber-ish
     case "stopped":
-    case "idle":
+      return penalty === -1 ? "text-red-600" : "text-neutral-900";
+    case "running":
+      return "text-neutral-900";
     default:
-      return "text-neutral-900"; // high-contrast default for the digits
+      return "text-neutral-900"; // idle / holding — high-contrast black
   }
 }
 
@@ -167,6 +167,7 @@ export default function TimerFocus({
       }
     }
     rafRef.current = requestAnimationFrame(tick);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const startLoop = useCallback(() => {
@@ -398,13 +399,14 @@ export default function TimerFocus({
       aria-label="Timer focus area — press and hold space or tap to control"
     >
       <span
-        className={`font-[family-name:var(--font-geist-mono)] text-7xl font-bold tabular-nums tracking-tight transition-colors duration-300 sm:text-8xl ${phaseColor(
+        className={`font-[family-name:var(--font-geist-mono)] text-7xl font-bold tabular-nums tracking-tight text-neutral-900 transition-colors duration-300 sm:text-8xl ${phaseColor(
           phase,
+          penalty,
         )} ${phase === "ready" || phase === "ready2" ? "scale-[1.02]" : ""}`}
       >
         {display}
       </span>
-      <span className="mt-6 text-[0.6rem] font-medium uppercase tracking-[0.3em] text-[#BBB]">
+      <span className="mt-6 text-[0.6rem] font-medium uppercase tracking-[0.3em] text-[#9A9A95]">
         {hint}
       </span>
     </button>
