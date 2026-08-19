@@ -13,16 +13,22 @@ import HistoryFlow from "@/components/timer/HistoryFlow";
 import SolveDetailModal from "@/components/timer/SolveDetailModal";
 import SettingsDrawer from "@/components/timer/SettingsDrawer";
 
-import { db, addSolve, deleteSolve, updateSolvePenalty, listSessions } from "@/lib/db";
+import { db, addSolve, deleteSolve, updateSolvePenalty } from "@/lib/db";
 import { generateScramble } from "@/lib/scramble";
-import { type Penalty, type Solve, type TimerEvent } from "@/lib/timer-types";
+import {
+  getMode,
+  type ModeId,
+  type Penalty,
+  type PuzzleId,
+  type Solve,
+} from "@/lib/timer-types";
 
 // ============================================================================
 // /timer — single-page lightweight timer.
 //
-// Layout (max-w-5xl centered wrapper):
+// Layout (max-w-5xl centered wrapper, viewport-locked — no vertical scroll):
 //   ┌──────────────────────────────────────────────┐
-//   │   [ Puzzle | Mode | Case ]        ⚙          │  Header
+//   │   [ Puzzle ▾ ] [ Mode ▾ ] [ Filter ▾ ]    ⚙  │  Header
 //   ├──────────────────────────────────────────────┤
 //   │           Scramble  (max-w-2xl centered)      │
 //   ├──────────────────────────────────────────────┤
@@ -40,19 +46,14 @@ import { type Penalty, type Solve, type TimerEvent } from "@/lib/timer-types";
 //   - SolveDetailModal: opened from History Flow row click
 // ============================================================================
 
-const EVENTS: TimerEvent[] = ["2x2x2", "3x3x3", "4x4x4", "5x5x5"];
-
-const PUZZLE_LABEL: Record<TimerEvent, "2x2" | "3x3" | "4x4" | "5x5"> = {
-  "2x2x2": "2x2",
-  "3x3x3": "3x3",
-  "4x4x4": "4x4",
-  "5x5x5": "5x5",
-};
+const DEFAULT_SESSION = "Default";
 
 export default function TimerPage() {
   // ----- Page state -----------------------------------------------------
-  const [event, setEvent] = useState<TimerEvent>("3x3x3");
-  const [session, setSession] = useState<string>("Default");
+  const [puzzle, setPuzzle] = useState<PuzzleId>("3x3x3");
+  const [mode, setMode] = useState<ModeId>("WCA");
+  const [selectedCases, setSelectedCases] = useState<Set<number>>(new Set());
+  const [session, setSession] = useState<string>(DEFAULT_SESSION);
   const [scramble, setScramble] = useState<string>("");
   const [scrambleLoading, setScrambleLoading] = useState<boolean>(false);
 
@@ -69,27 +70,48 @@ export default function TimerPage() {
   const solves = useLiveQuery(
     async () => {
       const list = await db.solves
-        .where({ event, session })
+        .where({ event: puzzle, session })
         .toArray();
       // chronological (oldest first) for AoX math
       list.sort((a, b) => a.date - b.date);
       return list;
     },
-    [event, session],
+    [puzzle, session],
     [] as Solve[],
   ) ?? [];
 
-  const sessionNames = useLiveQuery(
-    () => listSessions(event),
-    [event],
-    ["Default"],
-  ) ?? ["Default"];
+  // ----- Case-filter management ----------------------------------------
+  // When (puzzle, mode) changes, rebuild the selected-cases set so every
+  // case index 1..N is selected by default.
+  const totalCases = getMode(puzzle, mode).totalCases;
+  useEffect(() => {
+    setSelectedCases(
+      new Set(Array.from({ length: totalCases }, (_, i) => i + 1)),
+    );
+  }, [totalCases, puzzle, mode]);
+
+  const handleToggleCase = useCallback((n: number) => {
+    setSelectedCases((prev) => {
+      const next = new Set(prev);
+      if (next.has(n)) next.delete(n);
+      else next.add(n);
+      return next;
+    });
+  }, []);
+
+  const handleResetCases = useCallback(() => {
+    setSelectedCases(
+      new Set(Array.from({ length: totalCases }, (_, i) => i + 1)),
+    );
+  }, [totalCases]);
 
   // ----- Scramble generation -------------------------------------------
+  // cubing/scramble is loaded inside generateScramble via dynamic import()
+  // and only invoked from this effect / handlers — never during SSR.
   const fetchScramble = useCallback(async () => {
     setScrambleLoading(true);
     try {
-      const s = await generateScramble(event);
+      const s = await generateScramble(puzzle);
       setScramble(s);
     } catch (e) {
       console.error("Scramble generation failed", e);
@@ -97,7 +119,7 @@ export default function TimerPage() {
     } finally {
       setScrambleLoading(false);
     }
-  }, [event]);
+  }, [puzzle]);
 
   useEffect(() => {
     fetchScramble();
@@ -107,7 +129,7 @@ export default function TimerPage() {
   const handleSolve = useCallback(
     async (result: { time: number; penalty: Penalty; inspectionTime: number }) => {
       await addSolve({
-        event,
+        event: puzzle,
         session,
         time: result.time,
         penalty: result.penalty,
@@ -118,7 +140,7 @@ export default function TimerPage() {
       // Generate the next scramble automatically.
       fetchScramble();
     },
-    [event, session, scramble, fetchScramble],
+    [puzzle, session, scramble, fetchScramble],
   );
 
   const handleDelete = useCallback(async (id: number) => {
@@ -137,29 +159,37 @@ export default function TimerPage() {
     [],
   );
 
-  const handleEventChange = useCallback((e: TimerEvent) => {
-    setEvent(e);
-    setSession("Default");
+  const handlePuzzleChange = useCallback((p: PuzzleId) => {
+    setPuzzle(p);
+    setMode("WCA");
+    setSession(DEFAULT_SESSION);
   }, []);
+
+  const handleModeChange = useCallback((m: ModeId) => {
+    setMode(m);
+  }, []);
+
+  const handleOpenSettings = useCallback(() => setSettingsOpen(true), []);
+  const handleCloseSettings = useCallback(() => setSettingsOpen(false), []);
+  const handleCloseSolveModal = useCallback(() => setSelectedSolve(null), []);
 
   // Solve list newest-first for display in the history flow.
   const solvesDesc = [...solves].reverse();
 
   return (
-    <div className="min-h-screen bg-[#FBFBFA] font-[family-name:var(--font-geist-sans)] text-[#2C2C2C]">
-      {/* Centered outer wrapper — max-w-5xl keeps the layout calm on wide screens */}
-      <div className="mx-auto flex h-screen w-full max-w-5xl flex-col justify-between px-6 py-6 sm:px-8">
+    <div className="w-full h-screen overflow-hidden bg-[#E5E5E5] flex justify-center font-[family-name:var(--font-geist-sans)] text-[#2C2C2C]">
+      {/* Centered inner content container — viewport-locked, no scroll */}
+      <div className="w-full max-w-5xl h-full p-6 flex flex-col justify-between">
         {/* ---------- Header ---------- */}
         <TimerHeader
-          event={event}
-          events={EVENTS}
-          session={session}
-          sessions={sessionNames}
-          inspectionEnabled={inspectionEnabled}
-          onEventChange={handleEventChange}
-          onSessionChange={setSession}
-          onToggleInspection={() => setInspectionEnabled((v) => !v)}
-          onOpenSettings={() => setSettingsOpen(true)}
+          puzzle={puzzle}
+          onPuzzleChange={handlePuzzleChange}
+          mode={mode}
+          onModeChange={handleModeChange}
+          selectedCases={selectedCases}
+          onToggleCase={handleToggleCase}
+          onResetCases={handleResetCases}
+          onOpenSettings={handleOpenSettings}
         />
 
         {/* ---------- Scramble banner ---------- */}
@@ -174,7 +204,7 @@ export default function TimerPage() {
         </div>
 
         {/* ---------- Center Focus: Timer ---------- */}
-        <div className="flex flex-1 items-center justify-center py-4">
+        <div className="flex min-h-0 flex-1 items-center justify-center py-4">
           <TimerFocus
             inspectionEnabled={inspectionEnabled}
             voiceEnabled={voiceEnabled}
@@ -190,12 +220,12 @@ export default function TimerPage() {
           {/* Right column: History flow on top, Preview below */}
           <div className="flex flex-col items-end gap-3">
             <HistoryFlow solves={solvesDesc} onSelect={setSelectedSolve} />
-            <ScrambleViewer puzzle={PUZZLE_LABEL[event]} scramble={scramble} />
+            <ScrambleViewer puzzle={puzzle} scramble={scramble} />
           </div>
         </div>
       </div>
 
-      {/* ---------- Back link (absolute, bottom-left) ---------- */}
+      {/* ---------- Back link (absolute, top-left) ---------- */}
       <Link
         href="/"
         className="fixed left-6 top-6 z-10 text-[0.65rem] font-medium uppercase tracking-[0.3em] text-[#BBB] transition-colors hover:text-[#2C2C2C] sm:left-8"
@@ -210,13 +240,13 @@ export default function TimerPage() {
         voiceEnabled={voiceEnabled}
         onToggleInspection={setInspectionEnabled}
         onToggleVoice={setVoiceEnabled}
-        onClose={() => setSettingsOpen(false)}
+        onClose={handleCloseSettings}
       />
 
       {selectedSolve && selectedSolve.id !== undefined && (
         <SolveDetailModal
           solve={selectedSolve}
-          onClose={() => setSelectedSolve(null)}
+          onClose={handleCloseSolveModal}
           onPenaltyChange={handlePenaltyChange}
           onDelete={handleDelete}
         />

@@ -1,43 +1,55 @@
 "use client";
 
-import { useEffect, type CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
+import { getPuzzle, type PuzzleId } from "@/lib/timer-types";
 
 // ============================================================================
 // Bottom-Right scramble viewer — always visible (no toggle).
 // Renders a <twisty-player> with the current scramble applied so the user
 // can preview the scrambled state.
 //
+// Layout: fixed compact size (120×90) sitting in the bottom-right corner of
+// the timer page, stacked under the History Flow.
+//
+// cubing/twisty is a heavy client-only module; we register the custom
+// element inside a useEffect and gate the actual <twisty-player> render on
+// a `mounted` flag so the SSR pass never emits the element.
+//
 // The <twisty-player> JSX intrinsic element is declared globally in
 // components/CubeImage.tsx.
 // ============================================================================
 
 export interface ScrambleViewerProps {
-  puzzle: "2x2" | "3x3" | "4x4" | "5x5";
+  puzzle: PuzzleId;
   scramble: string;
 }
 
 export default function ScrambleViewer({ puzzle, scramble }: ScrambleViewerProps) {
-  // Register the custom element client-side only.
+  const [mounted, setMounted] = useState(false);
+
+  // Register the custom element client-side only. The dynamic import is
+  // invoked from inside an effect so it never runs during SSR.
   useEffect(() => {
-    import("cubing/twisty");
+    let cancelled = false;
+    import("cubing/twisty")
+      .then(() => {
+        if (!cancelled) setMounted(true);
+      })
+      .catch((e) => console.error("cubing/twisty load failed", e));
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  const puzzleId =
-    puzzle === "2x2"
-      ? "2x2x2"
-      : puzzle === "3x3"
-      ? "3x3x3"
-      : puzzle === "4x4"
-      ? "4x4x4"
-      : "5x5x5";
+  const cubingEvent = getPuzzle(puzzle).cubingEvent;
 
   return (
-    <div className="h-40 w-40 overflow-hidden rounded-2xl border border-[#E8E8E4] bg-[#FBFBFA] p-1 sm:h-52 sm:w-52">
-      {scramble ? (
+    <div className="h-[90px] w-[120px] flex-shrink-0 overflow-hidden rounded-xl border border-[#E8E8E4] bg-white p-0.5">
+      {mounted && scramble ? (
         <twisty-player
-          puzzle={puzzleId}
+          puzzle={cubingEvent}
           alg={scramble}
-          visualization="3D"
+          visualization="2D"
           background="none"
           control-panel="none"
           style={
@@ -49,8 +61,8 @@ export default function ScrambleViewer({ puzzle, scramble }: ScrambleViewerProps
           }
         />
       ) : (
-        <div className="flex h-full w-full items-center justify-center text-[0.6rem] uppercase tracking-[0.2em] text-[#BBB]">
-          No scramble
+        <div className="flex h-full w-full items-center justify-center text-[0.55rem] uppercase tracking-[0.2em] text-[#BBB]">
+          {scramble ? "Loading…" : "—"}
         </div>
       )}
     </div>

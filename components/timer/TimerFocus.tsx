@@ -64,20 +64,22 @@ export interface TimerFocusProps {
   onRequestNextScramble: () => void;
 }
 
-// Helper: translate phase -> tailwind color state
+// Helper: translate phase -> tailwind color state.
+// Idle/running/stopped use high-contrast near-black so the giant `00.00`
+// digits are always legible; ready/inspecting keep a calm status tint so
+// the user can still tell at a glance which state they're in.
 function phaseColor(p: Phase): string {
   switch (p) {
     case "ready":
     case "ready2":
-      return "text-[#7BA17B]"; // calm green
+      return "text-[#5E8C5E]"; // calm green (state signal)
     case "inspecting":
-      return "text-[#B8A33A]"; // amber-ish
+      return "text-[#9A8628]"; // amber (state signal)
     case "running":
-      return "text-[#2C2C2C]";
     case "stopped":
-      return "text-[#2C2C2C]";
+    case "idle":
     default:
-      return "text-[#999]";
+      return "text-neutral-900"; // high-contrast default for the digits
   }
 }
 
@@ -396,7 +398,7 @@ export default function TimerFocus({
       aria-label="Timer focus area — press and hold space or tap to control"
     >
       <span
-        className={`font-[family-name:var(--font-geist-mono)] text-6xl font-light tabular-nums tracking-tight transition-colors duration-300 sm:text-8xl ${phaseColor(
+        className={`font-[family-name:var(--font-geist-mono)] text-7xl font-bold tabular-nums tracking-tight transition-colors duration-300 sm:text-8xl ${phaseColor(
           phase,
         )} ${phase === "ready" || phase === "ready2" ? "scale-[1.02]" : ""}`}
       >
