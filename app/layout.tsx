@@ -25,6 +25,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* cubing/twisty — load the <twisty-player> custom element from the
+            official CDN as a native ESM module. This registers the global
+            custom element; pages that render <twisty-player> just use it.
+            We use the CDN (not the npm package) because Next.js's webpack
+            cannot bundle cubing.js's web-worker + WASM modules — see
+            https://github.com/cubing/cubing.js/issues/323. */}
+        <script
+          type="module"
+          src="https://cdn.cubing.net/v0/js/cubing/twisty"
+          async
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

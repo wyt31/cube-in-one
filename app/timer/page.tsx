@@ -154,13 +154,22 @@ export default function TimerPage() {
   ) ?? [];
 
   // ----- Scramble generation -------------------------------------------
-  // cubing.js is imported dynamically inside the function so the rest of the
-  // app never touches cubing's module graph at load time.
+  // cubing.js is loaded from the official CDN (cdn.cubing.net) at runtime
+  // as a native ESM module. The `webpackIgnore: true` magic comment tells
+  // Next.js's webpack to leave this import alone — the browser fetches
+  // cubing/scramble directly from the CDN, which is the officially supported
+  // way to use cubing.js with bundlers that have trouble with its web-worker
+  // + WASM modules (see https://github.com/cubing/cubing.js/issues/323 —
+  // Next.js is explicitly listed as incompatible with the npm package).
+  // The npm `cubing` package stays installed only for TypeScript types.
   const fetchScramble = useCallback(async () => {
     setScrambleLoading(true);
     try {
-      const { randomScrambleForEvent } = await import("cubing/scramble");
-      const alg = await randomScrambleForEvent(CUBING_EVENT_ID[event]);
+      const mod = await import(
+        /* webpackIgnore: true */
+        "https://cdn.cubing.net/v0/js/cubing/scramble"
+      );
+      const alg = await mod.randomScrambleForEvent(CUBING_EVENT_ID[event]);
       setScramble(alg.toString());
     } catch (e) {
       console.error("Scramble generation failed", e);

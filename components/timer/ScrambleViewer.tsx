@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, type CSSProperties } from "react";
+import { useMemo, type CSSProperties } from "react";
 import type { TimerEvent } from "@/lib/timer-types";
 
 // ============================================================================
@@ -11,8 +11,10 @@ import type { TimerEvent } from "@/lib/timer-types";
 // Sized as a compact fixed preview (120×90) so it sits snugly in the
 // bottom-right corner without crowding the central Scramble banner.
 //
-// The <twisty-player> JSX intrinsic element is declared globally in
-// components/CubeImage.tsx.
+// The <twisty-player> custom element is registered globally by the CDN
+// <script> tag in app/layout.tsx (not via `import("cubing/twisty")`, which
+// Next.js's webpack cannot bundle — see issue #323). The JSX intrinsic
+// element type is declared in components/CubeImage.tsx.
 // ============================================================================
 
 export interface ScrambleViewerProps {
@@ -24,11 +26,6 @@ export default function ScrambleViewer({
   puzzle,
   scramble,
 }: ScrambleViewerProps) {
-  // Register the custom element client-side only.
-  useEffect(() => {
-    import("cubing/twisty");
-  }, []);
-
   // Map our friendly TimerEvent to the puzzle id twisty-player expects.
   // twisty-player uses the same puzzle id as cubing.js events for NxN cubes
   // ("3x3x3", "4x4x4", ...) and the WCA event id for the rest.

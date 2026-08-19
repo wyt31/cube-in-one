@@ -243,8 +243,14 @@ export async function getCubeStateFromScramble(
   const ignoredColor = options.ignoredColor ?? DEFAULT_IGNORED;
   const layout = dimension === 2 ? LAYOUT_2X2 : LAYOUT_3X3;
 
-  // Dynamically import cubing.js (client-side, avoids SSR cost).
-  const puzzles = await import("cubing/puzzles");
+  // Dynamically import cubing.js from the official CDN as a native ESM
+  // module. `webpackIgnore: true` tells Next.js's webpack to leave this
+  // import alone — bundling cubing/puzzles triggers the search-worker-entry.js
+  // resolution failure (see https://github.com/cubing/cubing.js/issues/323).
+  const puzzles = await import(
+    /* webpackIgnore: true */
+    "https://cdn.cubing.net/v0/js/cubing/puzzles"
+  );
   const loader = dimension === 2 ? puzzles.cube2x2x2 : puzzles.cube3x3x3;
   const kpuzzle = await loader.kpuzzle();
   const defaultPattern = kpuzzle.defaultPattern();

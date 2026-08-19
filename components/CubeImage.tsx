@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, type CSSProperties } from "react";
+import type { CSSProperties } from "react";
 
 interface CubeImageProps {
   puzzle?: string;
@@ -38,10 +38,9 @@ export default function CubeImage({
   stickering,
   className = "",
 }: CubeImageProps) {
-  useEffect(() => {
-    // Register cubing/twisty custom element at runtime, client-side only.
-    import("cubing/twisty");
-  }, []);
+  // The <twisty-player> custom element is registered globally by the CDN
+  // <script> tag in app/layout.tsx — no client-side import needed here.
+  // (Next.js's webpack cannot bundle cubing/twisty — see issue #323.)
 
   return (
     <div className={`relative flex items-center justify-center overflow-hidden ${className}`}>
