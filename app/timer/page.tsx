@@ -14,10 +14,29 @@ import SolveDetailModal from "@/components/timer/SolveDetailModal";
 import SettingsDrawer from "@/components/timer/SettingsDrawer";
 
 import { db, addSolve, deleteSolve, updateSolvePenalty } from "@/lib/db";
-import { generateScramble } from "@/lib/scramble";
 import { type Penalty, type Solve, type TimerEvent, type TimerMode } from "@/lib/timer-types";
 import { algData2x2, type AlgCase } from "@/data/algs";
 import { algData3x3 } from "@/data/algs3x3";
+
+/**
+ * Maps our friendly TimerEvent names to cubing.js event IDs accepted by
+ * `randomScrambleForEvent`. Kept local since lib/scramble.ts was removed.
+ */
+const CUBING_EVENT_ID: Record<TimerEvent, string> = {
+  "2x2x2": "222",
+  "3x3x3": "333",
+  "4x4x4": "444",
+  "5x5x5": "555",
+  "6x6x6": "666",
+  "7x7x7": "777",
+  "3x3x3 OH": "333oh",
+  "3x3x3 BF": "333bf",
+  Clock: "clock",
+  Megaminx: "minigsm",
+  Pyraminx: "pyram",
+  Skewb: "skewb",
+  "Square-1": "sq1",
+};
 
 // ============================================================================
 // /timer — single-page lightweight timer.
@@ -135,20 +154,21 @@ export default function TimerPage() {
   ) ?? [];
 
   // ----- Scramble generation -------------------------------------------
-  // generateScramble never throws and never hangs (see lib/scramble.ts), so
-  // this stays simple — no Promise.race needed at the call site.
+  // cubing.js is imported dynamically inside the function so the rest of the
+  // app never touches cubing's module graph at load time.
   const fetchScramble = useCallback(async () => {
     setScrambleLoading(true);
     try {
-      const s = await generateScramble(event, mode);
-      setScramble(s);
-    } catch {
-      // Defensive only — generateScramble already swallows errors.
+      const { randomScrambleForEvent } = await import("cubing/scramble");
+      const alg = await randomScrambleForEvent(CUBING_EVENT_ID[event]);
+      setScramble(alg.toString());
+    } catch (e) {
+      console.error("Scramble generation failed", e);
       setScramble("");
     } finally {
       setScrambleLoading(false);
     }
-  }, [event, mode]);
+  }, [event]);
 
   useEffect(() => {
     fetchScramble();

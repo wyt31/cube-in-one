@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, type CSSProperties } from "react";
-import { CUBING_EVENT_ID } from "@/lib/scramble";
 import type { TimerEvent } from "@/lib/timer-types";
 
 // ============================================================================
@@ -45,9 +44,18 @@ export default function ScrambleViewer({
       case "3x3x3 OH":
       case "3x3x3 BF":
         return "3x3x3";
+      case "Clock":
+        return "clock";
+      case "Megaminx":
+        return "minigsm";
+      case "Pyraminx":
+        return "pyram";
+      case "Skewb":
+        return "skewb";
+      case "Square-1":
+        return "sq1";
       default:
-        // clock / megaminx / pyraminx / skewb / sq1 — reuse cubing event id.
-        return CUBING_EVENT_ID[puzzle];
+        return "3x3x3";
     }
   }, [puzzle]);
 
