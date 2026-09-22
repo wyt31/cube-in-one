@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -37,14 +37,14 @@ export default function SideDrawer({ isOpen, onClose }: SideDrawerProps) {
         aria-hidden={!isOpen}
       >
         <div className="flex items-center justify-between px-6 py-5">
-          <span className="text-[0.65rem] uppercase tracking-[0.3em] text-[#666]">
+          <span className="text-[0.65rem] uppercase tracking-[0.3em] text-neutral-500">
             Menu
           </span>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close menu"
-            className="text-[#999] transition-colors hover:text-[#333]"
+            className="text-neutral-400 transition-colors hover:text-neutral-800"
           >
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden>
               <path
@@ -70,8 +70,8 @@ export default function SideDrawer({ isOpen, onClose }: SideDrawerProps) {
                 onClick={onClose}
                 className={`rounded-xl px-4 py-3.5 text-sm tracking-wide transition-all ${
                   isActive
-                    ? "bg-[#2C2C2C]/5 text-[#2C2C2C] font-medium"
-                    : "text-[#444] hover:bg-[#F0EBE3]/60"
+                    ? "bg-neutral-800/5 text-neutral-800 font-medium"
+                    : "text-neutral-700 hover:bg-[#F0EBE3]/60"
                 }`}
               >
                 {item.label}

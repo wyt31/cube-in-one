@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
@@ -6,7 +6,6 @@ import {
   CUBES,
   CATEGORIES,
   algData,
-  AVAILABLE_TAGS,
   type CubeType,
   type AlgCase,
   type CategorySpec,
@@ -56,6 +55,24 @@ export default function AlgsPage() {
     });
   }, [selectedCube, selectedCategory, selectedGroup]);
 
+  // When "All" is selected, group the cards by subCategory (alg.group) so the
+  // page renders elegant per-group sections (e.g. Sune, Anti-Sune, Pi, ...).
+  // When a specific group is picked, render a single section for it.
+  const groupedAlgs = useMemo(() => {
+    const sections: { group: string; items: AlgCase[] }[] = [];
+    const seen = new Map<string, number>();
+    filteredAlgs.forEach((alg) => {
+      const idx = seen.get(alg.group);
+      if (idx === undefined) {
+        seen.set(alg.group, sections.length);
+        sections.push({ group: alg.group, items: [alg] });
+      } else {
+        sections[idx].items.push(alg);
+      }
+    });
+    return sections;
+  }, [filteredAlgs]);
+
   const handleCubeChange = (cube: CubeType) => {
     setSelectedCube(cube);
     setSelectedCategory(CATEGORIES[cube][0].name);
@@ -68,16 +85,16 @@ export default function AlgsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FBFBFA] font-[family-name:var(--font-geist-sans)] text-[#2C2C2C]">
+    <div className="min-h-screen bg-[#FBFBFA] font-[family-name:var(--font-geist-sans)] text-neutral-800">
       {/* Header */}
-      <header className="px-6 py-8 sm:px-12">
+      <header className="px-6 pb-10 pt-14 sm:px-12">
         <Link
           href="/"
-          className="text-[0.65rem] font-medium uppercase tracking-[0.3em] text-[#888] transition-colors hover:text-[#2C2C2C]"
+          className="text-[0.65rem] font-medium uppercase tracking-[0.3em] text-neutral-400 transition-colors hover:text-neutral-800"
         >
           &lt; Cube in One
         </Link>
-        <h1 className="mt-6 text-2xl font-extralight uppercase tracking-[0.25em] sm:text-3xl">
+        <h1 className="mt-10 text-2xl font-extralight uppercase tracking-[0.15em] sm:text-3xl">
           Algorithm Sets
         </h1>
       </header>
@@ -91,8 +108,8 @@ export default function AlgsPage() {
               onClick={() => handleCubeChange(cube)}
               className={`text-sm tracking-[0.15em] transition-all ${
                 selectedCube === cube
-                  ? "font-medium text-[#2C2C2C]"
-                  : "text-[#AAA] hover:text-[#666]"
+                  ? "font-medium text-neutral-800"
+                  : "text-neutral-400 hover:text-neutral-500"
               }`}
             >
               {cube}
@@ -106,10 +123,10 @@ export default function AlgsPage() {
             <button
               key={cat}
               onClick={() => handleCategoryChange(cat)}
-              className={`rounded-full border px-4 py-1.5 text-[0.65rem] tracking-[0.1em] transition-all ${
+              className={`rounded-full px-4 py-1.5 text-[0.65rem] tracking-[0.1em] transition-colors ${
                 selectedCategory === cat
-                  ? "border-[#2C2C2C] bg-[#2C2C2C] text-white"
-                  : "border-[#E8E8E4] bg-white text-[#888] hover:border-[#CCC]"
+                  ? "bg-neutral-800 text-[#fbfbf9]"
+                  : "text-neutral-400 hover:text-neutral-700"
               }`}
             >
               {cat}
@@ -126,8 +143,8 @@ export default function AlgsPage() {
                 onClick={() => setSelectedGroup(group)}
                 className={`text-[0.6rem] uppercase tracking-[0.15em] transition-colors ${
                   selectedGroup === group
-                    ? "font-bold text-[#2C2C2C]"
-                    : "text-[#AAA] hover:text-[#666]"
+                    ? "font-bold text-neutral-800"
+                    : "text-neutral-400 hover:text-neutral-500"
                 }`}
               >
                 {group}
@@ -136,62 +153,65 @@ export default function AlgsPage() {
           </div>
         )}
 
-        {/* Tier 3: Cards */}
-        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredAlgs.length > 0 ? (
-            filteredAlgs.map((alg) => (
-              <div
-                key={alg.id}
-                onClick={() => setSelectedAlg(alg)}
-                className="group flex cursor-pointer flex-col rounded-2xl border border-[#E8E8E4] bg-white p-5 shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-all hover:translate-y-[-2px] hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)]"
-              >
-                {/* Rendering engine routed by alg.cube + alg.set */}
-                <div className="relative mb-5 flex aspect-square w-full items-center justify-center overflow-hidden rounded-xl border border-[#F0F0EE] bg-[#FBFBFA] p-3">
-                  <AlgCardCube alg={alg} className="h-full w-full" />
-                </div>
-
-                <div className="flex items-start justify-between">
-                  <h3 className="text-sm font-medium tracking-wide text-[#2C2C2C]">
-                    {alg.name}
-                  </h3>
-                  <span className="rounded bg-[#F5F5F2] px-2 py-0.5 text-[0.6rem] uppercase tracking-wider text-[#A0A09A]">
-                    {alg.set}
+        {/* Tier 3: Cards — grouped by subCategory (alg.group) */}
+        {groupedAlgs.length > 0 ? (
+          <div className="mt-10 flex flex-col gap-10">
+            {groupedAlgs.map((section) => (
+              <section key={section.group}>
+                {/* Group header (subCategory) */}
+                <div className="mb-4 flex items-baseline gap-3">
+                  <h2 className="text-sm font-medium uppercase tracking-[0.25em] text-neutral-800">
+                    {section.group}
+                  </h2>
+                  <span className="text-[0.65rem] tracking-[0.15em] text-neutral-300">
+                    {section.items.length} {section.items.length === 1 ? "case" : "cases"}
                   </span>
                 </div>
 
-                <div className="mt-4 rounded-xl bg-[#FBFBFA] p-4 border border-[#F0F0EE]">
-                  <code className="block font-[family-name:var(--font-geist-mono)] text-xs leading-relaxed tracking-wide text-[#555]">
-                    {alg.recommended}
-                  </code>
-                </div>
-
-                <div className="mt-auto pt-4 flex flex-wrap gap-1.5">
-                  {alg.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-[0.6rem] text-[#BBB] before:content-['#']"
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                  {section.items.map((alg) => (
+                    <div
+                      key={alg.id}
+                      onClick={() => setSelectedAlg(alg)}
+                      className="group flex min-h-[120px] h-auto cursor-pointer items-center gap-4 rounded-2xl border border-[#E8E8E4] bg-white p-4 shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-all duration-200 hover:border-[#D8D8D2] hover:bg-[#FAFAF8] hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)]"
                     >
-                      {tag}
-                    </span>
+                      {/* Left: 96px cube + case name */}
+                      <div className="flex w-24 flex-shrink-0 flex-col items-center gap-2">
+                        <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-xl border border-[#F0F0EE] bg-[#FBFBFA] p-1.5">
+                          <AlgCardCube alg={alg} className="h-full w-full" />
+                        </div>
+                        <h3 className="text-center text-[0.7rem] font-medium leading-tight tracking-wide text-neutral-800">
+                          {alg.name}
+                        </h3>
+                      </div>
+
+                      {/* Right: single strongest (S-tier) recommended formula only.
+                          Elastic height — long formulas gracefully expand the
+                          card, never overlapping the case name on the left. */}
+                      <div className="flex min-w-0 flex-1 items-center">
+                        <code className="block min-w-0 flex-1 font-[family-name:var(--font-geist-mono)] text-[12.5px] font-medium leading-snug tracking-wide text-neutral-800">
+                          {alg.recommended}
+                        </code>
+                      </div>
+                    </div>
                   ))}
                 </div>
-              </div>
-            ))
-          ) : (
-            <div className="col-span-full py-20 text-center">
-              <p className="text-xs tracking-[0.2em] text-[#BBB]">
-                NO ALGORITHMS FOUND IN THIS CATEGORY.
-              </p>
-            </div>
-          )}
-        </div>
+              </section>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-10 py-20 text-center">
+            <p className="text-xs tracking-[0.2em] text-neutral-300">
+              NO ALGORITHMS FOUND IN THIS CATEGORY.
+            </p>
+          </div>
+        )}
       </main>
 
       {/* Detail Modal */}
       {selectedAlg && (
         <AlgDetailModal
           alg={selectedAlg}
-          availableTags={AVAILABLE_TAGS[selectedCube]}
           onClose={() => setSelectedAlg(null)}
         />
       )}

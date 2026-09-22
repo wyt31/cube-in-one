@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { formatTime, type Penalty, type Solve } from "@/lib/timer-types";
@@ -32,7 +32,7 @@ function CopyButton({ text }: { text: string }) {
     <button
       type="button"
       onClick={handle}
-      className="flex flex-shrink-0 items-center gap-1.5 rounded-lg border border-[#E8E8E4] bg-white px-2.5 py-1 text-[0.6rem] font-medium text-[#666] transition-all hover:border-[#2C2C2C] hover:text-[#2C2C2C] active:scale-95"
+      className="flex flex-shrink-0 items-center gap-1.5 rounded-lg border border-[#E8E8E4] bg-white px-2.5 py-1 text-[0.6rem] font-medium text-neutral-500 transition-all hover:border-neutral-800 hover:text-neutral-800 active:scale-95"
     >
       {copied ? (
         <span className="text-green-600">Copied</span>
@@ -87,6 +87,14 @@ export default function SolveDetailModal({
       ? solve.time + 2000
       : solve.time;
 
+  // Delete solve requires two clicks to confirm.
+  const [deleteConfirming, setDeleteConfirming] = useState(false);
+  useEffect(() => {
+    if (!deleteConfirming) return;
+    const t = window.setTimeout(() => setDeleteConfirming(false), 3500);
+    return () => window.clearTimeout(t);
+  }, [deleteConfirming]);
+
   return (
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center px-6"
@@ -101,7 +109,7 @@ export default function SolveDetailModal({
         {/* Header */}
         <div className="relative flex flex-shrink-0 items-start gap-5 border-b border-[#F0F0EE] p-6 pr-12">
           <div className="min-w-0 flex-1">
-            <h2 className="font-[family-name:var(--font-geist-mono)] text-2xl font-light tabular-nums tracking-wide text-[#2C2C2C]">
+            <h2 className="font-[family-name:var(--font-geist-mono)] text-2xl font-light tabular-nums tracking-wide text-neutral-800">
               {finalMs === null ? "DNF" : formatTime(finalMs)}
             </h2>
             <p className="mt-1 text-[0.6rem] uppercase tracking-[0.2em] text-[#A0A09A]">
@@ -113,7 +121,7 @@ export default function SolveDetailModal({
           <button
             type="button"
             onClick={onClose}
-            className="absolute right-6 top-6 text-[#BBB] transition-colors hover:text-[#2C2C2C]"
+            className="absolute right-6 top-6 text-neutral-300 transition-colors hover:text-neutral-800"
             aria-label="Close"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -125,18 +133,18 @@ export default function SolveDetailModal({
 
         {/* Body — scramble */}
         <div className="flex-1 overflow-y-auto p-6">
-          <h4 className="mb-2 text-[0.6rem] font-medium uppercase tracking-[0.2em] text-[#888]">
+          <h4 className="mb-2 text-[0.6rem] font-medium uppercase tracking-[0.2em] text-neutral-400">
             Scramble
           </h4>
           <div className="flex items-start justify-between gap-3 rounded-xl border border-[#F0F0EE] bg-[#FBFBFA] p-4">
-            <code className="block break-all font-[family-name:var(--font-geist-mono)] text-xs leading-relaxed tracking-wide text-[#555]">
+            <code className="block break-all font-[family-name:var(--font-geist-mono)] text-xs leading-relaxed tracking-wide text-neutral-500">
               {solve.scramble || "—"}
             </code>
             {solve.scramble && <CopyButton text={solve.scramble} />}
           </div>
 
           {solve.inspectionTime !== undefined && (
-            <p className="mt-3 text-[0.6rem] tracking-wide text-[#BBB]">
+            <p className="mt-3 text-[0.6rem] tracking-wide text-neutral-300">
               Inspection: {(solve.inspectionTime / 1000).toFixed(1)}s
             </p>
           )}
@@ -144,7 +152,7 @@ export default function SolveDetailModal({
 
         {/* Footer — penalty + delete */}
         <div className="flex-shrink-0 border-t border-[#F0F0EE] p-6">
-          <h4 className="mb-3 text-[0.6rem] font-medium uppercase tracking-[0.2em] text-[#888]">
+          <h4 className="mb-3 text-[0.6rem] font-medium uppercase tracking-[0.2em] text-neutral-400">
             Penalty
           </h4>
           <div className="grid grid-cols-3 gap-2">
@@ -160,8 +168,8 @@ export default function SolveDetailModal({
                   }
                   className={`rounded-xl border px-3 py-2 text-[0.65rem] font-medium uppercase tracking-[0.15em] transition-all ${
                     active
-                      ? "border-[#2C2C2C] bg-[#2C2C2C] text-white"
-                      : "border-[#E8E8E4] bg-white text-[#666] hover:border-[#2C2C2C] hover:text-[#2C2C2C]"
+                      ? "border-neutral-800 bg-neutral-800 text-white"
+                      : "border-[#E8E8E4] bg-white text-neutral-500 hover:border-neutral-800 hover:text-neutral-800"
                   }`}
                 >
                   {opt.label}
@@ -173,14 +181,22 @@ export default function SolveDetailModal({
           <button
             type="button"
             onClick={() => {
-              if (solve.id !== undefined) {
-                onDelete(solve.id);
-                onClose();
+              if (solve.id === undefined) return;
+              if (!deleteConfirming) {
+                setDeleteConfirming(true);
+                return;
               }
+              onDelete(solve.id);
+              setDeleteConfirming(false);
+              onClose();
             }}
-            className="mt-4 w-full rounded-xl border border-[#E8E8E4] bg-white py-2.5 text-[0.65rem] font-medium uppercase tracking-[0.2em] text-[#888] transition-all hover:border-[#C44] hover:text-[#C44]"
+            className={`mt-4 w-full rounded-xl border py-2.5 text-[0.65rem] font-medium uppercase tracking-[0.2em] transition-all ${
+              deleteConfirming
+                ? "border-[#C44] bg-[#C44] text-white"
+                : "border-[#E8E8E4] bg-white text-neutral-400 hover:border-[#C44] hover:text-[#C44]"
+            }`}
           >
-            Delete solve
+            {deleteConfirming ? "Confirm delete? (click again)" : "Delete solve"}
           </button>
         </div>
       </div>

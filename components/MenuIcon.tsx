@@ -52,7 +52,7 @@ export default function MenuIcon() {
         className={`group grid cursor-pointer grid-cols-2 grid-rows-2 outline-none transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           isOpen
             ? "h-44 w-44 gap-2.5"
-            : "h-7 w-7 gap-[2px] hover:opacity-80 hover:scale-105"
+            : "h-10 w-10 gap-[3px] hover:opacity-80 hover:scale-105"
         }`}
         style={{
           transform: isOpen
@@ -66,7 +66,7 @@ export default function MenuIcon() {
             className={`flex items-center justify-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
               isOpen
                 ? "rounded-2xl border border-[#EBE7E0] bg-white/90 opacity-100 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.05)] backdrop-blur-md"
-                : "rounded-[3px] opacity-100"
+                : "rounded-[4px] opacity-100"
             }`}
             style={{
               backgroundColor: isOpen ? "#FFFFFF" : card.color,

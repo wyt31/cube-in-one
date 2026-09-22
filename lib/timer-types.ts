@@ -57,15 +57,51 @@ export type TimerMode =
 //   -1  = DNF
 export type Penalty = 0 | 2 | -1;
 
+/**
+ * Input entry source: space-bar timer vs manual typing.
+ * Used by the page to switch between TimerFocus and ManualTimeInput.
+ */
+export type InputMode = "timer" | "typing";
+
+/**
+ * A named session group that isolates solves into different buckets
+ * (e.g. "Default", "Practice", "Comp Sim").  The `id` is a stable
+ * string used as the foreign key on Solve; `name` is the display label
+ * the user can freely rename.  `isDefault` marks the always-present
+ * session that cannot be deleted.
+ *
+ * `event` scopes a session to a single puzzle — each event owns its own
+ * default session and sessions are never shared across events.
+ */
+export interface Session {
+  id: string;
+  name: string;
+  event: TimerEvent;
+  createdAt: number;
+  isDefault?: boolean;
+}
+
 /** One stored solve row. Field names match the Dexie schema 1:1. */
 export interface Solve {
   id?: number; // auto-increment primary key
   event: TimerEvent;
-  session: string; // e.g. "Default", "Practice"
+  session: string; // display name (kept for backward compat / denormalized)
+  sessionId?: string; // links to Session.id (new field for grouped sessions)
   time: number; // raw milliseconds before penalty is applied
   penalty: Penalty;
   scramble: string;
   inspectionTime?: number; // ms spent in inspection (for diagnostics)
+  note?: string; // user-authored review note for this solve
+  /**
+   * Original text the user typed when entering the solve manually
+   * (Typing mode). Absent for space-bar timer solves.
+   */
+  rawInput?: string;
+  /**
+   * Reserved for the future PSC (Prepared Solve Challenge) mode: true when
+   * the solve was completed under PSC mode. Always false/absent for now.
+   */
+  isPsc?: boolean;
   date: number; // epoch ms
 }
 

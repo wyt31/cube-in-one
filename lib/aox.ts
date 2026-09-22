@@ -136,3 +136,83 @@ export function computeRollingStats(solves: Solve[]): RollingStats {
     currentAo100: calcAo100(times),
   };
 }
+
+// ============================================================================
+// AoX Window detail — for the Average Detail Modal.
+// Returns the N solves in the window, which indices are trimmed (best/worst),
+// and the computed average. Mirrors calcAoX's trimming logic exactly.
+// ============================================================================
+
+export interface AoXWindow {
+  /** The N solves in chronological order within this window. */
+  solves: Solve[];
+  /** The computed AoX value (null = DNF or insufficient data). */
+  average: number | null;
+  /** Indices within `solves` that are trimmed (best + worst). */
+  trimmedIndices: number[];
+}
+
+/**
+ * Build a window result from N solves, identifying which are trimmed.
+ * Mirrors calcAoX: drop best (min) and worst (max) among non-null; DNFs are
+ * implicitly excluded and also marked as trimmed for display purposes.
+ */
+function buildWindow(windowSolves: Solve[], x: number): AoXWindow {
+  const times = windowSolves.map(finalTime);
+  const average = calcAoX(times, x);
+  const trimmed: number[] = [];
+
+  if (times.length >= x && average !== null) {
+    // Sort non-null by value to find best + worst
+    const valid = times
+      .map((t, i) => ({ t, i }))
+      .filter((e) => e.t !== null) as { t: number; i: number }[];
+    valid.sort((a, b) => a.t - b.t);
+    if (valid.length > 0) trimmed.push(valid[0].i); // best
+    if (valid.length > 1) trimmed.push(valid[valid.length - 1].i); // worst
+  }
+
+  // DNF indices are always trimmed (excluded from the average)
+  times.forEach((t, i) => {
+    if (t === null && !trimmed.includes(i)) trimmed.push(i);
+  });
+
+  return { solves: windowSolves, average, trimmedIndices: trimmed };
+}
+
+/** Get the *current* (last-N) AoX window. Returns null if insufficient solves. */
+export function getCurrentAoXWindow(solves: Solve[], x: number): AoXWindow | null {
+  if (solves.length < x) return null;
+  const windowSolves = solves.slice(solves.length - x);
+  return buildWindow(windowSolves, x);
+}
+
+/**
+ * Find the *best-ever* AoX window by sliding over all valid positions.
+ * Returns the window with the lowest average. Returns null if no valid window.
+ */
+export function getBestAoXWindow(solves: Solve[], x: number): AoXWindow | null {
+  let best: AoXWindow | null = null;
+  for (let i = x; i <= solves.length; i++) {
+    const windowSolves = solves.slice(i - x, i);
+    const w = buildWindow(windowSolves, x);
+    if (w.average !== null && (best === null || w.average < best.average!)) {
+      best = w;
+    }
+  }
+  return best;
+}
+
+/** Find the solve index (in the full solves array) that has the best single. */
+export function findBestSingleIndex(solves: Solve[]): number {
+  let bestIdx = -1;
+  let bestVal = Infinity;
+  for (let i = 0; i < solves.length; i++) {
+    const ft = finalTime(solves[i]);
+    if (ft !== null && ft < bestVal) {
+      bestVal = ft;
+      bestIdx = i;
+    }
+  }
+  return bestIdx;
+}

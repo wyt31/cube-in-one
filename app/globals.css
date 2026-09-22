@@ -2,6 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   Global thin scrollbar — applies to every scrollable surface in the app,
+   replacing the system default. The `.custom-scrollbar` class below still
+   acts as an opt-in for the slightly wider "always visible" variant used
+   inside History Modal grid + detail containers.
+   ========================================================================== */
+
+/* Chrome / Safari / Edge — modern thin scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+/* Firefox compatibility */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+}
+
 :root {
   --background: #f9f9f9;
   --foreground: #333333;
@@ -48,6 +81,144 @@ body {
   }
 }
 
+/* History Modal — slide-up animation for the bottom selection stats bar.
+   Applies translate3d so the compositor GPU handles the 180ms eases and
+   avoids repainting the grid underneath. */
+@keyframes statsBarSlideUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 .animate-tab-enter {
   animation: tabEnter 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Trainer Modal: when the modal is open, blur the home page main content 8px.
+   Keeps transition: all 200ms (declared inline on .search-home-main) so the
+   blur fades in/out smoothly alongside the modal's scale/opacity. */
+body[data-trainer-open="1"] .search-home-main {
+  filter: blur(8px);
+}
+
+/* Timer History Modal: same treatment — blur the timer page container while
+   the history modal is open, so focus goes fully to the grid cards. */
+body[data-history-open="1"] .timer-page-root {
+  filter: blur(8px);
+}
+
+/* Running-light border for interactive credit cards on /about.
+   A conic gradient "light" slowly rotates around the card border on hover.
+   The effect is subtle — low-opacity white, not flashy. */
+@keyframes runningLight {
+  to {
+    --light-angle: 360deg;
+  }
+}
+
+@property --light-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.running-light-card {
+  position: relative;
+  isolation: isolate;
+}
+.running-light-card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2.5px;
+  background: conic-gradient(
+    from var(--light-angle),
+    transparent 0%,
+    transparent 40%,
+    rgba(255, 255, 255, 0.45) 58%,
+    rgba(255, 255, 255, 1) 68%,
+    rgba(255, 255, 255, 0.45) 78%,
+    transparent 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000, #000) content-box,
+    linear-gradient(#000, #000);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+.running-light-card:hover::before {
+  opacity: 1;
+  animation: runningLight 2s linear infinite;
+}
+/* Dark backdrop visible behind the rotating light so it reads on white cards */
+.running-light-card::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(44, 44, 44, 0.1), rgba(44, 44, 44, 0.16));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+  pointer-events: none;
+}
+.running-light-card:hover::after {
+  opacity: 1;
+}
+
+/* Subtle star blink — like a subway "approaching" indicator. */
+@keyframes starBlink {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.star-blink {
+  animation: starBlink 2.4s ease-in-out infinite;
+}
+
+/* Custom scrollbar — thin, subtle, used inside History Modal grid + detail.
+   Default thumb is always visible (not transparent) so the user can tell there
+   is scrollable content. Hovering the container boosts contrast and hover on
+   thumb itself makes it darkest — matches the "磨砂灰" aesthetic from
+   experience #1482583. */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.32);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.26);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+.custom-scrollbar {
+  scrollbar-width: auto;
+  scrollbar-color: rgba(0, 0, 0, 0.22) transparent;
 }

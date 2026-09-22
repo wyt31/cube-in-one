@@ -1,9 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import MenuIcon from "@/components/MenuIcon";
-
-const TAGS = ["2x2 EG-1", "CLL", "PLL", "OLL"] as const;
 
 const MOCK_RESULTS = [
   {
@@ -110,13 +109,18 @@ export default function SearchHome() {
   return (
     <div className="relative flex min-h-screen flex-col bg-[#F9F9F9] font-[family-name:var(--font-geist-sans)] text-[#333]">
       <header className="flex items-center justify-between px-6 py-5 sm:px-10">
-        <span className="text-[0.65rem] font-normal uppercase tracking-[0.35em] text-[#444] sm:text-xs">
+        <span className="text-[0.8rem] font-normal uppercase tracking-[0.35em] text-[#444] sm:text-sm">
           Cube in One
         </span>
-        <MenuIcon />
+        <span className="hidden" aria-hidden>
+          <MenuIcon />
+        </span>
       </header>
 
-      <main className="flex flex-1 flex-col items-center justify-center px-6 pb-24 pt-8 sm:px-10">
+      <main
+        data-search-home
+        className="search-home-main flex flex-1 flex-col items-center justify-center px-6 pb-24 pt-8 transition-all duration-200 sm:px-10"
+      >
         <div className="w-full max-w-xl text-center">
           <h1 className="text-3xl font-extralight uppercase tracking-[0.35em] sm:text-4xl">
             Cube in One
@@ -186,17 +190,84 @@ Fewer Clicks, More Practice
             )}
           </div>
 
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
-            {TAGS.map((tag) => (
-              <button
-                key={tag}
-                type="button"
-                onClick={() => setQuery(tag)}
-                className="rounded-full border border-[#E8E2D9] bg-white/60 px-4 py-1.5 text-[0.65rem] uppercase tracking-[0.15em] text-[#666] transition-all hover:border-[#C5D4BC] hover:bg-[#F0EBE3]/50 hover:text-[#444]"
-              >
-                {tag}
-              </button>
-            ))}
+          {/* Quick entry — 4 square cards (1:1) */}
+          <div className="mt-8 grid w-full max-w-3xl grid-cols-4 gap-2 sm:gap-3">
+            {/* Timer */}
+            <Link
+              href="/timer"
+              className="group flex aspect-square flex-col items-center justify-center gap-2 rounded-2xl border border-black/[0.04] bg-black/[0.015] transition-all duration-200 hover:border-black/10 hover:bg-white"
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="text-[#555] transition-colors group-hover:text-[#333]" aria-hidden>
+                <circle cx="12" cy="13" r="8" />
+                <path d="M12 9v4l2.5 2.5" />
+                <path d="M9 2h6" />
+                <path d="M12 5V2" />
+              </svg>
+              <div className="text-center">
+                <h3 className="text-[0.72rem] font-bold uppercase tracking-[0.12em] text-[#333]">
+                  Timer
+                </h3>
+                <p className="mt-0.5 text-[0.55rem] text-[#BBB]">
+                  Ready? GO!
+                </p>
+              </div>
+            </Link>
+
+            {/* Algs */}
+            <Link
+              href="/algs"
+              className="group flex aspect-square flex-col items-center justify-center gap-2 rounded-2xl border border-black/[0.04] bg-black/[0.015] transition-all duration-200 hover:border-black/10 hover:bg-white"
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="text-[#555] transition-colors group-hover:text-[#333]" aria-hidden>
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+              </svg>
+              <div className="text-center">
+                <h3 className="text-[0.72rem] font-bold uppercase tracking-[0.12em] text-[#333]">
+                  Algs
+                </h3>
+                <p className="mt-0.5 text-[0.55rem] text-[#BBB]">
+                  EG, CFOP, and more...
+                </p>
+              </div>
+            </Link>
+
+            {/* About */}
+            <Link
+              href="/about"
+              className="group flex aspect-square flex-col items-center justify-center gap-2 rounded-2xl border border-black/[0.04] bg-black/[0.015] transition-all duration-200 hover:border-black/10 hover:bg-white"
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="text-[#555] transition-colors group-hover:text-[#333]" aria-hidden>
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 16v-4" />
+                <path d="M12 8h.01" />
+              </svg>
+              <div className="text-center">
+                <h3 className="text-[0.72rem] font-bold uppercase tracking-[0.12em] text-[#333]">
+                  About
+                </h3>
+                <p className="mt-0.5 text-[0.55rem] text-[#BBB]">
+                  Who, what & why
+                </p>
+              </div>
+            </Link>
+
+            {/* Tools — faded / coming soon */}
+            <div
+              className="group flex aspect-square cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-black/10 opacity-40 transition-all duration-300 hover:opacity-100 hover:border-black/20 hover:bg-white"
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="text-[#999] transition-colors group-hover:text-[#666]" aria-hidden>
+                <path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-2.5 2.5-2.5z" />
+              </svg>
+              <div className="text-center">
+                <h3 className="text-[0.72rem] font-bold uppercase tracking-[0.12em] text-[#999] transition-colors group-hover:text-[#666]">
+                  Tools
+                </h3>
+                <p className="mt-0.5 text-[0.55rem] text-[#CCC] transition-colors group-hover:text-[#AAA]">
+                  Coming soon... but when? Idk lol
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </main>

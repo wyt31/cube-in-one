@@ -6,17 +6,20 @@
 //   3x3: F2L | OLL (57) | PLL (21)
 // ==========================================================================
 
-import { twoByTwoData, type TwoByTwoAlg } from "./algs2x2";
+import { allTwoByTwoAlgs } from "./algs/2x2";
+import type { TwoByTwoAlg, Tier, AlgItem } from "./algs/types";
+import { tierWeight } from "./algs/types";
 import { algData3x3 } from "./algs3x3";
 
 export type CubeType = "2x2" | "3x3";
 export type ViewMode = "2D" | "3D";
 
-// A single formula variant carrying its own (v2) tags, used by the detail
-// modal for AND-intersection tag highlighting. Mirrors SubAlg in algs2x2.ts.
+// A single formula variant carrying its tier. Consumed by the detail modal
+// to render tier-ranked formula lists with TierBadge accents.
 export interface AlgVariant {
   alg: string;
-  tags?: string[];
+  tier: Tier;
+  note?: string;
 }
 
 export interface AlgCase {
@@ -26,25 +29,16 @@ export interface AlgCase {
   set: string;       // Tier 1: "CLL", "EG1", "TCLL", "OLL", ...
   group: string;     // Tier 2: "Sune", "TCLL+", "LS1", "Cross", "T", ...
   setup: string;
-  recommended: string;
-  others?: string[];
-  // v2 per-formula tag data (consumed by the detail modal). `others` stays
-  // available for the simple card grid; `altAlgs` carries the same variants
-  // plus their tags for AND tag filtering.
-  recommendedTags?: string[];
-  altAlgs?: AlgVariant[];
+  recommended: string;       // top-ranked alg (highest tier) — card preview
+  recommendedTier?: Tier;    // tier of the recommended alg
+  others?: string[];         // 3x3 legacy plain alt list (kept for 3x3 compat)
+  altAlgs?: AlgVariant[];    // remaining candidate algs with tier (2x2)
   viewMode: ViewMode;
   stickering?: string;
-  tags: string[];
+  tags: string[];            // 3x3 legacy tag metadata (kept for 3x3 compat)
 }
 
-// Default tag palette shown in the detail modal's top-right multi-select,
-// keyed by cube tier. Per-category overrides can be supplied at the call
-// site, but these are the baseline option sets.
-export const AVAILABLE_TAGS: Record<CubeType, string[]> = {
-  "2x2": ["Cancellation", "Multi-Angle", "Mirror"],
-  "3x3": ["Multi-Angle", "One-Handed"],
-};
+export type { Tier, AlgItem };
 
 export const CUBES: CubeType[] = ["2x2", "3x3"];
 
@@ -64,7 +58,7 @@ export const CATEGORIES: Record<CubeType, CategorySpec[]> = {
     { name: "CLL"  },
     { name: "EG1"  },
     { name: "EG2"  },
-    { name: "LEG"  },
+    { name: "LEG1"  },
     { name: "TCLL", groups: ["TCLL+", "TCLL-"] },
     { name: "LS",   groups: ["LS1","LS2","LS3","LS4","LS5","LS6","LS7","LS8","LS9"] },
   ],
@@ -89,7 +83,7 @@ export function shouldRenderWithTwisty(cube: CubeType, set: string): boolean {
 }
 
 // ---------------------------------------------------------------------------
-// 2x2 data bridge: twoByTwoData (TwoByTwoAlg[]) -> AlgCase[].
+// 2x2 data bridge: allTwoByTwoAlgs (TwoByTwoAlg[]) -> AlgCase[].
 //
 // The CSV files contain *solution* algorithms. To render the case visually
 // (2D SVG + cubing.js, or twisty-player for PBL) we need a setup *scramble*
@@ -165,23 +159,34 @@ function invertCubeAlg(input: string): string {
 }
 
 function twoByTwoToAlgCase(a: TwoByTwoAlg): AlgCase {
-  const tags = [a.category, a.subCategory, a.case].filter(Boolean) as string[];
+  // Rank candidate algs within the case by tier weight (S > A > B).
+  // Stable sort preserves original source order across equal tiers.
+  const sortedAlgs: AlgItem[] = [...a.algs].sort(
+    (x, y) => tierWeight[y.tier] - tierWeight[x.tier],
+  );
+
+  const top = sortedAlgs[0];
+  const rest = sortedAlgs.slice(1);
+
   return {
     id: a.id,
     name: a.name,
     cube: "2x2",
     set: a.category,
     group: a.subCategory ?? a.case ?? "—",
-    setup: invertCubeAlg(a.alg),
-    recommended: a.alg,
-    recommendedTags: a.tags,
-    others: a.subAlgs?.map((s) => s.alg),
-    altAlgs: a.subAlgs?.map((s) => ({ alg: s.alg, tags: s.tags })),
+    setup: invertCubeAlg(top.alg),
+    recommended: top.alg,
+    recommendedTier: top.tier,
+    altAlgs: rest.map((item) => ({
+      alg: item.alg,
+      tier: item.tier,
+      note: item.note,
+    })),
     viewMode: a.category === "PBL" ? "3D" : "2D",
-    tags,
+    tags: [],
   };
 }
 
-export const algData2x2: AlgCase[] = twoByTwoData.map(twoByTwoToAlgCase);
+export const algData2x2: AlgCase[] = allTwoByTwoAlgs.map(twoByTwoToAlgCase);
 
 export const algData: AlgCase[] = [...algData2x2, ...algData3x3];

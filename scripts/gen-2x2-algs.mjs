@@ -153,79 +153,78 @@ for (const file of files) {
   }
 }
 
-// --- emit TypeScript -------------------------------------------------------
+// --- emit TypeScript (modular) --------------------------------------------
+// Writes one file per category/sub-category under data/algs/2x2/.
+// Types live in data/algs/types.ts and are imported (not re-emitted).
 function esc(s) {
   return JSON.stringify(s);
 }
 
-const lines = [];
-lines.push(`// ==========================================================================`);
-lines.push(`// 2x2 full algorithm database.`);
-lines.push(`//`);
-lines.push(`// Generated from the CSV files in the project root`);
-lines.push(`// ("Copy of Best 2x2 Algs - *.csv"). Each formula row becomes one entry;`);
-lines.push(`// the first formula column is the main alg (alg) and the remaining columns`);
-lines.push(`// are alternative algorithms (subAlgs).`);
-lines.push(`//`);
-lines.push(`// First-level categories (category field):`);
-lines.push(`//   PBL | CLL | EG1 | EG2 | LEG | TCLL [TCLL+, TCLL-] | LS [LS1..LS9]`);
-lines.push(`// ==========================================================================`);
-lines.push(``);
-lines.push(`export interface SubAlg {`);
-lines.push(`  alg: string;             // formula text`);
-lines.push(`  tags?: string[];         // e.g. "Cancellation", "Multi-Angle", "Mirror", "One-Handed"`);
-lines.push(`  cancelPrefix?: string;  // cancellation prefix reservation, e.g. "R U"`);
-lines.push(`  note?: string;           // remark`);
-lines.push(`}`);
-lines.push(``);
-lines.push(`export interface TwoByTwoAlg {`);
-lines.push(`  id: string;              // unique id, e.g. "cll-sune-1"`);
-lines.push(`  name: string;            // case name + index, e.g. "Sune 1"`);
-lines.push(`  category: string;       // tier-1 category: PBL | CLL | EG1 | EG2 | LEG | TCLL | LS`);
-lines.push(`  subCategory?: string;    // tier-2: TCLL+ | TCLL- | LS1..LS9`);
-lines.push(`  case?: string;           // shape/case grouping: Sune, Anti-Sune, Pi, U, T, L, H, ...`);
-lines.push(``);
-lines.push(`  // main algorithm (aligned with SubAlg fields)`);
-lines.push(`  alg: string;             // default recommended main alg`);
-lines.push(`  tags?: string[];`);
-lines.push(`  cancelPrefix?: string;`);
-lines.push(``);
-lines.push(`  // variant algorithms`);
-lines.push(`  subAlgs?: SubAlg[];`);
-lines.push(`}`);
-lines.push(``);
-lines.push(`export const twoByTwoData: TwoByTwoAlg[] = [`);
-
-for (const e of entries) {
-  const parts = [];
-  parts.push(`id: ${esc(e.id)}`);
-  parts.push(`name: ${esc(e.name)}`);
-  parts.push(`category: ${esc(e.category)}`);
-  if (e.subCategory) parts.push(`subCategory: ${esc(e.subCategory)}`);
-  parts.push(`case: ${esc(e.case)}`);
-  parts.push(`alg: ${esc(e.alg)}`);
-  // CSV has no tags/cancelPrefix/note -> omit for later manual curation.
-  // subAlgs are emitted as SubAlg objects: { alg: "..." }.
-  if (e.subAlgs && e.subAlgs.length) {
-    parts.push(`subAlgs: [${e.subAlgs.map((s) => `{ alg: ${esc(s)} }`).join(", ")}]`);
+// Map a category (+ optional subCategory) to its target module file relative
+// to data/algs/2x2/, the exported const name, and the import depth to types.
+function targetFor(category, subCategory) {
+  if (category === "CLL")  return { file: "cll.ts",       name: "cllData",       depth: 1 };
+  if (category === "EG1")  return { file: "eg1.ts",       name: "eg1Data",       depth: 1 };
+  if (category === "EG2")  return { file: "eg2.ts",       name: "eg2Data",       depth: 1 };
+  if (category === "LEG")  return { file: "leg1.ts",      name: "leg1Data",      depth: 1 };
+  if (category === "TCLL" && subCategory === "TCLL+") return { file: "tcll-plus.ts",  name: "tcllPlusData",  depth: 1 };
+  if (category === "TCLL" && subCategory === "TCLL-") return { file: "tcll-minus.ts", name: "tcllMinusData", depth: 1 };
+  if (category === "LS" && subCategory) {
+    const n = subCategory.replace(/[^0-9]/g, "");
+    return { file: `ls/ls${n}.ts`, name: `ls${n}Data`, depth: 2 };
   }
-  lines.push(`  { ${parts.join(", ")} },`);
+  // Fallback: dump unknown categories into a catch-all file.
+  return { file: "misc.ts", name: "miscData", depth: 1 };
 }
-lines.push(`];`);
 
-const out = lines.join("\n") + "\n";
-// Override the output path via GEN_2X2_OUT (relative to project root) to
-// dry-run without clobbering data/algs2x2.ts. Defaults to the real file.
-const OUT_PATH = process.env.GEN_2X2_OUT
-  ? join(ROOT, process.env.GEN_2X2_OUT)
-  : join(ROOT, "data", "algs2x2.ts");
-writeFileSync(OUT_PATH, out, "utf8");
+function renderModule(name, entries, typesDepth) {
+  const rel = "../".repeat(typesDepth) + "types";
+  const out = [];
+  out.push(`import type { TwoByTwoAlg } from "${rel}";`);
+  out.push(``);
+  out.push(`export const ${name}: TwoByTwoAlg[] = [`);
+  for (const e of entries) {
+    const parts = [];
+    parts.push(`id: ${esc(e.id)}`);
+    parts.push(`name: ${esc(e.name)}`);
+    parts.push(`category: ${esc(e.category)}`);
+    if (e.subCategory) parts.push(`subCategory: ${esc(e.subCategory)}`);
+    parts.push(`case: ${esc(e.case)}`);
+    parts.push(`alg: ${esc(e.alg)}`);
+    if (e.subAlgs && e.subAlgs.length) {
+      parts.push(`subAlgs: [${e.subAlgs.map((s) => `{ alg: ${esc(s)} }`).join(", ")}]`);
+    }
+    out.push(`  { ${parts.join(", ")} },`);
+  }
+  out.push(`];`);
+  out.push(``);
+  return out.join("\n");
+}
+
+// Group entries by target module.
+const groups = new Map(); // file -> { name, depth, entries: [] }
+for (const e of entries) {
+  const t = targetFor(e.category, e.subCategory);
+  if (!groups.has(t.file)) groups.set(t.file, { name: t.name, depth: t.depth, entries: [] });
+  groups.get(t.file).entries.push(e);
+}
+
+const ALGS_DIR = join(ROOT, "data", "algs", "2x2");
+const written = [];
+for (const [file, { name, depth, entries: groupEntries }] of groups) {
+  const full = join(ALGS_DIR, file);
+  writeFileSync(full, renderModule(name, groupEntries, depth), "utf8");
+  written.push({ file, count: groupEntries.length });
+}
 
 // Summary
+console.log(`Wrote ${written.length} module file(s) under data/algs/2x2/:`);
+for (const w of written) console.log(`  ${w.file}: ${w.count}`);
+
 const byCat = {};
 for (const e of entries) {
   const k = e.subCategory ? `${e.category}/${e.subCategory}` : e.category;
   byCat[k] = (byCat[k] || 0) + 1;
 }
-console.log(`Wrote ${OUT_PATH} with ${entries.length} entries.`);
+console.log(`Total entries: ${entries.length}`);
 for (const [k, v] of Object.entries(byCat).sort()) console.log(`  ${k}: ${v}`);
