@@ -28,6 +28,7 @@ export interface AlgCase {
   cube: CubeType;
   set: string;       // Tier 1: "CLL", "EG1", "TCLL", "OLL", ...
   group: string;     // Tier 2: "Sune", "TCLL+", "LS1", "Cross", "T", ...
+  subGroup?: string; // Tier 3 (TCLL only): "Hammer", "Spaceship", ...
   setup: string;
   recommended: string;       // top-ranked alg (highest tier) — card preview
   recommendedTier?: Tier;    // tier of the recommended alg
@@ -158,6 +159,19 @@ function invertCubeAlg(input: string): string {
   return out.join(" ").trim();
 }
 
+// TCLL sub-category names (longer first so "Pinwheel Poser" matches before
+// "Pinwheel"). Used to derive `subGroup` from the case display name.
+const TCLL_SUB_CATEGORIES = [
+  "Pinwheel Poser",
+  "Hammer",
+  "Spaceship",
+  "Stollery",
+  "Pinwheel",
+  "Two-Face",
+  "Turtle",
+  "Gun",
+];
+
 function twoByTwoToAlgCase(a: TwoByTwoAlg): AlgCase {
   // Rank candidate algs within the case by tier weight (S > A > B).
   // Stable sort preserves original source order across equal tiers.
@@ -168,12 +182,21 @@ function twoByTwoToAlgCase(a: TwoByTwoAlg): AlgCase {
   const top = sortedAlgs[0];
   const rest = sortedAlgs.slice(1);
 
+  // For TCLL, derive the sub-category (Hammer, Spaceship, ...) from the case
+  // name so the algs page can offer an independent sub-group filter that
+  // does not collide with the TCLL+ / TCLL- group filter.
+  let subGroup: string | undefined;
+  if (a.category === "TCLL") {
+    subGroup = TCLL_SUB_CATEGORIES.find((sc) => a.name.startsWith(sc));
+  }
+
   return {
     id: a.id,
     name: a.name,
     cube: "2x2",
     set: a.category,
     group: a.subCategory ?? a.case ?? "—",
+    subGroup,
     setup: invertCubeAlg(top.alg),
     recommended: top.alg,
     recommendedTier: top.tier,

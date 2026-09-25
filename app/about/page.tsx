@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
@@ -63,6 +63,72 @@ const CREDITS: { group: string; entries: CreditEntry[] }[] = [
   },
 ];
 
+// ---------- Team avatars (DiceBear Clay) --------------------------------
+function FreddieAvatar() {
+  return (
+    <svg viewBox="0 0 100 100" className="h-16 w-16" fill="none" aria-hidden>
+      <defs>
+        <g id="top-antenna-59dc5f0f"><path d="M15 30v-8c-1-6-2-10-4.5-13.5M29 30v-8c1-6 2-10 4.5-13.5" fill="none" stroke="#8ba06b" strokeWidth="2.5" strokeLinecap="round"/><path d="M15 30v-8c-1-6-2-10-4.5-13.5M29 30v-8c1-6 2-10 4.5-13.5" fill="none" stroke="#44403c" strokeOpacity=".15" strokeWidth="2.5" strokeLinecap="round"/><circle cx="10" cy="6.5" r="3.6" fill="#c4795c"/><circle cx="34" cy="6.5" r="3.1" fill="#c4795c"/></g>
+        <clipPath id="dbclb-pear"><path d="M26 92c-4-7.5-5.5-16-2.5-23.5s6-13 7-20c1-10 7.5-18 19-18.5 11-.5 17.5 7 19 16.5 1 8 4 14 7.5 22 3.5 7.5 2 16-2 23.5-9.5 1.6-38.5 1.6-48 0"/></clipPath>
+        <g id="eyes-outward-59dc5f0f"><circle cx="10.5" cy="11" r="7.3" fill="#44403c" opacity=".15"/><circle cx="10" cy="10" r="7.3" fill="#ffffff"/><circle cx="7" cy="8.5" r="3.1" fill="#44403c"/><circle cx="5.9" cy="7.3" r=".7" fill="#ffffff" opacity=".7"/><circle cx="32.5" cy="10.7" r="6.5" fill="#44403c" opacity=".15"/><circle cx="32" cy="9.7" r="6.5" fill="#ffffff"/><circle cx="35" cy="8.2" r="2.7" fill="#44403c"/><circle cx="34.1" cy="7.1" r=".7" fill="#ffffff" opacity=".7"/></g>
+        <g id="mouth-grin-59dc5f0f"><rect x="5" y="2.8" width="16" height="6.4" rx="3.2" fill="#44403c"/><path d="M9.6 2.8h3.1v2a1.55 1.55 0 0 1-3.1 0Zm3.7 0h3.1v2a1.55 1.55 0 0 1-3.1 0Z" fill="#ffffff"/></g>
+        <clipPath id="clip-59dc5f0f"><rect width="100" height="100" rx="50" ry="50"/></clipPath>
+      </defs>
+      <g clipPath="url(#clip-59dc5f0f)">
+        <rect width="100" height="100" fill="#e3efe9"/>
+        <ellipse cx="51" cy="92.8" rx="29" ry="3.2" fill="#44403c" opacity=".13"/>
+        <path d="M26 92c-4-7.5-5.5-16-2.5-23.5s6-13 7-20c1-10 7.5-18 19-18.5 11-.5 17.5 7 19 16.5 1 8 4 14 7.5 22 3.5 7.5 2 16-2 23.5-9.5 1.6-38.5 1.6-48 0" fill="#8ba06b"/>
+        <g clipPath="url(#dbclb-pear)">
+          <path d="M26 92c-4-7.5-5.5-16-2.5-23.5s6-13 7-20c1-10 7.5-18 19-18.5 11-.5 17.5 7 19 16.5 1 8 4 14 7.5 22 3.5 7.5 2 16-2 23.5-9.5 1.6-38.5 1.6-48 0m2.8 3.2c-4-7.5-5.5-16-2.5-23.5s6-13 7-20c1-10 7.5-18 19-18.5 11-.5 17.5 7 19 16.5 1 8 4 14 7.5 22 3.5 7.5 2 16-2 23.5-9.5 1.6-38.5 1.6-48 0" fill="#ffffff" opacity=".2" fillRule="evenodd"/>
+          <path d="M26 92c-4-7.5-5.5-16-2.5-23.5s6-13 7-20c1-10 7.5-18 19-18.5 11-.5 17.5 7 19 16.5 1 8 4 14 7.5 22 3.5 7.5 2 16-2 23.5-9.5 1.6-38.5 1.6-48 0m-2.8-3.2c-4-7.5-5.5-16-2.5-23.5s6-13 7-20c1-10 7.5-18 19-18.5 11-.5 17.5 7 19 16.5 1 8 4 14 7.5 22 3.5 7.5 2 16-2 23.5-9.5 1.6-38.5 1.6-48 0" fill="#44403c" opacity=".12" fillRule="evenodd"/>
+        </g>
+        <g transform="translate(27.5 14.5)"><use href="#top-antenna-59dc5f0f"/></g>
+        <g transform="translate(29 41)"><use href="#eyes-outward-59dc5f0f"/></g>
+        <g transform="translate(37 60)"><use href="#mouth-grin-59dc5f0f"/></g>
+      </g>
+    </svg>
+  );
+}
+
+function AhareAvatar() {
+  return (
+    <svg viewBox="0 0 100 100" className="h-16 w-16" fill="none" aria-hidden>
+      <defs>
+        <clipPath id="dbclb-gumdrop"><path d="M26 92c-3.5-9-4-20-1-31 3-11.5 8.5-21.5 18.5-27.5 4-2.5 2.5-7 5.5-9s7.5 0 6.5 3.5c-.7 2.5 2 4.5 5.5 8 8.5 7.5 13.5 17 15.5 27s1 20-3 29c-9 1.6-38.5 1.6-47.5 0"/></clipPath>
+        <g id="pattern-freckles-d7161b3f"><circle cx="9" cy="6" r="1.5" fill="#44403c" opacity=".22"/><circle cx="15.5" cy="9.5" r="1.5" fill="#44403c" opacity=".22"/><circle cx="21.5" cy="5.5" r="1.5" fill="#44403c" opacity=".22"/><circle cx="13" cy="13" r="1.5" fill="#44403c" opacity=".22"/></g>
+        <g id="eyes-inward-d7161b3f"><circle cx="10.5" cy="11" r="7.3" fill="#44403c" opacity=".15"/><circle cx="10" cy="10" r="7.3" fill="#ffffff"/><circle cx="13.2" cy="11" r="3.1" fill="#44403c"/><circle cx="12.1" cy="9.8" r=".7" fill="#ffffff" opacity=".7"/><circle cx="32.5" cy="10.7" r="6.5" fill="#44403c" opacity=".15"/><circle cx="32" cy="9.7" r="6.5" fill="#ffffff"/><circle cx="28.8" cy="10.7" r="2.7" fill="#44403c"/><circle cx="27.9" cy="9.6" r=".7" fill="#ffffff" opacity=".7"/></g>
+        <g id="mouth-toothy-d7161b3f"><path d="M4.5 1.8h17a8.5 8.5 0 0 1-17 0" fill="#44403c"/><path d="M7.5 1.8H12v2a2.25 2.25 0 0 1-4.5 0Zm6.5 0h4.5v2a2.25 2.25 0 0 1-4.5 0Z" fill="#ffffff"/></g>
+        <clipPath id="clip-d7161b3f"><rect width="100" height="100" rx="50" ry="50"/></clipPath>
+      </defs>
+      <g clipPath="url(#clip-d7161b3f)">
+        <rect width="100" height="100" fill="#e3efe9"/>
+        <ellipse cx="51" cy="92.8" rx="29" ry="3.2" fill="#44403c" opacity=".13"/>
+        <path d="M26 92c-3.5-9-4-20-1-31 3-11.5 8.5-21.5 18.5-27.5 4-2.5 2.5-7 5.5-9s7.5 0 6.5 3.5c-.7 2.5 2 4.5 5.5 8 8.5 7.5 13.5 17 15.5 27s1 20-3 29c-9 1.6-38.5 1.6-47.5 0" fill="#cf9f52"/>
+        <g clipPath="url(#dbclb-gumdrop)">
+          <path d="M26 92c-3.5-9-4-20-1-31 3-11.5 8.5-21.5 18.5-27.5 4-2.5 2.5-7 5.5-9s7.5 0 6.5 3.5c-.7 2.5 2 4.5 5.5 8 8.5 7.5 13.5 17 15.5 27s1 20-3 29c-9 1.6-38.5 1.6-47.5 0m2.8 3.2c-3.5-9-4-20-1-31 3-11.5 8.5-21.5 18.5-27.5 4-2.5 2.5-7 5.5-9s7.5 0 6.5 3.5c-.7 2.5 2 4.5 5.5 8 8.5 7.5 13.5 17 15.5 27s1 20-3 29c-9 1.6-38.5 1.6-47.5 0" fill="#ffffff" opacity=".2" fillRule="evenodd"/>
+          <path d="M26 92c-3.5-9-4-20-1-31 3-11.5 8.5-21.5 18.5-27.5 4-2.5 2.5-7 5.5-9s7.5 0 6.5 3.5c-.7 2.5 2 4.5 5.5 8 8.5 7.5 13.5 17 15.5 27s1 20-3 29c-9 1.6-38.5 1.6-47.5 0m-2.8-3.2c-3.5-9-4-20-1-31 3-11.5 8.5-21.5 18.5-27.5 4-2.5 2.5-7 5.5-9s7.5 0 6.5 3.5c-.7 2.5 2 4.5 5.5 8 8.5 7.5 13.5 17 15.5 27s1 20-3 29c-9 1.6-38.5 1.6-47.5 0" fill="#44403c" opacity=".12" fillRule="evenodd"/>
+        </g>
+        <g transform="translate(35 72) translate(-2.04765 -0.36686) rotate(-4.5197 15 8)"><use href="#pattern-freckles-d7161b3f"/></g>
+        <g transform="translate(29 42)"><use href="#eyes-inward-d7161b3f"/></g>
+        <g transform="translate(37 61)"><use href="#mouth-toothy-d7161b3f"/></g>
+      </g>
+    </svg>
+  );
+}
+
+function TeamAvatar({ name }: { name: string }) {
+  if (name === "Freddie Wang") return <FreddieAvatar />;
+  if (name === "Ahare") return <AhareAvatar />;
+  // Fallback for other entries
+  const initials = name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+  return (
+    <svg viewBox="0 0 80 80" className="h-16 w-16" fill="none">
+      <circle cx="40" cy="40" r="39" fill="#F3F3F0" stroke="#E0E0DC" strokeWidth="1" />
+      <text x="40" y="46" textAnchor="middle" fontSize="22" fontWeight="300" fill="#2C2C2C" fontFamily="var(--font-geist-sans)" letterSpacing="1">{initials}</text>
+    </svg>
+  );
+}
+
 // ---------- Small UI atoms ---------------------------------------------
 function VersionBadge() {
   return (
@@ -74,32 +140,6 @@ function VersionBadge() {
 }
 
 // ---------- Credit detail modal ----------------------------------------
-function AvatarPlaceholder({ name }: { name: string }) {
-  const initials = name
-    .split(" ")
-    .map((w) => w[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-  return (
-    <svg viewBox="0 0 80 80" className="h-16 w-16" fill="none">
-      <circle cx="40" cy="40" r="39" fill="#F3F3F0" stroke="#E0E0DC" strokeWidth="1" />
-      <text
-        x="40"
-        y="46"
-        textAnchor="middle"
-        fontSize="22"
-        fontWeight="300"
-        fill="#2C2C2C"
-        fontFamily="var(--font-geist-sans)"
-        letterSpacing="1"
-      >
-        {initials}
-      </text>
-    </svg>
-  );
-}
-
 function CreditModal({
   entry,
   onClose,
@@ -127,7 +167,7 @@ function CreditModal({
         </button>
 
         <div className="flex justify-center">
-          <AvatarPlaceholder name={entry.name} />
+          <TeamAvatar name={entry.name} />
         </div>
 
         <h3 className="mt-4 text-center text-lg font-medium tracking-wide text-neutral-800">
@@ -164,9 +204,6 @@ function AboutView({ onCreditClick }: { onCreditClick: (entry: CreditEntry) => v
         <h1 className="mt-6 text-3xl font-extralight uppercase tracking-[0.35em] sm:text-4xl">
           Cube in One
         </h1>
-        <p className="mt-4 text-sm font-light tracking-[0.2em] text-neutral-500 sm:text-base">
-          Fewer clicks, more practice.
-        </p>
 
         <div className="mt-7">
           <VersionBadge />
@@ -204,13 +241,16 @@ function AboutView({ onCreditClick }: { onCreditClick: (entry: CreditEntry) => v
                 }
               >
                 <div className="relative z-[2] flex items-start justify-between gap-3">
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium tracking-wide text-neutral-800">
-                      {entry.name}
-                    </p>
-                    <p className="mt-1 text-[0.7rem] tracking-wide text-neutral-400">
-                      {entry.role}
-                    </p>
+                  <div className="flex min-w-0 flex-1 items-center gap-3">
+                    <TeamAvatar name={entry.name} />
+                    <div>
+                      <p className="text-sm font-medium tracking-wide text-neutral-800">
+                        {entry.name}
+                      </p>
+                      <p className="mt-1 text-[0.7rem] tracking-wide text-neutral-400">
+                        {entry.role}
+                      </p>
+                    </div>
                   </div>
                   {entry.note && (
                     <span className="flex-shrink-0 rounded-full bg-[#FAFAF8] px-2 py-0.5 text-[0.55rem] uppercase tracking-[0.15em] text-[#9A9A94]">
@@ -398,17 +438,13 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-[#FBFBFA] font-[family-name:var(--font-geist-sans)] text-neutral-800">
       {/* ---------- Header ---------- */}
-      <header className="flex items-center px-6 py-8 sm:px-12">
+      <header className="px-6 pb-10 pt-14 sm:px-12">
         <Link
           href="/"
-          className="flex items-center gap-3"
+          className="text-[0.65rem] font-medium uppercase tracking-[0.3em] text-neutral-400 transition-colors hover:text-neutral-800"
         >
-          {/* <CubeLogo size="h-8 w-8" /> */}
-          <span className="text-[0.65rem] font-medium uppercase tracking-[0.3em] text-neutral-400 transition-colors hover:text-neutral-800">
-            Cube in One
-          </span>
+          &lt; Cube in One
         </Link>
-
       </header>
 
       <main className="mx-auto w-full max-w-4xl px-6 pb-24 sm:px-12">

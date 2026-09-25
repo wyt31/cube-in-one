@@ -666,11 +666,11 @@ export default function TimerPage() {
       {/* ---------- Back link (fixed, top-left) — hidden during running ---------- */}
       <Link
         href="/"
-        className={`fixed left-6 top-6 z-10 text-[0.65rem] font-medium uppercase tracking-[0.3em] text-[#999] transition-all duration-200 hover:text-[#2C2C2C] ${
+        className={`fixed left-6 top-6 z-10 text-[0.65rem] font-medium uppercase tracking-[0.3em] text-neutral-400 transition-all duration-200 hover:text-neutral-800 ${
           isRunning ? "pointer-events-none opacity-0" : "opacity-100"
         }`}
       >
-        &lt;
+        &lt; Cube in One
       </Link>
 
       {/* ---------- Modals & Drawers ---------- */}

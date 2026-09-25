@@ -1,59 +1,40 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import MenuIcon from "@/components/MenuIcon";
+import AlgCardCube from "@/components/AlgCardCube";
+import { algData, type AlgCase } from "@/data/algs";
 
-const MOCK_RESULTS = [
-  {
-    id: "eg1-right-bar",
-    name: "EG-1 — Right Bar",
-    formula: "R U R' U' R' F R F'",
-    tags: ["2x2", "EG-1"],
-  },
-  {
-    id: "eg1-left-bar",
-    name: "EG-1 — Left Bar",
-    formula: "F R' F' R U R U' R'",
-    tags: ["2x2", "EG-1"],
-  },
-  {
-    id: "cll-h",
-    name: "CLL — H Case",
-    formula: "R U R' U R U' R' U R U2 R'",
-    tags: ["2x2", "CLL"],
-  },
-  {
-    id: "cll-sune",
-    name: "CLL — Sune",
-    formula: "R U R' U R U2 R'",
-    tags: ["2x2", "CLL"],
-  },
-  {
-    id: "pll-t",
-    name: "PLL — T Perm",
-    formula: "R U R' U' R' F R2 U' R' U' R U R' F'",
-    tags: ["3x3", "PLL"],
-  },
-  {
-    id: "pll-ua",
-    name: "PLL — Ua Perm",
-    formula: "R U' R U R U R U' R' U' R2",
-    tags: ["3x3", "PLL"],
-  },
-  {
-    id: "oll-27",
-    name: "OLL — 27",
-    formula: "R U R' U R U2 R'",
-    tags: ["3x3", "OLL"],
-  },
-  {
-    id: "oll-21",
-    name: "OLL — 21",
-    formula: "R U2 R' U' R U R' U' R U' R'",
-    tags: ["3x3", "OLL"],
-  },
-];
+// Normalize: lowercase + strip all whitespace for fuzzy matching.
+function normalize(s: string): string {
+  return s.toLowerCase().replace(/\s+/g, "");
+}
+
+// Multi-field fuzzy search across the entire algorithm dataset.
+// Matches: name, subGroup, set, group, recommended alg, altAlgs,
+// altAlgs notes, others (3x3), and tags.
+function searchAlgs(query: string, max = 5): AlgCase[] {
+  const q = normalize(query);
+  if (!q) return [];
+
+  return algData
+    .filter((alg) => {
+      if (normalize(alg.name).includes(q)) return true;
+      if (alg.subGroup && normalize(alg.subGroup).includes(q)) return true;
+      if (normalize(alg.set).includes(q)) return true;
+      if (normalize(alg.group).includes(q)) return true;
+      if (normalize(alg.recommended).includes(q)) return true;
+      if (alg.altAlgs?.some((a) => normalize(a.alg).includes(q))) return true;
+      if (alg.altAlgs?.some((a) => a.note && normalize(a.note).includes(q)))
+        return true;
+      if (alg.others?.some((o) => normalize(o).includes(q))) return true;
+      if (alg.tags?.some((t) => normalize(t).includes(q))) return true;
+      return false;
+    })
+    .slice(0, max);
+}
 
 function SearchIcon() {
   return (
@@ -90,28 +71,90 @@ function ClearIcon() {
 }
 
 export default function SearchHome() {
+  const router = useRouter();
   const [query, setQuery] = useState("");
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const results = useMemo(() => {
-    const trimmed = query.trim().toLowerCase();
-    if (!trimmed) return [];
+  const results = useMemo(() => searchAlgs(query), [query]);
 
-    return MOCK_RESULTS.filter(
-      (item) =>
-        item.name.toLowerCase().includes(trimmed) ||
-        item.formula.toLowerCase().includes(trimmed) ||
-        item.tags.some((tag) => tag.toLowerCase().includes(trimmed))
-    );
+  // Cmd+K / Ctrl+K to focus search
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        inputRef.current?.focus();
+        inputRef.current?.select();
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  // Reset highlight when results change
+  useEffect(() => {
+    setHighlightedIndex(-1);
   }, [query]);
 
-  const showResults = query.trim().length > 0;
+  const showDropdown = isDropdownOpen && query.trim().length > 0;
+
+  const navigateToAlg = useCallback(
+    (alg: AlgCase) => {
+      const params = new URLSearchParams();
+      params.set("cube", alg.cube);
+      params.set("set", alg.set);
+      if (alg.set === "TCLL" && alg.group) {
+        params.set("group", alg.group);
+      }
+      router.push(`/algs?${params.toString()}`);
+    },
+    [router],
+  );
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!showDropdown || results.length === 0) return;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setHighlightedIndex((prev) =>
+        prev < results.length - 1 ? prev + 1 : 0,
+      );
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setHighlightedIndex((prev) =>
+        prev > 0 ? prev - 1 : results.length - 1,
+      );
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      const target = results[highlightedIndex] ?? results[0];
+      if (target) navigateToAlg(target);
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      setQuery("");
+      setIsDropdownOpen(false);
+      inputRef.current?.blur();
+    }
+  };
 
   return (
     <div className="relative flex min-h-screen flex-col bg-[#F9F9F9] font-[family-name:var(--font-geist-sans)] text-[#333]">
       <header className="flex items-center justify-between px-6 py-5 sm:px-10">
-        <span className="text-[0.8rem] font-normal uppercase tracking-[0.35em] text-[#444] sm:text-sm">
-          Cube in One
-        </span>
         <span className="hidden" aria-hidden>
           <MenuIcon />
         </span>
@@ -125,59 +168,96 @@ export default function SearchHome() {
           <h1 className="text-3xl font-extralight uppercase tracking-[0.35em] sm:text-4xl">
             Cube in One
           </h1>
-          <p className="mt-5 text-xs font-normal tracking-[0.2em] text-[#666] sm:text-sm">
-Fewer Clicks, More Practice
-          </p>
 
-          <div className="relative mt-12">
+          <div ref={containerRef} className="relative mt-12">
             <div className="flex items-center gap-3 rounded-full border border-[#E8E2D9] bg-white/80 px-5 py-3.5 shadow-[0_2px_16px_rgba(51,51,51,0.06)] backdrop-blur-sm transition-shadow focus-within:border-[#C5D4BC]/80 focus-within:shadow-[0_4px_24px_rgba(51,51,51,0.08)] sm:px-6 sm:py-4">
               <SearchIcon />
               <input
+                ref={inputRef}
                 type="text"
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setIsDropdownOpen(true);
+                }}
+                onFocus={() => setIsDropdownOpen(true)}
+                onKeyDown={handleKeyDown}
                 placeholder="Search algorithms, cases (e.g. EG-1, CLL, PLL, OLL)..."
                 className="min-w-0 flex-1 bg-transparent text-sm text-[#333] placeholder:text-[#AAA] focus:outline-none sm:text-[0.9rem]"
               />
-              {query && (
+              {query ? (
                 <button
                   type="button"
-                  onClick={() => setQuery("")}
+                  onClick={() => {
+                    setQuery("");
+                    inputRef.current?.focus();
+                  }}
                   aria-label="Clear search"
                   className="shrink-0 text-[#BBB] transition-colors hover:text-[#666]"
                 >
                   <ClearIcon />
                 </button>
+              ) : (
+                <kbd className="hidden shrink-0 rounded border border-[#E8E2D9] bg-[#F9F9F9] px-1.5 py-0.5 text-[0.6rem] font-medium text-[#AAA] sm:inline-block">
+                  ⌘K
+                </kbd>
               )}
             </div>
 
-            {showResults && (
-              <div className="absolute left-0 right-0 top-[calc(100%+0.75rem)] z-10 overflow-hidden rounded-2xl border border-[#E8E2D9] bg-white/95 shadow-[0_8px_32px_rgba(51,51,51,0.08)] backdrop-blur-md">
+            {/* Spotlight-style dropdown */}
+            {showDropdown && (
+              <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-50 overflow-hidden rounded-2xl border border-[#E8E2D9] bg-white shadow-[0_8px_32px_rgba(51,51,51,0.10)] dark:border-white/5 dark:bg-[#1A1C1E]">
                 {results.length > 0 ? (
-                  <ul className="divide-y divide-[#F0EBE3]">
-                    {results.map((item) => (
-                      <li
-                        key={item.id}
-                        className="px-5 py-4 text-left transition-colors hover:bg-[#F9F9F9]"
-                      >
-                        <div className="flex items-start justify-between gap-3">
-                          <p className="text-sm font-medium tracking-wide text-[#333]">
-                            {item.name}
-                          </p>
-                          <div className="flex shrink-0 gap-1.5">
-                            {item.tags.map((tag) => (
-                              <span
-                                key={tag}
-                                className="rounded-full bg-[#F0EBE3] px-2 py-0.5 text-[0.6rem] uppercase tracking-wider text-[#888]"
-                              >
-                                {tag}
-                              </span>
-                            ))}
+                  <ul className="py-1">
+                    {results.map((alg, i) => (
+                      <li key={alg.id}>
+                        <button
+                          type="button"
+                          onMouseEnter={() => setHighlightedIndex(i)}
+                          onClick={() => navigateToAlg(alg)}
+                          className={`flex w-full items-center gap-3 px-3 py-2.5 text-left transition-colors ${
+                            i === highlightedIndex
+                              ? "bg-[#F5F5F2] dark:bg-white/5"
+                              : ""
+                          }`}
+                        >
+                          {/* Cube thumbnail */}
+                          <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg border border-[#F0F0EE] bg-[#FBFBFA] dark:border-white/5 dark:bg-white/5">
+                            <AlgCardCube
+                              alg={alg}
+                              className="h-full w-full"
+                            />
                           </div>
-                        </div>
-                        <p className="mt-1.5 font-[family-name:var(--font-geist-mono)] text-xs tracking-wide text-[#777]">
-                          {item.formula}
-                        </p>
+
+                          {/* Case name + category */}
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate text-sm font-medium tracking-wide text-neutral-800 dark:text-neutral-200">
+                              {alg.name}
+                            </p>
+                            <p className="truncate text-[0.65rem] tracking-wide text-neutral-400">
+                              {alg.cube} · {alg.set}
+                              {alg.subGroup ? ` · ${alg.subGroup}` : ""}
+                            </p>
+                          </div>
+
+                          {/* Inkan badge for TCLL */}
+                          {alg.set === "TCLL" && (
+                            <span
+                              className={`flex-shrink-0 rounded-[3px] border px-1.5 py-0.5 text-[10px] font-bold tracking-wider select-none ${
+                                alg.group === "TCLL+"
+                                  ? "border-[#4A6B5D] bg-[#4A6B5D]/5 text-[#4A6B5D]"
+                                  : "border-[#A65B4C] bg-[#A65B4C]/5 text-[#A65B4C]"
+                              }`}
+                            >
+                              {alg.group}
+                            </span>
+                          )}
+
+                          {/* Formula preview */}
+                          <code className="hidden flex-shrink-0 truncate font-[family-name:var(--font-geist-mono)] text-[0.65rem] tracking-wide text-neutral-400 sm:block sm:max-w-[120px]">
+                            {alg.recommended}
+                          </code>
+                        </button>
                       </li>
                     ))}
                   </ul>

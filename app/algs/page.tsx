@@ -1,6 +1,6 @@
-﻿"use client";
+"use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import {
   CUBES,
@@ -27,7 +27,24 @@ export default function AlgsPage() {
     CATEGORIES["2x2"][0].name
   );
   const [selectedGroup, setSelectedGroup] = useState<string>("All");
+  const [selectedSubGroup, setSelectedSubGroup] = useState<string>("All");
   const [selectedAlg, setSelectedAlg] = useState<AlgCase | null>(null);
+
+  // Read URL params on mount (from home page search navigation)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const cube = params.get("cube") as CubeType | null;
+    const set = params.get("set");
+    const group = params.get("group");
+    if (cube && CUBES.includes(cube)) {
+      setSelectedCube(cube);
+      const cat = CATEGORIES[cube].find((c) => c.name === set);
+      if (cat) {
+        setSelectedCategory(set!);
+        if (group) setSelectedGroup(group);
+      }
+    }
+  }, []);
 
   const availableGroups = useMemo(() => {
     const cat = findCategory(selectedCube, selectedCategory);
@@ -46,26 +63,48 @@ export default function AlgsPage() {
     return ["All", ...Array.from(groups)];
   }, [selectedCube, selectedCategory]);
 
+  // Available sub-groups (TCLL Hammer / Spaceship / ...). Derived from the
+  // data already filtered by cube + category + group, so the list narrows
+  // correctly when the user picks TCLL+ or TCLL-.
+  const availableSubGroups = useMemo(() => {
+    const subGroups = new Set<string>();
+    algData.forEach((alg) => {
+      if (
+        alg.cube === selectedCube &&
+        alg.set === selectedCategory &&
+        (selectedGroup === "All" || alg.group === selectedGroup) &&
+        alg.subGroup
+      ) {
+        subGroups.add(alg.subGroup);
+      }
+    });
+    return subGroups.size > 0 ? ["All", ...Array.from(subGroups)] : [];
+  }, [selectedCube, selectedCategory, selectedGroup]);
+
   const filteredAlgs = useMemo(() => {
     return algData.filter((alg) => {
       const matchCube = alg.cube === selectedCube;
       const matchCategory = alg.set === selectedCategory;
       const matchGroup = selectedGroup === "All" || alg.group === selectedGroup;
-      return matchCube && matchCategory && matchGroup;
+      const matchSubGroup =
+        selectedSubGroup === "All" || alg.subGroup === selectedSubGroup;
+      return matchCube && matchCategory && matchGroup && matchSubGroup;
     });
-  }, [selectedCube, selectedCategory, selectedGroup]);
+  }, [selectedCube, selectedCategory, selectedGroup, selectedSubGroup]);
 
-  // When "All" is selected, group the cards by subCategory (alg.group) so the
-  // page renders elegant per-group sections (e.g. Sune, Anti-Sune, Pi, ...).
-  // When a specific group is picked, render a single section for it.
+  // Group cards into sections. For TCLL the section header is the sub-category
+  // (Hammer, Spaceship, ...) because `group` is the family filter (TCLL+/-).
+  // For all other sets (CLL, OLL, ...) `group` is the natural section header
+  // (Sune, Anti-Sune, T, ...).
   const groupedAlgs = useMemo(() => {
     const sections: { group: string; items: AlgCase[] }[] = [];
     const seen = new Map<string, number>();
     filteredAlgs.forEach((alg) => {
-      const idx = seen.get(alg.group);
+      const key = alg.subGroup ?? alg.group;
+      const idx = seen.get(key);
       if (idx === undefined) {
-        seen.set(alg.group, sections.length);
-        sections.push({ group: alg.group, items: [alg] });
+        seen.set(key, sections.length);
+        sections.push({ group: key, items: [alg] });
       } else {
         sections[idx].items.push(alg);
       }
@@ -77,11 +116,18 @@ export default function AlgsPage() {
     setSelectedCube(cube);
     setSelectedCategory(CATEGORIES[cube][0].name);
     setSelectedGroup("All");
+    setSelectedSubGroup("All");
   };
 
   const handleCategoryChange = (cat: string) => {
     setSelectedCategory(cat);
     setSelectedGroup("All");
+    setSelectedSubGroup("All");
+  };
+
+  const handleGroupChange = (group: string) => {
+    setSelectedGroup(group);
+    setSelectedSubGroup("All");
   };
 
   return (
@@ -134,13 +180,13 @@ export default function AlgsPage() {
           ))}
         </div>
 
-        {/* Tier 2.5: Group Filter (second level) */}
+        {/* Tier 2.5: Group Filter (second level — TCLL+/TCLL-, LS1..LS9) */}
         {availableGroups.length > 1 && (
           <div className="mt-4 flex flex-wrap gap-3">
             {availableGroups.map((group) => (
               <button
                 key={group}
-                onClick={() => setSelectedGroup(group)}
+                onClick={() => handleGroupChange(group)}
                 className={`text-[0.6rem] uppercase tracking-[0.15em] transition-colors ${
                   selectedGroup === group
                     ? "font-bold text-neutral-800"
@@ -148,6 +194,25 @@ export default function AlgsPage() {
                 }`}
               >
                 {group}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Tier 2.6: Sub-Group Filter (TCLL Hammer / Spaceship / ...) */}
+        {availableSubGroups.length > 1 && (
+          <div className="mt-3 flex flex-wrap gap-3">
+            {availableSubGroups.map((sg) => (
+              <button
+                key={sg}
+                onClick={() => setSelectedSubGroup(sg)}
+                className={`text-[0.6rem] uppercase tracking-[0.15em] transition-colors ${
+                  selectedSubGroup === sg
+                    ? "font-bold text-neutral-800"
+                    : "text-neutral-400 hover:text-neutral-500"
+                }`}
+              >
+                {sg}
               </button>
             ))}
           </div>
@@ -173,8 +238,20 @@ export default function AlgsPage() {
                     <div
                       key={alg.id}
                       onClick={() => setSelectedAlg(alg)}
-                      className="group flex min-h-[120px] h-auto cursor-pointer items-center gap-4 rounded-2xl border border-[#E8E8E4] bg-white p-4 shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-all duration-200 hover:border-[#D8D8D2] hover:bg-[#FAFAF8] hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)]"
+                      className="group relative flex min-h-[120px] h-auto cursor-pointer items-center gap-4 rounded-2xl border border-[#E8E8E4] bg-white p-4 shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-all duration-200 hover:border-[#D8D8D2] hover:bg-[#FAFAF8] hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)]"
                     >
+                      {/* Inkan-style badge: TCLL+ / TCLL- (only for TCLL set) */}
+                      {alg.set === "TCLL" && (
+                        <span
+                          className={`absolute top-3 right-3 text-[10px] font-bold tracking-wider px-1.5 py-0.5 rounded-[3px] border select-none ${
+                            alg.group === "TCLL+"
+                              ? "border-[#4A6B5D] text-[#4A6B5D] bg-[#4A6B5D]/5"
+                              : "border-[#A65B4C] text-[#A65B4C] bg-[#A65B4C]/5"
+                          }`}
+                        >
+                          {alg.group}
+                        </span>
+                      )}
                       {/* Left: 96px cube + case name */}
                       <div className="flex w-24 flex-shrink-0 flex-col items-center gap-2">
                         <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-xl border border-[#F0F0EE] bg-[#FBFBFA] p-1.5">
