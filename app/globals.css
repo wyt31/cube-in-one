@@ -36,8 +36,13 @@
 }
 
 :root {
-  --background: #f9f9f9;
+  --background: #DAC9A6;
   --foreground: #333333;
+}
+
+.dark {
+  --background: #0a0b0d;
+  --foreground: #e4e4e7;
 }
 
 body {
@@ -45,6 +50,26 @@ body {
   background: var(--background);
   font-family: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI",
     sans-serif;
+}
+
+/* Dark mode scrollbar overrides */
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+.dark * {
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.32);
+}
+.dark .custom-scrollbar {
+  scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
 }
 
 @layer utilities {

@@ -43,13 +43,13 @@ function ToggleRow({
 }) {
   return (
     <div
-      className={`flex items-center justify-between gap-4 rounded-2xl border border-[#EFEFEC] bg-white p-4 transition-opacity duration-300 ${
+      className={`flex items-center justify-between gap-4 rounded-2xl border border-[#EFEFEC] dark:border-white/8 bg-white dark:bg-zinc-900 p-4 transition-opacity duration-300 ${
         disabled ? "opacity-40" : "opacity-100"
       }`}
     >
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-medium tracking-wide text-[#2C2C2C]">{title}</p>
-        <p className="mt-1 text-[0.65rem] leading-relaxed tracking-wide text-[#999]">
+        <p className="text-sm font-medium tracking-wide text-[#2C2C2C] dark:text-neutral-200">{title}</p>
+        <p className="mt-1 text-[0.65rem] leading-relaxed tracking-wide text-[#999] dark:text-neutral-500">
           {description}
         </p>
       </div>
@@ -64,7 +64,7 @@ function ToggleRow({
             ? "cursor-not-allowed"
             : "cursor-pointer"
         } ${
-          value ? "bg-[#2C2C2C]" : "bg-[#E0E0DC]"
+          value ? "bg-[#2C2C2C]" : "bg-[#E0E0DC] dark:bg-white/10"
         }`}
       >
         <span
@@ -80,7 +80,7 @@ function ToggleRow({
 /** Inline key / snippet styling, shared with the guide Modal. */
 function Kbd({ children }: { children: React.ReactNode }) {
   return (
-    <code className="rounded-md bg-neutral-100 px-1.5 py-0.5 font-mono text-[0.7rem] text-[#666]">
+    <code className="rounded-md bg-neutral-100 dark:bg-white/10 px-1.5 py-0.5 font-mono text-[0.7rem] text-[#666] dark:text-neutral-400">
       {children}
     </code>
   );
@@ -100,14 +100,14 @@ function InputModeRow({
     { key: "typing", label: "Typing" },
   ];
   return (
-    <div className="rounded-2xl border border-[#EFEFEC] bg-white p-4">
+    <div className="rounded-2xl border border-[#EFEFEC] dark:border-white/8 bg-white dark:bg-zinc-900 p-4">
       <div className="flex items-center justify-between">
-        <p className="text-sm font-medium tracking-wide text-[#2C2C2C]">Input Mode</p>
+        <p className="text-sm font-medium tracking-wide text-[#2C2C2C] dark:text-neutral-200">Input Mode</p>
         <button
           type="button"
           onClick={onHelp}
           aria-label="Input mode syntax guide"
-          className="text-[#999] opacity-50 transition-opacity hover:opacity-100"
+          className="text-[#999] dark:text-neutral-500 opacity-50 transition-opacity hover:opacity-100"
         >
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
             <circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1" />
@@ -122,7 +122,7 @@ function InputModeRow({
           </svg>
         </button>
       </div>
-      <div className="mt-3 grid grid-cols-2 gap-1 rounded-full border border-[#EFEFEC] bg-[#F6F6F3] p-1">
+      <div className="mt-3 grid grid-cols-2 gap-1 rounded-full border border-[#EFEFEC] dark:border-white/8 bg-[#F6F6F3] dark:bg-white/[0.04] p-1">
         {options.map((opt) => {
           const active = value === opt.key;
           return (
@@ -132,7 +132,7 @@ function InputModeRow({
               onClick={() => onChange(opt.key)}
               aria-pressed={active}
               className={`rounded-full py-2 text-xs font-medium tracking-wide transition-colors duration-300 ${
-                active ? "bg-[#2C2C2C] text-white shadow-sm" : "text-[#999] hover:text-[#555]"
+                active ? "bg-[#2C2C2C] text-white shadow-sm" : "text-[#999] dark:text-neutral-500 hover:text-[#555] dark:hover:text-neutral-400"
               }`}
             >
               {opt.label}
@@ -146,8 +146,8 @@ function InputModeRow({
 
 function Bullet({ children }: { children: React.ReactNode }) {
   return (
-    <li className="flex gap-2.5 text-[0.7rem] leading-relaxed text-[#666]">
-      <span className="mt-[0.5em] h-1 w-1 flex-shrink-0 rounded-full bg-[#CCC]" />
+    <li className="flex gap-2.5 text-[0.7rem] leading-relaxed text-[#666] dark:text-neutral-400">
+      <span className="mt-[0.5em] h-1 w-1 flex-shrink-0 rounded-full bg-[#CCC] dark:bg-white/30" />
       <span className="flex-1">{children}</span>
     </li>
   );
@@ -162,7 +162,7 @@ function SyntaxGuideModal({
 }) {
   return (
     <div
-      className={`fixed inset-0 z-[60] flex items-center justify-center bg-black/40 px-4 transition-opacity duration-300 ${
+      className={`fixed inset-0 z-[60] flex items-center justify-center bg-black/40 dark:bg-black/60 px-4 transition-opacity duration-300 ${
         open ? "opacity-100" : "pointer-events-none opacity-0"
       }`}
       onClick={onClose}
@@ -170,19 +170,19 @@ function SyntaxGuideModal({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`w-full max-w-md rounded-3xl border border-[#EFEFEC] bg-[#fbfbf9] p-7 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.8),0_8px_32px_rgba(51,51,51,0.08)] transition-transform duration-300 ${
+        className={`w-full max-w-md rounded-3xl border border-[#EFEFEC] dark:border-white/8 bg-[#fbfbf9] dark:bg-zinc-900 p-7 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.8),0_8px_32px_rgba(51,51,51,0.08)] transition-transform duration-300 ${
           open ? "scale-100" : "scale-95"
         }`}
       >
         <div className="mb-6 flex items-center justify-between">
-          <span className="text-[0.65rem] uppercase tracking-[0.3em] text-[#999]">
+          <span className="text-[0.65rem] uppercase tracking-[0.3em] text-[#999] dark:text-neutral-500">
             Guide
           </span>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close guide"
-            className="text-[#999] transition-colors hover:text-[#333]"
+            className="text-[#999] dark:text-neutral-500 transition-colors hover:text-[#333] dark:hover:text-neutral-200"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
               <path d="M4 4L12 12M12 4L4 12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
@@ -192,22 +192,22 @@ function SyntaxGuideModal({
 
         {/* Timer Mode section */}
         <div className="mb-6">
-          <p className="mb-3 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[#2C2C2C]">
+          <p className="mb-3 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[#2C2C2C] dark:text-neutral-200">
             Timer Mode
           </p>
           <ul className="flex flex-col gap-2.5">
             <Bullet>
-              <span className="font-medium text-[#444]">Hold &amp; Release:</span>{" "}
+              <span className="font-medium text-[#444] dark:text-neutral-200">Hold &amp; Release:</span>{" "}
               Hold <Kbd>Space</Kbd> to prepare, release when green to start.
             </Bullet>
             <Bullet>
-              <span className="font-medium text-[#444]">WCA Inspection:</span>{" "}
+              <span className="font-medium text-[#444] dark:text-neutral-200">WCA Inspection:</span>{" "}
               (If enabled) Press <Kbd>Space</Kbd> to start 15s inspection. Hold
               &amp; release <Kbd>Space</Kbd> to start timing. Overtime applies{" "}
               <Kbd>+2</Kbd> (&gt;15s) or <Kbd>DNF</Kbd> (&gt;17s).
             </Bullet>
             <Bullet>
-              <span className="font-medium text-[#444]">Stop:</span> Press{" "}
+              <span className="font-medium text-[#444] dark:text-neutral-200">Stop:</span> Press{" "}
               <Kbd>Space</Kbd> to stop timing.
             </Bullet>
           </ul>
@@ -215,25 +215,25 @@ function SyntaxGuideModal({
 
         {/* Typing Mode section */}
         <div>
-          <p className="mb-3 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[#2C2C2C]">
+          <p className="mb-3 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[#2C2C2C] dark:text-neutral-200">
             Typing Mode
           </p>
           <ul className="flex flex-col gap-2.5">
             <Bullet>
-              <span className="font-medium text-[#444]">Shorthand:</span>{" "}
+              <span className="font-medium text-[#444] dark:text-neutral-200">Shorthand:</span>{" "}
               <Kbd>1052</Kbd> &rarr; <Kbd>10.52</Kbd> | <Kbd>10052</Kbd> &rarr;{" "}
               <Kbd>1:00.52</Kbd>
             </Bullet>
             <Bullet>
-              <span className="font-medium text-[#444]">Penalties &amp; Quick Fix:</span>{" "}
+              <span className="font-medium text-[#444] dark:text-neutral-200">Penalties &amp; Quick Fix:</span>{" "}
               Append <Kbd>+</Kbd> or <Kbd>d</Kbd> for current time (e.g.{" "}
               <Kbd>3.75+</Kbd>, <Kbd>10.5d</Kbd>). Type a standalone{" "}
               <Kbd>+</Kbd> or <Kbd>d</Kbd>, then press <Kbd>Enter</Kbd> to
               penalty your last solve.{" "}
-              <span className="text-[#999]">(Hope you won&apos;t need this too often lol)</span>
+              <span className="text-[#999] dark:text-neutral-500">(Hope you won&apos;t need this too often lol)</span>
             </Bullet>
             <Bullet>
-              <span className="font-medium text-[#444]">Actions:</span>{" "}
+              <span className="font-medium text-[#444] dark:text-neutral-200">Actions:</span>{" "}
               <Kbd>Enter</Kbd> to save | <Kbd>Esc</Kbd> to clear
             </Bullet>
           </ul>
@@ -375,27 +375,27 @@ export default function SettingsDrawer({
   return (
     <>
       <div
-        className={`fixed inset-0 z-40 bg-black/5 backdrop-blur-[2px] transition-opacity duration-300 ${
+        className={`fixed inset-0 z-40 bg-black/5 dark:bg-black/60 backdrop-blur-[2px] transition-opacity duration-300 ${
           open ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
         onClick={onClose}
         aria-hidden={!open}
       />
       <aside
-        className={`fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col border-l border-[#E8E2D9] bg-[#FDFDFC] shadow-[-8px_0_32px_rgba(51,51,51,0.06)] transition-transform duration-300 ease-out ${
+        className={`fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col border-l border-[#E8E2D9] dark:border-white/8 bg-[#FDFDFC] dark:bg-zinc-900 shadow-[-8px_0_32px_rgba(51,51,51,0.06)] transition-transform duration-300 ease-out ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
         aria-hidden={!open}
       >
-        <div className="flex items-center justify-between border-b border-[#F0F0EE] px-6 py-5">
-          <span className="text-[0.65rem] uppercase tracking-[0.3em] text-[#666]">
+        <div className="flex items-center justify-between border-b border-[#F0F0EE] dark:border-white/8 px-6 py-5">
+          <span className="text-[0.65rem] uppercase tracking-[0.3em] text-[#666] dark:text-neutral-400">
             Settings
           </span>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close settings drawer"
-            className="text-[#999] transition-colors hover:text-[#333]"
+            className="text-[#999] dark:text-neutral-500 transition-colors hover:text-[#333] dark:hover:text-neutral-200"
           >
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden>
               <path d="M4 4L14 14M14 4L4 14" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
@@ -426,8 +426,8 @@ export default function SettingsDrawer({
             />
 
             {/* ---------- Data Management ---------- */}
-            <div className="mt-4 rounded-2xl border border-[#EFEFEC] bg-white p-4">
-              <p className="text-sm font-medium tracking-wide text-[#2C2C2C]">
+            <div className="mt-4 rounded-2xl border border-[#EFEFEC] dark:border-white/8 bg-white dark:bg-zinc-900 p-4">
+              <p className="text-sm font-medium tracking-wide text-[#2C2C2C] dark:text-neutral-200">
                 Data Management
               </p>
               <div className="mt-3 flex flex-col gap-2">
@@ -437,7 +437,7 @@ export default function SettingsDrawer({
                   disabled={solves.length === 0}
                   className={`flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-xs font-medium tracking-wide transition-colors duration-300 ${
                     solves.length === 0
-                      ? "cursor-not-allowed bg-[#F0F0EE] text-[#BBB]"
+                      ? "cursor-not-allowed bg-[#F0F0EE] dark:bg-white/[0.04] text-[#BBB] dark:text-neutral-500"
                       : "bg-[#2C2C2C] text-white hover:bg-[#1a1a1a]"
                   }`}
                 >
@@ -454,8 +454,8 @@ export default function SettingsDrawer({
                   disabled={sessions.length === 0}
                   className={`flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-xs font-medium tracking-wide transition-colors duration-300 ${
                     sessions.length === 0
-                      ? "cursor-not-allowed bg-[#F0F0EE] text-[#BBB]"
-                      : "border border-[#E0E0DC] bg-white text-[#555] hover:border-[#2C2C2C] hover:text-[#2C2C2C]"
+                      ? "cursor-not-allowed bg-[#F0F0EE] dark:bg-white/[0.04] text-[#BBB] dark:text-neutral-500"
+                      : "border border-[#E0E0DC] dark:border-white/8 bg-white dark:bg-zinc-900 text-[#555] dark:text-neutral-400 hover:border-[#2C2C2C] dark:hover:border-white/30 hover:text-[#2C2C2C] dark:hover:text-neutral-200"
                   }`}
                 >
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -465,7 +465,7 @@ export default function SettingsDrawer({
                   </svg>
                   Export All Sessions (CSV)
                 </button>
-                <p className="text-center text-[0.6rem] tracking-wide text-[#BBB]">
+                <p className="text-center text-[0.6rem] tracking-wide text-[#BBB] dark:text-neutral-500">
                   {solves.length} solve{solves.length === 1 ? "" : "s"} in this session · {sessions.length} session{sessions.length === 1 ? "" : "s"} total
                 </p>
               </div>

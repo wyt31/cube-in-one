@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -98,17 +98,17 @@ export default function ManualTimeInput({
           spellCheck={false}
           aria-label="Manual time input"
           className={`w-full bg-transparent text-center font-[family-name:var(--font-geist-mono)] text-5xl font-bold tabular-nums tracking-tight outline-none sm:text-6xl md:text-7xl lg:text-8xl ${
-            hasError ? "text-red-500" : "text-neutral-800"
+            hasError ? "text-red-500 dark:text-red-400" : "text-neutral-800 dark:text-neutral-200"
           }`}
         />
         {/* Thin underline — brightens on focus, dims on blur, reddens on error. */}
         <div
           className={`h-px w-72 transition-colors duration-300 ${
             hasError
-              ? "bg-red-400"
+              ? "bg-red-400 dark:bg-red-500"
               : isFocused
-                ? "bg-neutral-800/40"
-                : "bg-neutral-800/15"
+                ? "bg-neutral-800/40 dark:bg-white/40"
+                : "bg-neutral-800/15 dark:bg-white/15"
           }`}
         />
       </div>

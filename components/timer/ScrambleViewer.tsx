@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useMemo, useState, type CSSProperties } from "react";
 import type { TimerEvent } from "@/lib/timer-types";
@@ -64,7 +64,7 @@ export default function ScrambleViewer({
   }, [puzzle]);
 
   return (
-    <div className="relative h-[165px] w-[165px] flex-shrink-0 overflow-hidden rounded-xl border border-[#E8E8E4] bg-white/70 p-1 shadow-[0_1px_3px_rgba(0,0,0,0.04)] backdrop-blur-sm sm:h-[175px] sm:w-[200px] md:h-[185px] md:w-[220px]">
+    <div className="relative h-[165px] w-[165px] flex-shrink-0 overflow-hidden rounded-xl border border-[#E8E8E4] dark:border-white/8 bg-white/70 dark:bg-white/5 p-1 shadow-[0_1px_3px_rgba(0,0,0,0.04)] backdrop-blur-sm sm:h-[175px] sm:w-[200px] md:h-[185px] md:w-[220px]">
       {scramble ? (
         <>
           {/* twisty-player height reduced by ~18px to leave room for the
@@ -85,7 +85,7 @@ export default function ScrambleViewer({
             }
           />
           {/* 2D / 3D toggle — bottom-right corner of the preview card */}
-          <div className="absolute bottom-1.5 right-1.5 z-10 flex items-center gap-0.5 rounded-full border border-black/[0.08] bg-white/90 p-0.5 shadow-sm backdrop-blur-sm">
+          <div className="absolute bottom-1.5 right-1.5 z-10 flex items-center gap-0.5 rounded-full border border-black/[0.08] dark:border-white/8 bg-white/90 dark:bg-white/5 p-0.5 shadow-sm backdrop-blur-sm">
             {(["2D", "3D"] as const).map((mode) => (
               <button
                 key={mode}
@@ -96,7 +96,7 @@ export default function ScrambleViewer({
                 className={`flex h-5 w-7 items-center justify-center rounded-full text-[0.55rem] font-bold tracking-wide transition-all ${
                   viz === mode
                     ? "bg-neutral-800 text-white shadow-sm"
-                    : "text-neutral-400 hover:text-neutral-800"
+                    : "text-neutral-400 dark:text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200"
                 }`}
               >
                 {mode}
@@ -105,7 +105,7 @@ export default function ScrambleViewer({
           </div>
         </>
       ) : (
-        <div className="flex h-full w-full items-center justify-center text-center text-[0.55rem] uppercase tracking-[0.15em] text-neutral-300">
+        <div className="flex h-full w-full items-center justify-center text-center text-[0.55rem] uppercase tracking-[0.15em] text-neutral-300 dark:text-neutral-600">
           No scramble
         </div>
       )}

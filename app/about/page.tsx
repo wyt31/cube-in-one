@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import ThemeToggle from "@/components/ThemeToggle";
 
 // ============================================================================
 // /about — 4-tab architecture: About Us · Credits · Blog · Feedback
@@ -132,7 +133,7 @@ function TeamAvatar({ name }: { name: string }) {
 // ---------- Small UI atoms ---------------------------------------------
 function VersionBadge() {
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-neutral-800/15 bg-neutral-800/[0.04] px-3 py-1 text-[0.6rem] font-medium uppercase tracking-[0.2em] text-neutral-800">
+    <span className="inline-flex items-center gap-2 rounded-full border border-neutral-800/15 bg-neutral-800/[0.04] px-3 py-1 text-[0.6rem] font-medium uppercase tracking-[0.2em] text-neutral-800 dark:text-neutral-200">
       <span className="h-1.5 w-1.5 rounded-full bg-neutral-800 animate-breathe" />
       v0.1.0 · Beta
     </span>
@@ -153,12 +154,12 @@ function CreditModal({
       onClick={onClose}
     >
       <div
-        className="relative w-[min(420px,92vw)] rounded-3xl border border-black/[0.06] bg-white p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.3)] animate-tab-enter"
+        className="relative w-[min(420px,92vw)] rounded-3xl border border-black/[0.06] bg-white p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.3)] animate-tab-enter dark:bg-zinc-900"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
-          className="absolute right-5 top-5 flex h-7 w-7 items-center justify-center rounded-full text-neutral-400 transition-colors hover:bg-[#F5F5F2] hover:text-neutral-800"
+          className="absolute right-5 top-5 flex h-7 w-7 items-center justify-center rounded-full text-neutral-400 transition-colors hover:bg-[#F5F5F2] hover:text-neutral-800 dark:text-neutral-500 dark:hover:text-neutral-200"
           aria-label="Close"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -170,7 +171,7 @@ function CreditModal({
           <TeamAvatar name={entry.name} />
         </div>
 
-        <h3 className="mt-4 text-center text-lg font-medium tracking-wide text-neutral-800">
+        <h3 className="mt-4 text-center text-lg font-medium tracking-wide text-neutral-800 dark:text-neutral-200">
           {entry.name}
         </h3>
 
@@ -180,7 +181,7 @@ function CreditModal({
               key={i}
               className="flex items-center gap-2.5 text-[0.8rem] tracking-wide text-neutral-500"
             >
-              <span className="star-blink text-neutral-800" style={{ animationDelay: `${i * 0.4}s` }}>
+              <span className="star-blink text-neutral-800 dark:text-neutral-200" style={{ animationDelay: `${i * 0.4}s` }}>
                 ✦
               </span>
               {pos}
@@ -211,7 +212,7 @@ function AboutView({ onCreditClick }: { onCreditClick: (entry: CreditEntry) => v
       </section>
 
       {/* Vision */}
-      <section className="rounded-2xl border border-[#E8E8E4] bg-white p-6">
+      <section className="rounded-2xl border border-[#E8E8E4] bg-white p-6 dark:border-white/8 dark:bg-zinc-900">
         <h3 className="text-[0.6rem] font-medium uppercase tracking-[0.3em] text-[#A0A09A]">
           Our Vision
         </h3>
@@ -244,21 +245,21 @@ function AboutView({ onCreditClick }: { onCreditClick: (entry: CreditEntry) => v
                   <div className="flex min-w-0 flex-1 items-center gap-3">
                     <TeamAvatar name={entry.name} />
                     <div>
-                      <p className="text-sm font-medium tracking-wide text-neutral-800">
+                      <p className="text-sm font-medium tracking-wide text-neutral-800 dark:text-neutral-200">
                         {entry.name}
                       </p>
-                      <p className="mt-1 text-[0.7rem] tracking-wide text-neutral-400">
+                      <p className="mt-1 text-[0.7rem] tracking-wide text-neutral-400 dark:text-neutral-500">
                         {entry.role}
                       </p>
                     </div>
                   </div>
                   {entry.note && (
-                    <span className="flex-shrink-0 rounded-full bg-[#FAFAF8] px-2 py-0.5 text-[0.55rem] uppercase tracking-[0.15em] text-[#9A9A94]">
+                    <span className="flex-shrink-0 rounded-full bg-[#FAFAF8] px-2 py-0.5 text-[0.55rem] uppercase tracking-[0.15em] text-[#9A9A94] dark:bg-white/[0.04]">
                       {entry.note}
                     </span>
                   )}
                   {isInteractive && (
-                    <span className="flex-shrink-0 text-neutral-400 transition-all duration-200 group-hover:translate-x-1 group-hover:text-neutral-800">
+                    <span className="flex-shrink-0 text-neutral-400 transition-all duration-200 group-hover:translate-x-1 group-hover:text-neutral-800 dark:text-neutral-500 dark:group-hover:text-neutral-200">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M9 18l6-6-6-6" />
                       </svg>
@@ -332,20 +333,20 @@ function CreditsView({ onCreditClick }: { onCreditClick: (entry: CreditEntry) =>
                 >
                   <div className="relative z-[2] flex items-start justify-between gap-3">
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium tracking-wide text-neutral-800">
+                      <p className="text-sm font-medium tracking-wide text-neutral-800 dark:text-neutral-200">
                         {entry.name}
                       </p>
-                      <p className="mt-1 text-[0.7rem] tracking-wide text-neutral-400">
+                      <p className="mt-1 text-[0.7rem] tracking-wide text-neutral-400 dark:text-neutral-500">
                         {entry.role}
                       </p>
                     </div>
                     {entry.note && (
-                      <span className="flex-shrink-0 rounded-full bg-[#FAFAF8] px-2 py-0.5 text-[0.55rem] uppercase tracking-[0.15em] text-[#9A9A94]">
+                      <span className="flex-shrink-0 rounded-full bg-[#FAFAF8] px-2 py-0.5 text-[0.55rem] uppercase tracking-[0.15em] text-[#9A9A94] dark:bg-white/[0.04]">
                         {entry.note}
                       </span>
                     )}
                     {isInteractive && (
-                      <span className="flex-shrink-0 text-neutral-400 transition-all duration-200 group-hover:translate-x-1 group-hover:text-neutral-800">
+                      <span className="flex-shrink-0 text-neutral-400 transition-all duration-200 group-hover:translate-x-1 group-hover:text-neutral-800 dark:text-neutral-500 dark:group-hover:text-neutral-200">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M9 18l6-6-6-6" />
                         </svg>
@@ -359,8 +360,8 @@ function CreditsView({ onCreditClick }: { onCreditClick: (entry: CreditEntry) =>
         </section>
       ))}
 
-      <section className="rounded-2xl border border-dashed border-[#E8E8E4] bg-[#FAFAF8] p-6 text-center">
-        <p className="text-[0.7rem] leading-relaxed tracking-wide text-neutral-400">
+      <section className="rounded-2xl border border-dashed border-[#E8E8E4] bg-[#FAFAF8] p-6 text-center dark:border-white/8 dark:bg-white/[0.04]">
+        <p className="text-[0.7rem] leading-relaxed tracking-wide text-neutral-400 dark:text-neutral-500">
           Thank you to everyone who has tested early builds, reported bugs, and
           shared algorithm corrections. CIO is shaped by your quiet feedback.
         </p>
@@ -403,11 +404,11 @@ function FeedbackView() {
 
   return (
     <div className="flex flex-col gap-6">
-      <section className="rounded-2xl border border-[#E8E8E4] bg-white p-6">
-        <h3 className="text-sm font-medium tracking-wide text-neutral-800">
+      <section className="rounded-2xl border border-[#E8E8E4] bg-white p-6 dark:border-white/8 dark:bg-zinc-900">
+        <h3 className="text-sm font-medium tracking-wide text-neutral-800 dark:text-neutral-200">
           Leave a Comment or Suggestion
         </h3>
-        <p className="mt-2 text-[0.75rem] leading-relaxed tracking-wide text-neutral-400">
+        <p className="mt-2 text-[0.75rem] leading-relaxed tracking-wide text-neutral-400 dark:text-neutral-500">
           Found a typo in an algorithm? Have an idea for a new feature? Drop a
           note below — every piece of feedback shapes the roadmap above.
         </p>
@@ -416,13 +417,13 @@ function FeedbackView() {
         <div ref={giscusRef} className="mt-6 giscus" />
       </section>
 
-      <section className="rounded-2xl border border-[#E8E8E4] bg-white p-6">
+      <section className="rounded-2xl border border-[#E8E8E4] bg-white p-6 dark:border-white/8 dark:bg-zinc-900">
         <h3 className="text-[0.6rem] font-medium uppercase tracking-[0.3em] text-[#A0A09A]">
           Other Channels
         </h3>
         <ul className="mt-4 flex flex-col gap-2 text-[0.75rem] tracking-wide text-neutral-500">
-          <li>· Email — <a href="mailto:freddiewang@cubeinone.com" className="underline hover:text-neutral-800 transition-colors">freddiewang@cubeinone.com</a></li>
-          <li>· GitHub Issues — <a href="https://github.com/wyt31/cube-in-one/issues" target="_blank" rel="noopener noreferrer" className="underline hover:text-neutral-800 transition-colors">https://github.com/wyt31/cube-in-one/issues</a></li>
+          <li>· Email — <a href="mailto:freddiewang@cubeinone.com" className="underline hover:text-neutral-800 transition-colors dark:hover:text-neutral-200">freddiewang@cubeinone.com</a></li>
+          <li>· GitHub Issues — <a href="https://github.com/wyt31/cube-in-one/issues" target="_blank" rel="noopener noreferrer" className="underline hover:text-neutral-800 transition-colors dark:hover:text-neutral-200">https://github.com/wyt31/cube-in-one/issues</a></li>
         </ul>
       </section>
     </div>
@@ -436,21 +437,22 @@ export default function AboutPage() {
   const [selectedCredit, setSelectedCredit] = useState<CreditEntry | null>(null);
 
   return (
-    <div className="min-h-screen bg-[#FBFBFA] font-[family-name:var(--font-geist-sans)] text-neutral-800">
+    <div className="min-h-screen bg-[#FBFBFA] font-[family-name:var(--font-geist-sans)] text-neutral-800 dark:bg-[#0A0B0D] dark:text-neutral-200">
       {/* ---------- Header ---------- */}
-      <header className="px-6 pb-10 pt-14 sm:px-12">
+      <header className="flex items-center justify-between px-6 pb-10 pt-14 sm:px-12">
         <Link
           href="/"
-          className="text-[0.65rem] font-medium uppercase tracking-[0.3em] text-neutral-400 transition-colors hover:text-neutral-800"
+          className="text-[0.65rem] font-medium uppercase tracking-[0.3em] text-neutral-400 transition-colors hover:text-neutral-800 dark:text-neutral-500 dark:hover:text-neutral-200"
         >
           &lt; Cube in One
         </Link>
+        <ThemeToggle />
       </header>
 
       <main className="mx-auto w-full max-w-4xl px-6 pb-24 sm:px-12">
         {/* ---------- Tab navigation ---------- */}
         <nav
-          className="flex items-center justify-center gap-1 rounded-full border border-[#E8E8E4] bg-white p-1"
+          className="flex items-center justify-center gap-1 rounded-full border border-[#E8E8E4] bg-white p-1 dark:border-white/8 dark:bg-zinc-900"
           role="tablist"
           aria-label="About sections"
         >
@@ -465,7 +467,7 @@ export default function AboutPage() {
                 className={`relative flex-1 rounded-full px-5 py-2 text-[0.7rem] font-medium uppercase tracking-[0.2em] transition-all duration-300 ${
                   active
                     ? "bg-neutral-800 text-white shadow-[0_2px_12px_rgba(44,44,44,0.12)]"
-                    : "text-neutral-400 hover:text-neutral-800"
+                    : "text-neutral-400 hover:text-neutral-800 dark:text-neutral-500 dark:hover:text-neutral-200"
                 }`}
               >
                 {tab.label}

@@ -12,6 +12,7 @@ import {
 } from "@/data/algs";
 import AlgCardCube from "@/components/AlgCardCube";
 import AlgDetailModal from "@/components/AlgDetailModal";
+import ThemeToggle from "@/components/ThemeToggle";
 
 function categoryNames(cube: CubeType): string[] {
   return CATEGORIES[cube].map((c) => c.name);
@@ -131,31 +132,34 @@ export default function AlgsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FBFBFA] font-[family-name:var(--font-geist-sans)] text-neutral-800">
+    <div className="min-h-screen bg-[#FBFBFA] font-[family-name:var(--font-geist-sans)] text-neutral-800 dark:bg-[#0A0B0D] dark:text-neutral-200">
       {/* Header */}
-      <header className="px-6 pb-10 pt-14 sm:px-12">
+      <header className="flex items-center justify-between px-6 pb-10 pt-14 sm:px-12">
+        <div>
         <Link
           href="/"
-          className="text-[0.65rem] font-medium uppercase tracking-[0.3em] text-neutral-400 transition-colors hover:text-neutral-800"
+          className="text-[0.65rem] font-medium uppercase tracking-[0.3em] text-neutral-400 transition-colors hover:text-neutral-800 dark:text-neutral-500 dark:hover:text-neutral-200"
         >
           &lt; Cube in One
         </Link>
-        <h1 className="mt-10 text-2xl font-extralight uppercase tracking-[0.15em] sm:text-3xl">
+        <h1 className="mt-10 text-3xl font-light uppercase tracking-[0.15em] sm:text-4xl">
           Algorithm Sets
         </h1>
+        </div>
+        <ThemeToggle />
       </header>
 
       <main className="px-6 pb-20 sm:px-12">
         {/* Tier 1: Cube Type */}
-        <div className="flex gap-4 border-b border-[#E8E8E4] pb-4">
+        <div className="flex gap-4 border-b border-[#E8E8E4] pb-4 dark:border-white/8">
           {CUBES.map((cube) => (
             <button
               key={cube}
               onClick={() => handleCubeChange(cube)}
-              className={`text-sm tracking-[0.15em] transition-all ${
+              className={`text-base tracking-[0.15em] transition-all ${
                 selectedCube === cube
-                  ? "font-medium text-neutral-800"
-                  : "text-neutral-400 hover:text-neutral-500"
+                  ? "font-semibold text-neutral-800 dark:text-neutral-200"
+                  : "text-neutral-400 hover:text-neutral-500 dark:text-neutral-500 dark:hover:text-neutral-400"
               }`}
             >
               {cube}
@@ -169,10 +173,10 @@ export default function AlgsPage() {
             <button
               key={cat}
               onClick={() => handleCategoryChange(cat)}
-              className={`rounded-full px-4 py-1.5 text-[0.65rem] tracking-[0.1em] transition-colors ${
+              className={`rounded-full px-5 py-2 text-xs font-medium tracking-[0.1em] transition-all ${
                 selectedCategory === cat
-                  ? "bg-neutral-800 text-[#fbfbf9]"
-                  : "text-neutral-400 hover:text-neutral-700"
+                  ? "bg-neutral-800 text-[#fbfbf9] shadow-[0_2px_8px_rgba(0,0,0,0.08)] dark:bg-neutral-200 dark:text-neutral-900 dark:shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
+                  : "text-neutral-400 hover:text-neutral-700 hover:bg-black/[0.03] dark:text-neutral-500 dark:hover:text-neutral-300 dark:hover:bg-white/[0.04]"
               }`}
             >
               {cat}
@@ -182,15 +186,15 @@ export default function AlgsPage() {
 
         {/* Tier 2.5: Group Filter (second level — TCLL+/TCLL-, LS1..LS9) */}
         {availableGroups.length > 1 && (
-          <div className="mt-4 flex flex-wrap gap-3">
+          <div className="mt-5 flex flex-wrap gap-3">
             {availableGroups.map((group) => (
               <button
                 key={group}
                 onClick={() => handleGroupChange(group)}
-                className={`text-[0.6rem] uppercase tracking-[0.15em] transition-colors ${
+                className={`text-[0.7rem] font-medium uppercase tracking-[0.15em] transition-colors ${
                   selectedGroup === group
-                    ? "font-bold text-neutral-800"
-                    : "text-neutral-400 hover:text-neutral-500"
+                    ? "font-semibold text-neutral-800 dark:text-neutral-200"
+                    : "text-neutral-400 hover:text-neutral-600 dark:text-neutral-500 dark:hover:text-neutral-400"
                 }`}
               >
                 {group}
@@ -206,10 +210,10 @@ export default function AlgsPage() {
               <button
                 key={sg}
                 onClick={() => setSelectedSubGroup(sg)}
-                className={`text-[0.6rem] uppercase tracking-[0.15em] transition-colors ${
+                className={`text-[0.7rem] font-medium uppercase tracking-[0.15em] transition-colors ${
                   selectedSubGroup === sg
-                    ? "font-bold text-neutral-800"
-                    : "text-neutral-400 hover:text-neutral-500"
+                    ? "font-semibold text-neutral-800 dark:text-neutral-200"
+                    : "text-neutral-400 hover:text-neutral-600 dark:text-neutral-500 dark:hover:text-neutral-400"
                 }`}
               >
                 {sg}
@@ -224,11 +228,11 @@ export default function AlgsPage() {
             {groupedAlgs.map((section) => (
               <section key={section.group}>
                 {/* Group header (subCategory) */}
-                <div className="mb-4 flex items-baseline gap-3">
-                  <h2 className="text-sm font-medium uppercase tracking-[0.25em] text-neutral-800">
+                <div className="mb-5 flex items-baseline gap-3">
+                  <h2 className="text-base font-semibold uppercase tracking-[0.25em] text-neutral-800 dark:text-neutral-200">
                     {section.group}
                   </h2>
-                  <span className="text-[0.65rem] tracking-[0.15em] text-neutral-300">
+                  <span className="text-xs tracking-[0.15em] text-neutral-400 dark:text-neutral-500">
                     {section.items.length} {section.items.length === 1 ? "case" : "cases"}
                   </span>
                 </div>
@@ -238,26 +242,26 @@ export default function AlgsPage() {
                     <div
                       key={alg.id}
                       onClick={() => setSelectedAlg(alg)}
-                      className="group relative flex min-h-[120px] h-auto cursor-pointer items-center gap-4 rounded-2xl border border-[#E8E8E4] bg-white p-4 shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-all duration-200 hover:border-[#D8D8D2] hover:bg-[#FAFAF8] hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)]"
+                      className="group relative flex min-h-[130px] h-auto cursor-pointer items-center gap-5 rounded-2xl border border-[#E8E8E4] bg-white p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#D0D0CA] hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] dark:border-white/8 dark:bg-zinc-900 dark:shadow-[0_2px_8px_rgba(0,0,0,0.3)] dark:hover:border-white/15 dark:hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)]"
                     >
                       {/* Inkan-style badge: TCLL+ / TCLL- (only for TCLL set) */}
                       {alg.set === "TCLL" && (
                         <span
-                          className={`absolute top-3 right-3 text-[10px] font-bold tracking-wider px-1.5 py-0.5 rounded-[3px] border select-none ${
+                          className={`absolute top-3 right-3 text-[0.65rem] font-bold tracking-wider px-2 py-0.5 rounded-[3px] border select-none ${
                             alg.group === "TCLL+"
-                              ? "border-[#4A6B5D] text-[#4A6B5D] bg-[#4A6B5D]/5"
-                              : "border-[#A65B4C] text-[#A65B4C] bg-[#A65B4C]/5"
+                              ? "border-[#4A6B5D] text-[#4A6B5D] bg-[#4A6B5D]/8"
+                              : "border-[#A65B4C] text-[#A65B4C] bg-[#A65B4C]/8"
                           }`}
                         >
                           {alg.group}
                         </span>
                       )}
-                      {/* Left: 96px cube + case name */}
-                      <div className="flex w-24 flex-shrink-0 flex-col items-center gap-2">
-                        <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-xl border border-[#F0F0EE] bg-[#FBFBFA] p-1.5">
+                      {/* Left: cube + case name */}
+                      <div className="flex w-24 flex-shrink-0 flex-col items-center gap-2.5">
+                        <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-xl border border-[#F0F0EE] bg-[#FBFBFA] p-1.5 shadow-[0_1px_4px_rgba(0,0,0,0.03)] dark:border-white/5 dark:bg-white/5 dark:shadow-[0_1px_4px_rgba(0,0,0,0.3)]">
                           <AlgCardCube alg={alg} className="h-full w-full" />
                         </div>
-                        <h3 className="text-center text-[0.7rem] font-medium leading-tight tracking-wide text-neutral-800">
+                        <h3 className="text-center text-sm font-semibold leading-tight tracking-wide text-neutral-800 dark:text-neutral-200">
                           {alg.name}
                         </h3>
                       </div>
@@ -266,7 +270,7 @@ export default function AlgsPage() {
                           Elastic height — long formulas gracefully expand the
                           card, never overlapping the case name on the left. */}
                       <div className="flex min-w-0 flex-1 items-center">
-                        <code className="block min-w-0 flex-1 font-[family-name:var(--font-geist-mono)] text-[12.5px] font-medium leading-snug tracking-wide text-neutral-800">
+                        <code className="block min-w-0 flex-1 font-[family-name:var(--font-geist-mono)] text-[0.8rem] font-semibold leading-relaxed tracking-wide text-neutral-800 dark:text-neutral-200">
                           {alg.recommended}
                         </code>
                       </div>
@@ -278,7 +282,7 @@ export default function AlgsPage() {
           </div>
         ) : (
           <div className="mt-10 py-20 text-center">
-            <p className="text-xs tracking-[0.2em] text-neutral-300">
+            <p className="text-sm tracking-[0.2em] text-neutral-400 dark:text-neutral-500">
               NO ALGORITHMS FOUND IN THIS CATEGORY.
             </p>
           </div>

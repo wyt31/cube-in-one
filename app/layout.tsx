@@ -24,8 +24,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Theme initialization — runs before paint to prevent FOUC.
+            Checks localStorage first, falls back to system preference. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark')}}catch(e){}})();`,
+          }}
+        />
         {/* cubing/twisty — load the <twisty-player> custom element from the
             official CDN as a native ESM module. This registers the global
             custom element; pages that render <twisty-player> just use it.

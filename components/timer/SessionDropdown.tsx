@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef, useState } from "react";
 import type { Session } from "@/lib/timer-types";
@@ -124,12 +124,12 @@ export default function SessionDropdown({
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        className="flex items-center gap-1.5 rounded-full border border-[#E8E8E4] bg-white/80 px-3 py-1.5 shadow-[0_1px_2px_rgba(0,0,0,0.03)] backdrop-blur-sm transition-colors hover:border-neutral-800/40"
+        className="flex items-center gap-1.5 rounded-full border border-[#E8E8E4] dark:border-white/8 bg-white/80 dark:bg-white/5 px-3 py-1.5 shadow-[0_1px_2px_rgba(0,0,0,0.03)] backdrop-blur-sm transition-colors hover:border-neutral-800/40 dark:hover:border-white/30"
       >
-        <span className="text-[0.7rem] font-semibold uppercase tracking-[0.15em] text-neutral-800">
+        <span className="text-[0.7rem] font-semibold uppercase tracking-[0.15em] text-neutral-800 dark:text-neutral-200">
           {label}
         </span>
-        <span aria-hidden className="text-[0.6rem] leading-none text-[#9A9A95]">
+        <span aria-hidden className="text-[0.6rem] leading-none text-[#9A9A95] dark:text-neutral-500">
           ▾
         </span>
       </button>
@@ -138,7 +138,7 @@ export default function SessionDropdown({
       {open && (
         <div
           role="listbox"
-          className="absolute left-0 top-[calc(100%+4px)] z-50 w-64 max-h-[360px] overflow-y-auto rounded-2xl border border-black/[0.08] bg-white p-1.5 shadow-[0_12px_40px_-16px_rgba(0,0,0,0.25)]"
+          className="absolute left-0 top-[calc(100%+4px)] z-50 w-64 max-h-[360px] overflow-y-auto rounded-2xl border border-black/[0.08] dark:border-white/8 bg-white dark:bg-zinc-900 p-1.5 shadow-[0_12px_40px_-16px_rgba(0,0,0,0.25)]"
         >
           {/* Session rows */}
           {orderedSessions.map((s) => {
@@ -150,7 +150,7 @@ export default function SessionDropdown({
               <div
                 key={s.id}
                 className={`group flex items-center gap-2 rounded-xl px-3 py-2 transition-colors ${
-                  isActive ? "bg-neutral-800/[0.04]" : "hover:bg-black/[0.03]"
+                  isActive ? "bg-neutral-800/[0.04] dark:bg-white/[0.04]" : "hover:bg-black/[0.03] dark:hover:bg-white/10"
                 }`}
               >
                 {/* Active dot */}
@@ -174,7 +174,7 @@ export default function SessionDropdown({
                         setEditName("");
                       }
                     }}
-                    className="flex-1 rounded-md border border-neutral-800/20 bg-white px-2 py-1 text-[0.72rem] text-neutral-800 focus:outline-none"
+                    className="flex-1 rounded-md border border-neutral-800/20 dark:border-white/15 bg-white dark:bg-zinc-900 px-2 py-1 text-[0.72rem] text-neutral-800 dark:text-neutral-200 focus:outline-none"
                   />
                 ) : (
                   <button
@@ -185,14 +185,14 @@ export default function SessionDropdown({
                     }}
                     className="flex flex-1 items-center gap-2 text-left"
                   >
-                    <span className="text-[0.72rem] font-medium text-neutral-800">
+                    <span className="text-[0.72rem] font-medium text-neutral-800 dark:text-neutral-200">
                       {s.name}
                     </span>
-                    <span className="rounded-full bg-black/[0.04] px-1.5 py-0.5 font-[family-name:var(--font-geist-mono)] tabular-nums text-[0.55rem] text-neutral-400">
+                    <span className="rounded-full bg-black/[0.04] dark:bg-white/[0.04] px-1.5 py-0.5 font-[family-name:var(--font-geist-mono)] tabular-nums text-[0.55rem] text-neutral-400 dark:text-neutral-500">
                       {count}
                     </span>
                     {s.isDefault && (
-                      <span className="text-[0.5rem] uppercase tracking-wider text-neutral-300">
+                      <span className="text-[0.5rem] uppercase tracking-wider text-neutral-300 dark:text-neutral-600">
                         default
                       </span>
                     )}
@@ -210,7 +210,7 @@ export default function SessionDropdown({
                         setEditName(s.name);
                       }}
                       aria-label={`Rename ${s.name}`}
-                      className="flex h-6 w-6 items-center justify-center rounded-full text-neutral-400 transition-colors hover:bg-black/[0.05] hover:text-neutral-800"
+                      className="flex h-6 w-6 items-center justify-center rounded-full text-neutral-400 dark:text-neutral-500 transition-colors hover:bg-black/[0.05] dark:hover:bg-white/10 hover:text-neutral-800 dark:hover:text-neutral-200"
                     >
                       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
@@ -226,7 +226,7 @@ export default function SessionDropdown({
                         className={`flex h-6 w-6 items-center justify-center rounded-full transition-colors ${
                           isDeleteConfirm
                             ? "bg-[#C04848] text-white"
-                            : "text-neutral-400 hover:bg-black/[0.05] hover:text-[#C04848]"
+                            : "text-neutral-400 dark:text-neutral-500 hover:bg-black/[0.05] dark:hover:bg-white/10 hover:text-[#C04848]"
                         }`}
                       >
                         {isDeleteConfirm ? (
@@ -249,7 +249,7 @@ export default function SessionDropdown({
           })}
 
           {/* --- Create new session --- */}
-          <div className="mt-1 border-t border-black/[0.06] pt-1.5">
+          <div className="mt-1 border-t border-black/[0.06] dark:border-white/8 pt-1.5">
             {creating ? (
               <div className="flex items-center gap-1.5 px-2 py-1">
                 <input
@@ -264,7 +264,7 @@ export default function SessionDropdown({
                     }
                   }}
                   placeholder="Session name…"
-                  className="flex-1 rounded-md border border-neutral-800/20 bg-white px-2 py-1.5 text-[0.72rem] text-neutral-800 focus:outline-none"
+                  className="flex-1 rounded-md border border-neutral-800/20 dark:border-white/15 bg-white dark:bg-zinc-900 px-2 py-1.5 text-[0.72rem] text-neutral-800 dark:text-neutral-200 focus:outline-none"
                 />
                 <button
                   type="button"
@@ -278,12 +278,12 @@ export default function SessionDropdown({
               <button
                 type="button"
                 onClick={() => setCreating(true)}
-                className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left transition-colors hover:bg-black/[0.03]"
+                className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left transition-colors hover:bg-black/[0.03] dark:hover:bg-white/10"
               >
-                <span className="flex h-4 w-4 items-center justify-center rounded-full bg-neutral-800/[0.06] text-[0.7rem] text-neutral-800">
+                <span className="flex h-4 w-4 items-center justify-center rounded-full bg-neutral-800/[0.06] dark:bg-white/[0.06] text-[0.7rem] text-neutral-800 dark:text-neutral-200">
                   +
                 </span>
-                <span className="text-[0.72rem] font-medium text-neutral-500">
+                <span className="text-[0.72rem] font-medium text-neutral-500 dark:text-neutral-400">
                   New Session
                 </span>
               </button>

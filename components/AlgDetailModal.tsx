@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
@@ -549,27 +549,27 @@ function InfoPopover({
               <ul className="flex flex-col gap-1.5 text-xs text-neutral-500 dark:text-zinc-400">
                 <li className="flex flex-wrap items-center gap-1">
                   <Code>se</Code> / <Code>sexy</Code>
-                  <span className="text-neutral-400">→</span>
+                  <span className="text-neutral-400 dark:text-neutral-500">→</span>
                   <Code>R U R&apos; U&apos;</Code>
                 </li>
                 <li className="flex flex-wrap items-center gap-1">
                   <Code>as</Code> / <Code>ase</Code> / <Code>antisexy</Code>
-                  <span className="text-neutral-400">→</span>
+                  <span className="text-neutral-400 dark:text-neutral-500">→</span>
                   <Code>R&apos; U&apos; R U</Code>
                 </li>
                 <li className="flex flex-wrap items-center gap-1">
                   <Code>sl</Code> / <Code>sledge</Code>
-                  <span className="text-neutral-400">→</span>
+                  <span className="text-neutral-400 dark:text-neutral-500">→</span>
                   <Code>R&apos; F R F&apos;</Code>
                 </li>
                 <li className="flex flex-wrap items-center gap-1">
                   <Code>he</Code> / <Code>hedge</Code>
-                  <span className="text-neutral-400">→</span>
+                  <span className="text-neutral-400 dark:text-neutral-500">→</span>
                   <Code>F R&apos; F&apos; R</Code>
                 </li>
                 <li className="flex flex-wrap items-center gap-1">
                   <Code>su</Code>
-                  <span className="text-neutral-400">→</span>
+                  <span className="text-neutral-400 dark:text-neutral-500">→</span>
                   <Code>R U R&apos; U</Code>
                 </li>
               </ul>
@@ -803,7 +803,7 @@ function SearchInput({
             className={`flex h-4 w-4 items-center justify-center transition-colors ${
               isInfoTooltipActive
                 ? "text-neutral-600 dark:text-zinc-300"
-                : "text-neutral-400 hover:text-neutral-600 dark:hover:text-zinc-300"
+                : "text-neutral-400 dark:text-neutral-500 hover:text-neutral-600 dark:hover:text-zinc-300"
             }`}
             aria-label="Rotational equivalent search info"
           >
@@ -1051,7 +1051,7 @@ export default function AlgDetailModal({
 
             <button
               onClick={onClose}
-              className="absolute right-6 top-6 text-neutral-400 transition-colors hover:bg-black/5 hover:text-neutral-700 dark:text-zinc-600 dark:hover:bg-white/5 dark:hover:text-zinc-300"
+              className="absolute right-6 top-6 text-neutral-400 transition-colors hover:bg-black/5 hover:text-neutral-700 dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-neutral-200"
               aria-label="Close"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1089,7 +1089,7 @@ export default function AlgDetailModal({
                   e.stopPropagation();
                   setSearchQuery("");
                 }}
-                className="rounded-lg border border-[#E8E8E4] bg-white px-3 py-1.5 text-[0.65rem] font-medium text-neutral-500 transition-all hover:border-neutral-800 hover:text-neutral-800 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:border-zinc-500"
+                className="rounded-lg border border-[#E8E8E4] bg-white px-3 py-1.5 text-[0.65rem] font-medium text-neutral-500 transition-all hover:border-neutral-800 hover:text-neutral-800 dark:border-white/8 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:border-zinc-500"
               >
                 Clear
               </button>

@@ -562,7 +562,7 @@ export default function TimerPage() {
   return (
     // Outer wrapper — locks the viewport (no vertical scroll) and centers
     // the content column. bg-[#E5E5E5] is the calm grey canvas.
-    <div className="w-full h-screen overflow-hidden bg-[#E5E5E5] flex justify-center font-[family-name:var(--font-geist-sans)] text-[#2C2C2C]">
+    <div className="w-full h-screen overflow-hidden bg-[#E5E5E5] dark:bg-[#0A0B0D] flex justify-center font-[family-name:var(--font-geist-sans)] text-[#2C2C2C]">
       <div
         className="timer-page-root w-full h-full px-4 py-3 transition-all duration-200 sm:px-12 sm:py-4 md:px-[6vw] flex flex-col gap-2 max-w-[min(1400px,92vw)]"
       >
@@ -666,7 +666,7 @@ export default function TimerPage() {
       {/* ---------- Back link (fixed, top-left) — hidden during running ---------- */}
       <Link
         href="/"
-        className={`fixed left-6 top-6 z-10 text-[0.65rem] font-medium uppercase tracking-[0.3em] text-neutral-400 transition-all duration-200 hover:text-neutral-800 ${
+        className={`fixed left-6 top-6 z-10 text-[0.65rem] font-medium uppercase tracking-[0.3em] text-neutral-400 transition-all duration-200 hover:text-neutral-800 dark:text-neutral-500 dark:hover:text-neutral-200 ${
           isRunning ? "pointer-events-none opacity-0" : "opacity-100"
         }`}
       >

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import type { TimerEvent, TimerMode, Session } from "@/lib/timer-types";
 import SessionDropdown from "@/components/timer/SessionDropdown";
@@ -51,12 +51,12 @@ function SelectCapsule({
   align?: "left" | "center";
 }) {
   return (
-    <div className="flex items-center gap-0.5 rounded-full border border-[#E8E8E4] bg-white/80 px-3 py-1.5 shadow-[0_1px_2px_rgba(0,0,0,0.03)] backdrop-blur-sm transition-colors hover:border-neutral-800/40">
+    <div className="flex items-center gap-0.5 rounded-full border border-[#E8E8E4] dark:border-white/8 bg-white/80 dark:bg-white/5 px-3 py-1.5 shadow-[0_1px_2px_rgba(0,0,0,0.03)] backdrop-blur-sm transition-colors hover:border-neutral-800/40 dark:hover:border-white/30">
       <select
         aria-label={ariaLabel}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className={`cursor-pointer appearance-none bg-transparent pr-1 text-[0.7rem] font-semibold uppercase tracking-[0.15em] text-neutral-800 focus:outline-none ${
+        className={`cursor-pointer appearance-none bg-transparent pr-1 text-[0.7rem] font-semibold uppercase tracking-[0.15em] text-neutral-800 dark:text-neutral-200 focus:outline-none ${
           align === "left" ? "text-left" : "text-center"
         }`}
       >
@@ -66,7 +66,7 @@ function SelectCapsule({
           </option>
         ))}
       </select>
-      <span aria-hidden className="text-[0.6rem] leading-none text-[#9A9A95]">
+      <span aria-hidden className="text-[0.6rem] leading-none text-[#9A9A95] dark:text-neutral-500">
         ▾
       </span>
     </div>
@@ -116,7 +116,7 @@ export default function TimerHeader({
             type="button"
             onClick={onOpenHistory}
             title="Session history"
-            className="flex items-center gap-1.5 rounded-full border border-[#E8E8E4] bg-white/80 px-3 py-1.5 text-[0.65rem] font-medium uppercase tracking-[0.2em] text-neutral-400 shadow-[0_1px_2px_rgba(0,0,0,0.03)] backdrop-blur-sm transition-all hover:border-neutral-800 hover:text-neutral-800"
+            className="flex items-center gap-1.5 rounded-full border border-[#E8E8E4] dark:border-white/8 bg-white/80 dark:bg-white/5 px-3 py-1.5 text-[0.65rem] font-medium uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500 shadow-[0_1px_2px_rgba(0,0,0,0.03)] backdrop-blur-sm transition-all hover:border-neutral-800 dark:hover:border-white/30 hover:text-neutral-800 dark:hover:text-neutral-200"
           >
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M3 3v5h5" />
@@ -149,7 +149,7 @@ export default function TimerHeader({
             type="button"
             onClick={onOpenSettings}
             aria-label="Open settings"
-            className="flex items-center gap-1.5 rounded-full border border-[#E8E8E4] bg-white/80 px-3 py-1.5 text-[0.65rem] font-medium uppercase tracking-[0.18em] text-neutral-500 backdrop-blur-sm transition-all hover:border-neutral-800 hover:text-neutral-800 shadow-[0_1px_2px_rgba(0,0,0,0.03)]"
+            className="flex items-center gap-1.5 rounded-full border border-[#E8E8E4] dark:border-white/8 bg-white/80 dark:bg-white/5 px-3 py-1.5 text-[0.65rem] font-medium uppercase tracking-[0.18em] text-neutral-500 dark:text-neutral-400 backdrop-blur-sm transition-all hover:border-neutral-800 dark:hover:border-white/30 hover:text-neutral-800 dark:hover:text-neutral-200 shadow-[0_1px_2px_rgba(0,0,0,0.03)]"
           >
             <svg
               width="13"
@@ -177,10 +177,10 @@ export default function TimerHeader({
             type="button"
             onClick={onOpenCaseFilter}
             title="Filter cases"
-            className="flex items-center gap-1.5 rounded-full border border-[#E8E8E4] bg-white/80 px-3 py-1.5 text-[0.65rem] font-medium uppercase tracking-[0.15em] text-neutral-500 shadow-[0_1px_2px_rgba(0,0,0,0.03)] backdrop-blur-sm transition-all hover:border-neutral-800 hover:text-neutral-800"
+            className="flex items-center gap-1.5 rounded-full border border-[#E8E8E4] dark:border-white/8 bg-white/80 dark:bg-white/5 px-3 py-1.5 text-[0.65rem] font-medium uppercase tracking-[0.15em] text-neutral-500 dark:text-neutral-400 shadow-[0_1px_2px_rgba(0,0,0,0.03)] backdrop-blur-sm transition-all hover:border-neutral-800 dark:hover:border-white/30 hover:text-neutral-800 dark:hover:text-neutral-200"
           >
             Filter Cases
-            <span className="font-[family-name:var(--font-geist-mono)] tabular-nums text-neutral-800">
+            <span className="font-[family-name:var(--font-geist-mono)] tabular-nums text-neutral-800 dark:text-neutral-200">
               {filterSelected}/{filterTotal}
             </span>
           </button>
