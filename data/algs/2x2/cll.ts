@@ -1,6 +1,3 @@
-// ==========================================================================
-// 2x2 — CLL (Corners of Last Layer)
-// ==========================================================================
 import type { TwoByTwoAlg } from "../types";
 
 export const cllData: TwoByTwoAlg[] = [
