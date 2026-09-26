@@ -44,7 +44,7 @@ function SearchIcon() {
       height="18"
       viewBox="0 0 18 18"
       fill="none"
-      className="shrink-0 text-[#999]"
+      className="shrink-0 text-[#897d55]"
       aria-hidden
     >
       <circle cx="8" cy="8" r="5.5" stroke="currentColor" strokeWidth="1.3" />
@@ -154,7 +154,7 @@ export default function SearchHome() {
   };
 
   return (
-    <div className="relative flex min-h-screen flex-col bg-[#DAC9A6] font-[family-name:var(--font-geist-sans)] text-[#333] dark:bg-[#0A0B0D] dark:text-neutral-200">
+    <div className="relative flex min-h-screen flex-col bg-[#F5F0E6] font-[family-name:var(--font-geist-sans)] text-[#333] dark:bg-[#0A0B0D] dark:text-neutral-200">
       <header className="flex items-center justify-between px-6 py-5 sm:px-10">
         <span className="hidden" aria-hidden>
           <MenuIcon />
@@ -172,7 +172,7 @@ export default function SearchHome() {
           </h1>
 
           <div ref={containerRef} className="relative mt-12">
-            <div className="flex items-center gap-3 rounded-full border border-[#E8E2D9] bg-white/80 px-6 py-4 shadow-[0_2px_16px_rgba(51,51,51,0.06)] backdrop-blur-sm transition-shadow focus-within:border-[#C5D4BC]/80 focus-within:shadow-[0_4px_24px_rgba(51,51,51,0.08)] sm:px-7 sm:py-4.5 dark:border-white/10 dark:bg-white/5 dark:shadow-[0_2px_16px_rgba(0,0,0,0.3)] dark:focus-within:border-[#C5D4BC]/40">
+            <div className="flex items-center gap-3 rounded-full border border-[#D7C4BB] bg-[#D7C4BB] px-6 py-4 shadow-[0_2px_16px_rgba(51,51,51,0.06)] backdrop-blur-sm transition-shadow focus-within:border-[#c5c56a] focus-within:shadow-[0_4px_24px_rgba(51,51,51,0.08)] sm:px-7 sm:py-4.5 dark:border-[#c5c56a]/60 dark:bg-[#c5c56a]/20 dark:shadow-[0_2px_16px_rgba(0,0,0,0.3)] dark:focus-within:border-[#c5c56a]/80">
               <SearchIcon />
               <input
                 ref={inputRef}
@@ -185,9 +185,9 @@ export default function SearchHome() {
                 onFocus={() => setIsDropdownOpen(true)}
                 onKeyDown={handleKeyDown}
                 placeholder="Search algorithms, cases (e.g. EG-1, CLL, PLL, OLL)..."
-                className="min-w-0 flex-1 bg-transparent text-base text-[#333] placeholder:text-[#AAA] focus:outline-none sm:text-[0.95rem] dark:text-neutral-100 dark:placeholder:text-neutral-500"
+                className="min-w-0 flex-1 bg-transparent text-base text-[#3E432A] placeholder:text-[#7F8565] focus:outline-none sm:text-[0.95rem] dark:text-neutral-100 dark:placeholder:text-neutral-500"
               />
-              {query ? (
+              {query && (
                 <button
                   type="button"
                   onClick={() => {
@@ -199,10 +199,6 @@ export default function SearchHome() {
                 >
                   <ClearIcon />
                 </button>
-              ) : (
-                <kbd className="hidden shrink-0 rounded border border-[#E8E2D9] bg-[#F9F9F9] px-1.5 py-0.5 text-[0.6rem] font-medium text-[#AAA] sm:inline-block dark:border-white/10 dark:bg-white/5 dark:text-neutral-500">
-                  ⌘K
-                </kbd>
               )}
             </div>
 
