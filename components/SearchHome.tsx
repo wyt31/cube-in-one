@@ -154,7 +154,7 @@ export default function SearchHome() {
   };
 
   return (
-    <div className="relative flex min-h-screen flex-col bg-[#F9F9F9] font-[family-name:var(--font-geist-sans)] text-[#333] dark:bg-[#0A0B0D] dark:text-neutral-200">
+    <div className="relative flex min-h-screen flex-col bg-[#DAC9A6] font-[family-name:var(--font-geist-sans)] text-[#333] dark:bg-[#0A0B0D] dark:text-neutral-200">
       <header className="flex items-center justify-between px-6 py-5 sm:px-10">
         <span className="hidden" aria-hidden>
           <MenuIcon />
