@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import { formatTime, type Penalty, type Solve } from "@/lib/timer-types";
@@ -32,7 +32,7 @@ function CopyButton({ text }: { text: string }) {
     <button
       type="button"
       onClick={handle}
-      className="flex flex-shrink-0 items-center gap-1.5 rounded-lg border border-[#E8E8E4] bg-white px-2.5 py-1 text-[0.6rem] font-medium text-neutral-500 transition-all hover:border-neutral-800 hover:text-neutral-800 active:scale-95"
+      className="flex flex-shrink-0 items-center gap-1.5 rounded-lg border border-[#EAE2D5] bg-white px-2.5 py-1 text-[0.6rem] font-medium text-neutral-500 transition-all hover:border-neutral-800 hover:text-neutral-800 active:scale-95"
     >
       {copied ? (
         <span className="text-green-600">Copied</span>
@@ -100,10 +100,10 @@ export default function SolveDetailModal({
       className="fixed inset-0 z-[100] flex items-center justify-center px-6"
       onClick={onClose}
     >
-      <div className="absolute inset-0 bg-black/5 backdrop-blur-sm transition-opacity" />
+      <div className="absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity" />
 
       <div
-        className="relative flex w-full max-w-md flex-col overflow-hidden rounded-3xl border border-[#E8E8E4] bg-white shadow-[0_20px_60px_rgba(0,0,0,0.1)] animate-tab-enter"
+        className="relative flex w-full max-w-md flex-col overflow-hidden rounded-3xl border border-[#EAE2D5] bg-[#FDFBF5] shadow-[0_20px_60px_rgba(0,0,0,0.1)] animate-tab-enter"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -136,7 +136,7 @@ export default function SolveDetailModal({
           <h4 className="mb-2 text-[0.6rem] font-medium uppercase tracking-[0.2em] text-neutral-400">
             Scramble
           </h4>
-          <div className="flex items-start justify-between gap-3 rounded-xl border border-[#F0F0EE] bg-[#FBFBFA] p-4">
+          <div className="flex items-start justify-between gap-3 rounded-xl border border-[#EAE2D5] bg-white/80 p-4">
             <code className="block break-all font-[family-name:var(--font-geist-mono)] text-xs leading-relaxed tracking-wide text-neutral-500">
               {solve.scramble || "—"}
             </code>
@@ -169,7 +169,7 @@ export default function SolveDetailModal({
                   className={`rounded-xl border px-3 py-2 text-[0.65rem] font-medium uppercase tracking-[0.15em] transition-all ${
                     active
                       ? "border-neutral-800 bg-neutral-800 text-white"
-                      : "border-[#E8E8E4] bg-white text-neutral-500 hover:border-neutral-800 hover:text-neutral-800"
+                      : "border-[#EAE2D5] bg-white text-neutral-500 hover:border-neutral-800 hover:text-neutral-800"
                   }`}
                 >
                   {opt.label}
@@ -193,7 +193,7 @@ export default function SolveDetailModal({
             className={`mt-4 w-full rounded-xl border py-2.5 text-[0.65rem] font-medium uppercase tracking-[0.2em] transition-all ${
               deleteConfirming
                 ? "border-[#C44] bg-[#C44] text-white"
-                : "border-[#E8E8E4] bg-white text-neutral-400 hover:border-[#C44] hover:text-[#C44]"
+                : "border-[#EAE2D5] bg-white text-neutral-400 hover:border-[#C44] hover:text-[#C44]"
             }`}
           >
             {deleteConfirming ? "Confirm delete? (click again)" : "Delete solve"}

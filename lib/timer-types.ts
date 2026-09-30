@@ -42,6 +42,7 @@ export type TimerMode =
   | "CLL"
   | "EG1"
   | "EG2"
+  | "LEG1"
   | "TCLL"
   | "TCLL+"
   | "TCLL-"

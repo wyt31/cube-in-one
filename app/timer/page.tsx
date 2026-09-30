@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
@@ -35,6 +35,7 @@ import { type Penalty, type Solve, type Session, type TimerEvent, type TimerMode
 import { algData2x2, type AlgCase } from "@/data/algs";
 import { algData3x3 } from "@/data/algs3x3";
 import { genLocalScramble } from "@/lib/scramble-fallback";
+import { generateCaseSetup } from "@/lib/solver222";
 
 /**
  * Maps our friendly TimerEvent names to cubing.js event IDs accepted by
@@ -95,7 +96,7 @@ const EVENTS: TimerEvent[] = [
 function modesForEvent(event: TimerEvent): TimerMode[] {
   switch (event) {
     case "2x2x2":
-      return ["WCA", "CLL", "EG1", "EG2", "TCLL", "TCLL+", "TCLL-", "LS"];
+      return ["WCA", "CLL", "EG1", "EG2", "LEG1", "TCLL", "TCLL+", "TCLL-"];
     case "3x3x3":
       return ["WCA", "OLL", "PLL", "LL"];
     default:
@@ -115,14 +116,14 @@ function casesForMode(event: TimerEvent, mode: TimerMode): AlgCase[] {
       return pool.filter((c) => c.set === "EG1");
     case "EG2":
       return pool.filter((c) => c.set === "EG2");
+    case "LEG1":
+      return pool.filter((c) => c.set === "LEG1");
     case "TCLL":
       return pool.filter((c) => c.set === "TCLL");
     case "TCLL+":
       return pool.filter((c) => c.set === "TCLL" && c.group === "TCLL+");
     case "TCLL-":
       return pool.filter((c) => c.set === "TCLL" && c.group === "TCLL-");
-    case "LS":
-      return pool.filter((c) => c.set === "LS");
     case "OLL":
       return pool.filter((c) => c.set === "OLL");
     case "PLL":
@@ -293,6 +294,17 @@ export default function TimerPage() {
     return new Set();
   });
 
+  useEffect(() => {
+  setSelectedCaseIds(() => {
+      try {
+        const stored = localStorage.getItem(caseFilterKey);
+        if (stored) return new Set(JSON.parse(stored));
+      } catch {}
+
+      return new Set();
+    });
+  }, [caseFilterKey]);
+
   // Reset filter when event/mode changes
   useEffect(() => {
     try {
@@ -336,11 +348,42 @@ export default function TimerPage() {
   }, [solves]);
 
   // ----- Scramble generation + history ---------------------------------
-  // cubing.js is loaded from the official CDN at runtime via native ESM.
-  // If the CDN module or its web worker fails to load (network, CORS,
-  // browser restrictions), fall back to a local pseudo-random generator
-  // so the timer never shows a blank scramble.
+  // For 2x2 Case Trainer modes (CLL, EG1, EG2, TCLL, TCLL±, LS), the
+  // scramble is a case setup produced by the local 2x2 IDDFS solver:
+  //   pick a random case → take its S-tier recommended alg →
+  //   generateCaseSetup(alg) → setup string.
+  // For WCA and 3x3 modes, cubing.js random scramble (CDN + fallback).
+  const isCaseTrainer2x2 = event === "2x2x2" && mode !== "WCA";
+
+  /** Pick a random AlgCase from the filtered pool for the current mode. */
+  const pickRandomCase = useCallback((): AlgCase | null => {
+    const filteredPool =
+      selectedCaseIds.size > 0
+        ? modeCases.filter((c) => selectedCaseIds.has(c.id))
+        : modeCases;
+
+  const pool =
+    filteredPool.length > 0 ? filteredPool : modeCases;
+    if (pool.length === 0) return null;
+    return pool[Math.floor(Math.random() * pool.length)];
+  }, [modeCases, selectedCaseIds]);
+
   const generateOne = useCallback(async (): Promise<string> => {
+    if (isCaseTrainer2x2) {
+      const caseData = pickRandomCase();
+      if (caseData?.trainerBaseAlg) {
+        const baseAlg = caseData.trainerBaseAlg;
+        try {
+          const setup = await generateCaseSetup(baseAlg);
+          return setup;
+        } catch (error) {
+          console.error("[CaseTrainer] generateCaseSetup failed for baseAlg:", baseAlg, "error:", error);
+          throw error;
+        }
+      }
+      console.warn("[CaseTrainer] no caseData/trainerBaseAlg — falling through to cubing.js");
+    }
+
     try {
       const mod = await import(
         /* webpackIgnore: true */
@@ -352,7 +395,7 @@ export default function TimerPage() {
       console.warn("[scramble] CDN generation failed, using local fallback:", e);
       return genLocalScramble(event);
     }
-  }, [event]);
+  }, [event, isCaseTrainer2x2, pickRandomCase]);
 
   /** Push a brand-new scramble onto the history and point index at it. */
   const pushNewScramble = useCallback(async () => {
@@ -395,6 +438,25 @@ export default function TimerPage() {
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
+
+  // Regenerate scramble when the mode changes (e.g. WCA ↔ CLL) so that
+  // case trainer modes immediately show a case setup scramble and switching
+  // back to WCA produces a cubing.js random scramble.
+  useEffect(() => {
+    (async () => {
+      setScrambleLoading(true);
+      try {
+        const s = await generateOne();
+        setScramblesHistory([s]);
+        setScrambleIdx(0);
+      } catch (e) {
+        console.error("Scramble generation failed", e);
+      } finally {
+        setScrambleLoading(false);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode]);
 
   /**
    * Generate a fresh scramble, append it to the history, and focus it.
@@ -561,8 +623,8 @@ export default function TimerPage() {
 
   return (
     // Outer wrapper — locks the viewport (no vertical scroll) and centers
-    // the content column. bg-[#E5E5E5] is the calm grey canvas.
-    <div className="w-full h-screen overflow-hidden bg-[#E5E5E5] dark:bg-[#0A0B0D] flex justify-center font-[family-name:var(--font-geist-sans)] text-[#2C2C2C]">
+    // the content column. bg-[#F5F0E6] is the calm grey canvas.
+    <div className="w-full h-screen overflow-hidden bg-[#F5F0E6] flex justify-center font-[family-name:var(--font-geist-sans)] text-[#2C2C2C]">
       <div
         className="timer-page-root w-full h-full px-4 py-3 transition-all duration-200 sm:px-12 sm:py-4 md:px-[6vw] flex flex-col gap-2 max-w-[min(1400px,92vw)]"
       >
@@ -676,7 +738,7 @@ export default function TimerPage() {
           height="26"
           viewBox="0 0 48 48"
           fill="none"
-          className="-rotate-90 text-neutral-400 transition-all duration-300 ease-out group-hover:-translate-x-1.5 group-hover:text-neutral-800 dark:text-neutral-500 dark:group-hover:text-neutral-200"
+          className="-rotate-90 text-neutral-400 transition-all duration-300 ease-out group-hover:-translate-x-1.5 group-hover:text-neutral-800"
         >
           <path fill="currentColor" d="M17.5 3.5c1.37 0 2.627.512 3.542 1.458c.915.947 1.458 2.299 1.458 3.93c0 1.623-.536 3.252-1.41 4.485c-.87 1.227-2.13 2.127-3.59 2.127s-2.72-.9-3.59-2.127c-.874-1.233-1.41-2.862-1.41-4.484c0-1.632.543-2.984 1.459-3.931C14.873 4.012 16.13 3.5 17.5 3.5m-11 9c1.37 0 2.627.512 3.542 1.458c.915.947 1.458 2.299 1.458 3.93c0 1.623-.536 3.252-1.41 4.485C9.22 23.6 7.96 24.5 6.5 24.5s-2.72-.9-3.59-2.127C2.036 21.14 1.5 19.51 1.5 17.889c0-1.632.543-2.984 1.459-3.931C3.873 13.012 5.13 12.5 6.5 12.5m17.5 7c-7.124 0-13.026 6.065-14.884 13.67c-.824 3.374.433 6.993 3.533 8.708c2.463 1.364 6.149 2.622 11.35 2.622c5.202 0 8.888-1.258 11.352-2.622c3.099-1.715 4.356-5.334 3.532-8.707C37.026 25.565 31.123 19.5 24 19.5m17.5-7c-1.37 0-2.627.512-3.541 1.458c-.916.947-1.459 2.299-1.459 3.93c0 1.623.536 3.252 1.41 4.485c.87 1.227 2.13 2.127 3.59 2.127s2.72-.9 3.59-2.127c.874-1.233 1.41-2.862 1.41-4.484c0-1.632-.543-2.984-1.458-3.931c-.915-.946-2.172-1.458-3.542-1.458m-11-9c-1.37 0-2.627.512-3.541 1.458c-.916.947-1.459 2.299-1.459 3.93c0 1.623.536 3.252 1.41 4.485c.87 1.227 2.13 2.127 3.59 2.127s2.72-.9 3.59-2.127c.874-1.233 1.41-2.862 1.41-4.484c0-1.632-.543-2.984-1.458-3.931C33.127 4.012 31.87 3.5 30.5 3.5" />
         </svg>

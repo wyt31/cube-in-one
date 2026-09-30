@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
@@ -123,7 +123,7 @@ function ScramblePreview({ puzzle, scramble }: { puzzle: TimerEvent; scramble: s
     );
   }
   return (
-    <div className="h-40 w-full overflow-hidden rounded-2xl border border-black/[0.05] bg-[#FBFAF7]">
+    <div className="h-40 w-full overflow-hidden rounded-2xl border border-[#EAE2D5] bg-white/80">
       <twisty-player
         puzzle={puzzleId}
         alg={scramble}
@@ -293,7 +293,7 @@ function CopyButton({ text }: { text: string }) {
     <button
       type="button"
       onClick={handle}
-      className="flex flex-shrink-0 items-center gap-1.5 rounded-lg border border-[#E8E8E4] bg-white px-2.5 py-1 text-[0.6rem] font-medium text-neutral-500 transition-colors hover:border-neutral-800 hover:text-neutral-800"
+      className="flex flex-shrink-0 items-center gap-1.5 rounded-lg border border-[#EAE2D5] bg-white px-2.5 py-1 text-[0.6rem] font-medium text-neutral-500 transition-colors hover:border-neutral-800 hover:text-neutral-800"
     >
       {copied ? (
         <span className="text-green-600">Copied</span>
@@ -616,7 +616,7 @@ export default function HistoryModal({ open, solves, event, onClose, onPenaltyCh
         pointerEvents: enter ? "auto" : "none",
         ...backdropStyle,
       }}
-      className="bg-black/40"
+      className="bg-black/20"
     >
       <div
         role="dialog"
@@ -635,7 +635,7 @@ export default function HistoryModal({ open, solves, event, onClose, onPenaltyCh
         <div
           ref={contentRootRef}
           onMouseDown={stopBubble}
-          className="relative flex h-[80vh] min-h-[600px] w-[min(1100px,92vw)] min-h-0 flex-col overflow-hidden rounded-3xl border border-black/[0.06] bg-white shadow-[0_30px_80px_-30px_rgba(0,0,0,0.35)]"
+          className="relative flex h-[80vh] min-h-[600px] w-[min(1100px,92vw)] min-h-0 flex-col overflow-hidden rounded-3xl border border-[#EAE2D5] bg-[#FDFBF5] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.35)]"
         >
           {/* ---------- Header ---------- */}
           <div className="flex flex-shrink-0 items-center justify-between border-b border-black/[0.05] px-6 py-4 sm:px-8">
@@ -650,7 +650,7 @@ export default function HistoryModal({ open, solves, event, onClose, onPenaltyCh
             <div className="flex items-center gap-3">
               {/* ---------- Time filter segmented control ---------- */}
               {ordered.length > 0 && selectedId === null && (
-                <div className="flex items-center gap-1 rounded-full border border-black/[0.06] bg-[#F6F5F1] p-0.5">
+                <div className="flex items-center gap-1 rounded-full border border-[#EAE2D5] bg-[#F6F5F1] p-0.5">
                   {([
                     { key: "all", label: "All" },
                     { key: "today", label: "Today" },
@@ -701,7 +701,7 @@ export default function HistoryModal({ open, solves, event, onClose, onPenaltyCh
                     value={customStart}
                     onChange={(e) => setCustomStart(e.target.value)}
                     aria-label="Start date"
-                    className="h-8 rounded-full border border-black/[0.08] bg-white px-3 text-[0.65rem] text-neutral-800 focus:outline-none focus:border-neutral-800/40"
+                    className="h-8 rounded-full border border-[#EAE2D5] bg-white px-3 text-[0.65rem] text-neutral-800 focus:outline-none focus:border-neutral-800/40"
                   />
                   <span className="text-[0.6rem] text-neutral-400">→</span>
                   <input
@@ -709,7 +709,7 @@ export default function HistoryModal({ open, solves, event, onClose, onPenaltyCh
                     value={customEnd}
                     onChange={(e) => setCustomEnd(e.target.value)}
                     aria-label="End date"
-                    className="h-8 rounded-full border border-black/[0.08] bg-white px-3 text-[0.65rem] text-neutral-800 focus:outline-none focus:border-neutral-800/40"
+                    className="h-8 rounded-full border border-[#EAE2D5] bg-white px-3 text-[0.65rem] text-neutral-800 focus:outline-none focus:border-neutral-800/40"
                   />
                 </div>
               )}
@@ -723,7 +723,7 @@ export default function HistoryModal({ open, solves, event, onClose, onPenaltyCh
                   className={`flex h-8 items-center gap-1.5 rounded-full border px-3 text-[0.62rem] font-semibold uppercase tracking-[0.18em] transition-all ${
                     selectMode
                       ? "border-neutral-800 bg-neutral-800 text-white shadow-sm"
-                      : "border-black/[0.08] bg-white text-neutral-500 hover:border-neutral-800/50 hover:text-neutral-800"
+                      : "border-[#EAE2D5] bg-white text-neutral-500 hover:border-neutral-800/50 hover:text-neutral-800"
                   }`}
                 >
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -750,7 +750,7 @@ export default function HistoryModal({ open, solves, event, onClose, onPenaltyCh
           {/* ---------- Multi-select toolbar (visible only in Select Mode) ---------- */}
           {selectMode && filteredOrdered.length > 0 && (
             <div
-              className="flex flex-shrink-0 flex-wrap items-center justify-between gap-3 border-b border-black/[0.04] bg-[#FBFAF7]/80 px-6 py-3 sm:px-8"
+              className="flex flex-shrink-0 flex-wrap items-center justify-between gap-3 border-b border-black/[0.04] bg-white/80/80 px-6 py-3 sm:px-8"
               style={{ backdropFilter: "blur(6px)" }}
             >
               {/* Left: count + All / None */}
@@ -770,7 +770,7 @@ export default function HistoryModal({ open, solves, event, onClose, onPenaltyCh
                     type="button"
                     onClick={handleSelectAll}
                     disabled={selectedIds.size === filteredOrdered.length}
-                    className="rounded-full border border-black/[0.06] bg-white px-2.5 py-1 text-[0.6rem] font-medium text-neutral-500 transition-colors hover:border-neutral-800/40 hover:text-neutral-800 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="rounded-full border border-[#EAE2D5] bg-white px-2.5 py-1 text-[0.6rem] font-medium text-neutral-500 transition-colors hover:border-neutral-800/40 hover:text-neutral-800 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     All
                   </button>
@@ -778,7 +778,7 @@ export default function HistoryModal({ open, solves, event, onClose, onPenaltyCh
                     type="button"
                     onClick={handleDeselectAll}
                     disabled={selectedIds.size === 0}
-                    className="rounded-full border border-black/[0.06] bg-white px-2.5 py-1 text-[0.6rem] font-medium text-neutral-500 transition-colors hover:border-neutral-800/40 hover:text-neutral-800 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="rounded-full border border-[#EAE2D5] bg-white px-2.5 py-1 text-[0.6rem] font-medium text-neutral-500 transition-colors hover:border-neutral-800/40 hover:text-neutral-800 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     None
                   </button>
@@ -791,7 +791,7 @@ export default function HistoryModal({ open, solves, event, onClose, onPenaltyCh
                   type="button"
                   onClick={handleCopySelected}
                   disabled={selectedIds.size === 0}
-                  className="flex h-8 items-center gap-1.5 rounded-full border border-black/[0.08] bg-white px-3 text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-neutral-500 transition-colors hover:border-neutral-800/50 hover:text-neutral-800 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex h-8 items-center gap-1.5 rounded-full border border-[#EAE2D5] bg-white px-3 text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-neutral-500 transition-colors hover:border-neutral-800/50 hover:text-neutral-800 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {bulkCopyTicked ? (
                     <>
@@ -817,7 +817,7 @@ export default function HistoryModal({ open, solves, event, onClose, onPenaltyCh
                   className={`flex h-8 items-center gap-1.5 rounded-full border px-3 text-[0.62rem] font-semibold uppercase tracking-[0.18em] transition-all disabled:cursor-not-allowed disabled:opacity-50 ${
                     bulkDeleteConfirming
                       ? "border-[#C04848] bg-[#C04848] text-white shadow-sm"
-                      : "border-black/[0.08] bg-white text-neutral-400 hover:border-[#C04848] hover:text-[#C04848]"
+                      : "border-[#EAE2D5] bg-white text-neutral-400 hover:border-[#C04848] hover:text-[#C04848]"
                   }`}
                 >
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -865,7 +865,7 @@ export default function HistoryModal({ open, solves, event, onClose, onPenaltyCh
                 <button
                   type="button"
                   onClick={() => setTimeFilter("all")}
-                  className="mt-1 rounded-full border border-black/[0.08] bg-white px-3 py-1 text-[0.58rem] font-medium uppercase tracking-[0.15em] text-neutral-500 transition-colors hover:border-neutral-800/40 hover:text-neutral-800"
+                  className="mt-1 rounded-full border border-[#EAE2D5] bg-white px-3 py-1 text-[0.58rem] font-medium uppercase tracking-[0.15em] text-neutral-500 transition-colors hover:border-neutral-800/40 hover:text-neutral-800"
                 >
                   Show All
                 </button>
@@ -897,7 +897,7 @@ export default function HistoryModal({ open, solves, event, onClose, onPenaltyCh
                             ? "border-neutral-800/40 bg-[#FAFAF3] shadow-[0_10px_28px_-14px_rgba(0,0,0,0.28)] ring-2 ring-[#2C2C2C]/10"
                             : detailSelected
                             ? "border-neutral-800/30 bg-[#FAFAF6] shadow-[0_8px_24px_-14px_rgba(0,0,0,0.25)]"
-                            : "border-black/[0.05] bg-[#FBFAF7] hover:border-black/[0.1] hover:bg-white hover:shadow-[0_8px_20px_-16px_rgba(0,0,0,0.25)]"
+                            : "border-[#EAE2D5] bg-white/80 hover:border-black/[0.1] hover:bg-white hover:shadow-[0_8px_20px_-16px_rgba(0,0,0,0.25)]"
                         }`}
                       >
                         {/* Row 1: index (top-left) OR checkbox (when select mode) + note icon (top-right) */}
@@ -914,7 +914,7 @@ export default function HistoryModal({ open, solves, event, onClose, onPenaltyCh
                               className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-md border transition-all ${
                                 inBasket
                                   ? "border-neutral-800 bg-neutral-800 text-white shadow-sm"
-                                  : "border-black/[0.15] bg-white text-transparent group-hover:border-neutral-800/40"
+                                  : "border-[#EAE2D5] bg-white text-transparent group-hover:border-neutral-800/40"
                               }`}
                             >
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -976,7 +976,7 @@ export default function HistoryModal({ open, solves, event, onClose, onPenaltyCh
                 className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] px-4 pb-2 sm:px-6 sm:pb-3"
               >
                 <div
-                  className="pointer-events-auto mx-auto flex w-full max-w-[960px] flex-wrap items-center justify-between gap-3 rounded-2xl border border-black/[0.06] bg-white/95 px-4 py-3 shadow-[0_18px_50px_-24px_rgba(0,0,0,0.35)] sm:px-6"
+                  className="pointer-events-auto mx-auto flex w-full max-w-[960px] flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#EAE2D5] bg-white/95 px-4 py-3 shadow-[0_18px_50px_-24px_rgba(0,0,0,0.35)] sm:px-6"
                   style={{
                     backdropFilter: "blur(8px)",
                     animation: "statsBarSlideUp 180ms cubic-bezier(0.16, 1, 0.3, 1) both",
@@ -1059,7 +1059,7 @@ export default function HistoryModal({ open, solves, event, onClose, onPenaltyCh
             {selectedSolve && (
               <div
                 aria-label="Solve details"
-                className="absolute inset-0 z-10 flex min-h-0 flex-col border-l-0 border-t border-black/[0.05] bg-white"
+                className="absolute inset-0 z-10 flex min-h-0 flex-col border-l-0 border-t border-black/[0.05] bg-[#FDFBF5]"
                 style={{ animation: "tabEnter 180ms cubic-bezier(0.16, 1, 0.3, 1) both" }}
               >
                 {/* Detail header */}
@@ -1100,7 +1100,7 @@ export default function HistoryModal({ open, solves, event, onClose, onPenaltyCh
                       className={`rounded-full border px-3.5 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.15em] transition-all ${
                         selectedSolve.penalty === 2
                           ? "border-neutral-800 bg-neutral-800 text-white"
-                          : "border-black/[0.1] bg-white text-neutral-500 hover:border-neutral-800 hover:text-neutral-800"
+                          : "border-[#EAE2D5] bg-white text-neutral-500 hover:border-neutral-800 hover:text-neutral-800"
                       }`}
                     >
                       +2
@@ -1111,7 +1111,7 @@ export default function HistoryModal({ open, solves, event, onClose, onPenaltyCh
                       className={`rounded-full border px-3.5 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.15em] transition-all ${
                         selectedSolve.penalty === -1
                           ? "border-[#C04848] bg-[#C04848] text-white"
-                          : "border-black/[0.1] bg-white text-neutral-500 hover:border-[#C04848] hover:text-[#C04848]"
+                          : "border-[#EAE2D5] bg-white text-neutral-500 hover:border-[#C04848] hover:text-[#C04848]"
                       }`}
                     >
                       DNF
@@ -1123,7 +1123,7 @@ export default function HistoryModal({ open, solves, event, onClose, onPenaltyCh
                       className={`ml-auto rounded-full border px-3.5 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.15em] transition-all ${
                         deleteConfirming
                           ? "border-[#C04848] bg-[#C04848] text-white"
-                          : "border-black/[0.1] bg-white text-neutral-400 hover:border-[#C04848] hover:text-[#C04848]"
+                          : "border-[#EAE2D5] bg-white text-neutral-400 hover:border-[#C04848] hover:text-[#C04848]"
                       }`}
                     >
                       {deleteConfirming ? "Confirm delete?" : "Delete"}
@@ -1146,7 +1146,7 @@ export default function HistoryModal({ open, solves, event, onClose, onPenaltyCh
                     <h3 className="text-[0.62rem] font-semibold uppercase tracking-[0.25em] text-neutral-400">
                       Scramble
                     </h3>
-                    <div className="rounded-2xl border border-black/[0.05] bg-[#FBFAF7] p-4 font-[family-name:var(--font-geist-mono)] text-[0.78rem] leading-relaxed tracking-tight text-neutral-800 break-words whitespace-normal">
+                    <div className="rounded-2xl border border-[#EAE2D5] bg-white/80 p-4 font-[family-name:var(--font-geist-mono)] text-[0.78rem] leading-relaxed tracking-tight text-neutral-800 break-words whitespace-normal">
                       {selectedSolve.scramble || "—"}
                     </div>
                   </section>
@@ -1168,7 +1168,7 @@ export default function HistoryModal({ open, solves, event, onClose, onPenaltyCh
                       placeholder="What went well? What would you do differently next time…"
                       spellCheck={false}
                       rows={5}
-                      className="w-full resize-y rounded-2xl border border-black/[0.05] bg-[#FBFAF7] px-4 py-3 text-[0.75rem] leading-relaxed text-neutral-800 outline-none transition-colors placeholder:text-[#C4BCB0] focus:border-black/20 focus:bg-white"
+                      className="w-full resize-y rounded-2xl border border-[#EAE2D5] bg-white/80 px-4 py-3 text-[0.75rem] leading-relaxed text-neutral-800 outline-none transition-colors placeholder:text-[#C4BCB0] focus:border-black/20 focus:bg-white"
                     />
                   </section>
                 </div>

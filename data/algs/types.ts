@@ -22,7 +22,7 @@ export interface TwoByTwoAlg {
   category: string;       // e.g. "CLL", "EG-1"
   subCategory?: string;   // e.g. "Sune"
   case?: string;
-
   //Candidate algs
-  algs: AlgItem[];     
+  algs: AlgItem[];
+  trainerBaseAlg: string;
 }

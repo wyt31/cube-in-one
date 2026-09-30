@@ -1,10 +1,9 @@
-"use client";
+﻿"use client";
 
 import { useMemo, useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import MenuIcon from "@/components/MenuIcon";
-import ThemeToggle from "@/components/ThemeToggle";
 import AlgCardCube from "@/components/AlgCardCube";
 import { algData, type AlgCase } from "@/data/algs";
 
@@ -44,7 +43,7 @@ function SearchIcon() {
       height="18"
       viewBox="0 0 18 18"
       fill="none"
-      className="shrink-0 text-[#897d55]"
+      className="shrink-0 text-[#F5F0E6]"
       aria-hidden
     >
       <circle cx="8" cy="8" r="5.5" stroke="currentColor" strokeWidth="1.3" />
@@ -154,12 +153,11 @@ export default function SearchHome() {
   };
 
   return (
-    <div className="relative flex min-h-screen flex-col bg-[#F5F0E6] font-[family-name:var(--font-geist-sans)] text-[#333] dark:bg-[#0A0B0D] dark:text-neutral-200">
+    <div className="relative flex min-h-screen flex-col bg-[#F5F0E6] font-[family-name:var(--font-geist-sans)] text-[#434343]">
       <header className="flex items-center justify-between px-6 py-5 sm:px-10">
         <span className="hidden" aria-hidden>
           <MenuIcon />
         </span>
-        <ThemeToggle />
       </header>
 
       <main
@@ -167,12 +165,12 @@ export default function SearchHome() {
         className="search-home-main flex flex-1 flex-col items-center justify-center px-6 pb-24 pt-8 transition-all duration-200 sm:px-10"
       >
         <div className="w-full max-w-xl text-center">
-          <h1 className="text-4xl font-light uppercase tracking-[0.35em] sm:text-5xl dark:text-neutral-100">
-            Cube in One
+          <h1 className="text-4xl font-light uppercase tracking-[0.35em] sm:text-5xl">
+            Cube In One
           </h1>
 
           <div ref={containerRef} className="relative mt-12">
-            <div className="flex items-center gap-3 rounded-full border border-[#D7C4BB] bg-[#D7C4BB] px-6 py-4 shadow-[0_2px_16px_rgba(51,51,51,0.06)] backdrop-blur-sm transition-shadow focus-within:border-[#c5c56a] focus-within:shadow-[0_4px_24px_rgba(51,51,51,0.08)] sm:px-7 sm:py-4.5 dark:border-[#c5c56a]/60 dark:bg-[#c5c56a]/20 dark:shadow-[0_2px_16px_rgba(0,0,0,0.3)] dark:focus-within:border-[#c5c56a]/80">
+            <div className="flex items-center gap-3 rounded-full border border-[#5B7B4E] bg-[#5B7B4E] px-6 py-4 shadow-[0_2px_16px_rgba(51,51,51,0.06)] backdrop-blur-sm transition-shadow focus-within:border-[#c5c56a] focus-within:shadow-[0_4px_24px_rgba(51,51,51,0.08)] sm:px-7 sm:py-4.5">
               <SearchIcon />
               <input
                 ref={inputRef}
@@ -185,7 +183,7 @@ export default function SearchHome() {
                 onFocus={() => setIsDropdownOpen(true)}
                 onKeyDown={handleKeyDown}
                 placeholder="Search algorithms, cases (e.g. EG-1, CLL, PLL, OLL)..."
-                className="min-w-0 flex-1 bg-transparent text-base text-[#3E432A] placeholder:text-[#7F8565] focus:outline-none sm:text-[0.95rem] dark:text-neutral-100 dark:placeholder:text-neutral-500"
+                className="min-w-0 flex-1 bg-transparent text-base text-[#F5F0E6] placeholder:text-[#F5F0E6] focus:outline-none sm:text-[0.95rem]"
               />
               {query && (
                 <button
@@ -195,7 +193,7 @@ export default function SearchHome() {
                     inputRef.current?.focus();
                   }}
                   aria-label="Clear search"
-                  className="shrink-0 text-[#BBB] transition-colors hover:text-[#666] dark:text-neutral-500 dark:hover:text-neutral-300"
+                  className="shrink-0 text-[#BBB] transition-colors hover:text-[#666]"
                 >
                   <ClearIcon />
                 </button>
@@ -204,7 +202,7 @@ export default function SearchHome() {
 
             {/* Spotlight-style dropdown */}
             {showDropdown && (
-              <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-50 overflow-hidden rounded-2xl border border-[#E8E2D9] bg-white shadow-[0_8px_32px_rgba(51,51,51,0.10)] dark:border-white/5 dark:bg-[#1A1C1E]">
+              <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-50 overflow-hidden rounded-2xl border border-[#E8E2D9] bg-white shadow-[0_8px_32px_rgba(51,51,51,0.10)]">
                 {results.length > 0 ? (
                   <ul className="py-1.5">
                     {results.map((alg, i) => (
@@ -215,12 +213,12 @@ export default function SearchHome() {
                           onClick={() => navigateToAlg(alg)}
                           className={`flex w-full items-center gap-3 px-4 py-3 text-left transition-colors ${
                             i === highlightedIndex
-                              ? "bg-[#F5F5F2] dark:bg-white/5"
+                              ? "bg-[#F5F5F2]"
                               : ""
                           }`}
                         >
                           {/* Cube thumbnail */}
-                          <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg border border-[#F0F0EE] bg-[#FBFBFA] shadow-[0_1px_3px_rgba(0,0,0,0.04)] dark:border-white/5 dark:bg-white/5">
+                          <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg border border-[#F0F0EE] bg-[#FBFBFA] shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
                             <AlgCardCube
                               alg={alg}
                               className="h-full w-full"
@@ -229,7 +227,7 @@ export default function SearchHome() {
 
                           {/* Case name + category */}
                           <div className="min-w-0 flex-1">
-                            <p className="truncate text-sm font-semibold tracking-wide text-neutral-800 dark:text-neutral-200">
+                            <p className="truncate text-sm font-semibold tracking-wide text-neutral-800">
                               {alg.name}
                             </p>
                             <p className="truncate text-xs tracking-wide text-neutral-400">
@@ -268,24 +266,24 @@ export default function SearchHome() {
             )}
           </div>
 
-          {/* Quick entry — 4 square cards (1:1) */}
-          <div className="mt-10 grid w-full max-w-3xl grid-cols-4 gap-2.5 sm:gap-3">
+          {/* Quick entry — 3 rectangle cards */}
+          <div className="mt-10 grid w-full max-w-3xl grid-cols-3 gap-3 sm:gap-4">
             {/* Timer */}
             <Link
               href="/timer"
-              className="group flex aspect-square flex-col items-center justify-center gap-3 rounded-2xl border border-black/[0.04] bg-black/[0.015] shadow-[0_1px_4px_rgba(0,0,0,0.02)] transition-all duration-200 hover:-translate-y-0.5 hover:border-black/10 hover:bg-white hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] dark:border-white/[0.06] dark:bg-white/[0.02] dark:hover:border-white/15 dark:hover:bg-white/[0.05] dark:hover:shadow-[0_4px_16px_rgba(0,0,0,0.3)]"
+              className="group flex items-center gap-5 px-6 py-5 rounded-2xl border border-[#D3CCB8] bg-[#E6DFC8]/70 shadow-[0_8px_24px_rgba(180,160,140,0.08)] transition-all duration-200 hover:-translate-y-0.5 hover:border-black/10 hover:bg-white hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)]"
             >
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="text-[#555] transition-colors group-hover:text-[#333] dark:text-neutral-400 dark:group-hover:text-neutral-200" aria-hidden>
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-[#2D5A3F] transition-colors group-hover:text-[#2D5A3F]" aria-hidden>
                 <circle cx="12" cy="13" r="8" />
                 <path d="M12 9v4l2.5 2.5" />
                 <path d="M9 2h6" />
                 <path d="M12 5V2" />
               </svg>
-              <div className="text-center">
-                <h3 className="text-sm font-bold uppercase tracking-[0.12em] text-[#333] dark:text-neutral-200">
+              <div className="text-left">
+                <h3 className="text-sm font-bold uppercase tracking-[0.12em] text-[#2D5A3F]">
                   Timer
                 </h3>
-                <p className="mt-1 text-[0.6rem] text-[#BBB] dark:text-neutral-500">
+                <p className="mt-1 text-[0.6rem] text-[#2D5A3F]">
                   Ready? GO!
                 </p>
               </div>
@@ -294,18 +292,18 @@ export default function SearchHome() {
             {/* Algs */}
             <Link
               href="/algs"
-              className="group flex aspect-square flex-col items-center justify-center gap-3 rounded-2xl border border-black/[0.04] bg-black/[0.015] shadow-[0_1px_4px_rgba(0,0,0,0.02)] transition-all duration-200 hover:-translate-y-0.5 hover:border-black/10 hover:bg-white hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] dark:border-white/[0.06] dark:bg-white/[0.02] dark:hover:border-white/15 dark:hover:bg-white/[0.05] dark:hover:shadow-[0_4px_16px_rgba(0,0,0,0.3)]"
+              className="group flex items-center gap-5 px-6 py-5 rounded-2xl border border-[#D3CCB8] bg-[#E6DFC8]/70 shadow-[0_8px_24px_rgba(180,160,140,0.08)] transition-all duration-200 hover:-translate-y-0.5 hover:border-black/10 hover:bg-white hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)]"
             >
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="text-[#555] transition-colors group-hover:text-[#333] dark:text-neutral-400 dark:group-hover:text-neutral-200" aria-hidden>
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-[#2D5A3F] transition-colors group-hover:text-[#2D5A3F]" aria-hidden>
                 <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
                 <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
               </svg>
-              <div className="text-center">
-                <h3 className="text-sm font-bold uppercase tracking-[0.12em] text-[#333] dark:text-neutral-200">
+              <div className="text-left">
+                <h3 className="text-sm font-bold uppercase tracking-[0.12em] text-[#2D5A3F]">
                   Algs
                 </h3>
-                <p className="mt-1 text-[0.6rem] text-[#BBB] dark:text-neutral-500">
-                  EG, CFOP, and more...
+                <p className="mt-1 text-[0.6rem] text-[#2D5A3F]">
+                  EG, CFOP, etc.
                 </p>
               </div>
             </Link>
@@ -313,39 +311,23 @@ export default function SearchHome() {
             {/* About */}
             <Link
               href="/about"
-              className="group flex aspect-square flex-col items-center justify-center gap-3 rounded-2xl border border-black/[0.04] bg-black/[0.015] shadow-[0_1px_4px_rgba(0,0,0,0.02)] transition-all duration-200 hover:-translate-y-0.5 hover:border-black/10 hover:bg-white hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] dark:border-white/[0.06] dark:bg-white/[0.02] dark:hover:border-white/15 dark:hover:bg-white/[0.05] dark:hover:shadow-[0_4px_16px_rgba(0,0,0,0.3)]"
+              className="group flex items-center gap-5 px-6 py-5 rounded-2xl border border-[#D3CCB8] bg-[#E6DFC8]/70 shadow-[0_8px_24px_rgba(180,160,140,0.08)] transition-all duration-200 hover:-translate-y-0.5 hover:border-black/10 hover:bg-white hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)]"
             >
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="text-[#555] transition-colors group-hover:text-[#333] dark:text-neutral-400 dark:group-hover:text-neutral-200" aria-hidden>
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-[#2D5A3F] transition-colors group-hover:text-[#2D5A3F]" aria-hidden>
                 <circle cx="12" cy="12" r="9" />
                 <path d="M12 16v-4" />
                 <path d="M12 8h.01" />
               </svg>
-              <div className="text-center">
-                <h3 className="text-sm font-bold uppercase tracking-[0.12em] text-[#333] dark:text-neutral-200">
+              <div className="text-left">
+                <h3 className="text-sm font-bold uppercase tracking-[0.12em] text-[#2D5A3F]">
                   About
                 </h3>
-                <p className="mt-1 text-[0.6rem] text-[#BBB] dark:text-neutral-500">
+                <p className="mt-1 text-[0.6rem] text-[#2D5A3F]">
                   Who, what & why
                 </p>
               </div>
             </Link>
 
-            {/* Tools — faded / coming soon */}
-            <div
-              className="group flex aspect-square cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-black/10 opacity-40 transition-all duration-300 hover:-translate-y-0.5 hover:opacity-100 hover:border-black/20 hover:bg-white hover:shadow-[0_4px_16px_rgba(0,0,0,0.04)] dark:border-white/10 dark:hover:border-white/20 dark:hover:bg-white/[0.05]"
-            >
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="text-[#999] transition-colors group-hover:text-[#666] dark:text-neutral-500 dark:group-hover:text-neutral-400" aria-hidden>
-                <path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-2.5 2.5-2.5z" />
-              </svg>
-              <div className="text-center">
-                <h3 className="text-sm font-bold uppercase tracking-[0.12em] text-[#999] transition-colors group-hover:text-[#666] dark:text-neutral-500 dark:group-hover:text-neutral-400">
-                  Tools
-                </h3>
-                <p className="mt-1 text-[0.6rem] text-[#CCC] transition-colors group-hover:text-[#AAA] dark:text-neutral-600 dark:group-hover:text-neutral-500">
-                  Coming soon... but when? Idk lol
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </main>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
@@ -12,7 +12,6 @@ import {
 } from "@/data/algs";
 import AlgCardCube from "@/components/AlgCardCube";
 import AlgDetailModal from "@/components/AlgDetailModal";
-import ThemeToggle from "@/components/ThemeToggle";
 
 function categoryNames(cube: CubeType): string[] {
   return CATEGORIES[cube].map((c) => c.name);
@@ -132,34 +131,42 @@ export default function AlgsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FBFBFA] font-[family-name:var(--font-geist-sans)] text-neutral-800 dark:bg-[#0A0B0D] dark:text-neutral-200">
+    <div className="min-h-screen bg-[#F5F0E6] font-[family-name:var(--font-geist-sans)] text-neutral-800">
       {/* Header */}
       <header className="flex items-center justify-between px-6 pb-10 pt-14 sm:px-12">
         <div>
-        <Link
+<Link
           href="/"
-          className="text-[0.65rem] font-medium uppercase tracking-[0.3em] text-neutral-400 transition-colors hover:text-neutral-800 dark:text-neutral-500 dark:hover:text-neutral-200"
+          className="group text-neutral-400 transition-all duration-300 ease-out hover:text-neutral-800"
+          aria-label="Back to home"
         >
-          &lt; Cube in One
+          <svg
+            width="26"
+            height="26"
+            viewBox="0 0 48 48"
+            fill="none"
+            className="-rotate-90 transition-all duration-300 ease-out group-hover:-translate-x-1.5 group-hover:text-neutral-800"
+          >
+            <path fill="currentColor" d="M17.5 3.5c1.37 0 2.627.512 3.542 1.458c.915.947 1.458 2.299 1.458 3.93c0 1.623-.536 3.252-1.41 4.485c-.87 1.227-2.13 2.127-3.59 2.127s-2.72-.9-3.59-2.127c-.874-1.233-1.41-2.862-1.41-4.484c0-1.632.543-2.984 1.459-3.931C14.873 4.012 16.13 3.5 17.5 3.5m-11 9c1.37 0 2.627.512 3.542 1.458c.915.947 1.458 2.299 1.458 3.93c0 1.623-.536 3.252-1.41 4.485C9.22 23.6 7.96 24.5 6.5 24.5s-2.72-.9-3.59-2.127C2.036 21.14 1.5 19.51 1.5 17.889c0-1.632.543-2.984 1.459-3.931C3.873 13.012 5.13 12.5 6.5 12.5m17.5 7c-7.124 0-13.026 6.065-14.884 13.67c-.824 3.374.433 6.993 3.533 8.708c2.463 1.364 6.149 2.622 11.35 2.622c5.202 0 8.888-1.258 11.352-2.622c3.099-1.715 4.356-5.334 3.532-8.707C37.026 25.565 31.123 19.5 24 19.5m17.5-7c-1.37 0-2.627.512-3.541 1.458c-.916.947-1.459 2.299-1.459 3.93c0 1.623.536 3.252 1.41 4.485c.87 1.227 2.13 2.127 3.59 2.127s2.72-.9 3.59-2.127c.874-1.233 1.41-2.862 1.41-4.484c0-1.632-.543-2.984-1.458-3.931c-.915-.946-2.172-1.458-3.542-1.458m-11-9c-1.37 0-2.627.512-3.541 1.458c-.916.947-1.459 2.299-1.459 3.93c0 1.623.536 3.252 1.41 4.485c.87 1.227 2.13 2.127 3.59 2.127s2.72-.9 3.59-2.127c.874-1.233 1.41-2.862 1.41-4.484c0-1.632-.543-2.984-1.458-3.931C33.127 4.012 31.87 3.5 30.5 3.5" />
+          </svg>
         </Link>
         <h1 className="mt-10 text-3xl font-light uppercase tracking-[0.15em] sm:text-4xl">
           Algorithm Sets
         </h1>
         </div>
-        <ThemeToggle />
       </header>
 
       <main className="px-6 pb-20 sm:px-12">
         {/* Tier 1: Cube Type */}
-        <div className="flex gap-4 border-b border-[#E8E8E4] pb-4 dark:border-white/8">
+        <div className="flex gap-4 border-b border-[#E8E8E4] pb-4">
           {CUBES.map((cube) => (
             <button
               key={cube}
               onClick={() => handleCubeChange(cube)}
               className={`text-base tracking-[0.15em] transition-all ${
                 selectedCube === cube
-                  ? "font-semibold text-neutral-800 dark:text-neutral-200"
-                  : "text-neutral-400 hover:text-neutral-500 dark:text-neutral-500 dark:hover:text-neutral-400"
+                  ? "font-semibold text-neutral-800"
+                  : "text-neutral-400 hover:text-neutral-500"
               }`}
             >
               {cube}
@@ -175,8 +182,8 @@ export default function AlgsPage() {
               onClick={() => handleCategoryChange(cat)}
               className={`rounded-full px-5 py-2 text-xs font-medium tracking-[0.1em] transition-all ${
                 selectedCategory === cat
-                  ? "bg-neutral-800 text-[#fbfbf9] shadow-[0_2px_8px_rgba(0,0,0,0.08)] dark:bg-neutral-200 dark:text-neutral-900 dark:shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
-                  : "text-neutral-400 hover:text-neutral-700 hover:bg-black/[0.03] dark:text-neutral-500 dark:hover:text-neutral-300 dark:hover:bg-white/[0.04]"
+                  ? "bg-neutral-800 text-[#fbfbf9] shadow-[0_2px_8px_rgba(0,0,0,0.08)]"
+                  : "text-neutral-400 hover:text-neutral-700 hover:bg-black/[0.03]"
               }`}
             >
               {cat}
@@ -193,8 +200,8 @@ export default function AlgsPage() {
                 onClick={() => handleGroupChange(group)}
                 className={`text-[0.7rem] font-medium uppercase tracking-[0.15em] transition-colors ${
                   selectedGroup === group
-                    ? "font-semibold text-neutral-800 dark:text-neutral-200"
-                    : "text-neutral-400 hover:text-neutral-600 dark:text-neutral-500 dark:hover:text-neutral-400"
+                    ? "font-semibold text-neutral-800"
+                    : "text-neutral-400 hover:text-neutral-600"
                 }`}
               >
                 {group}
@@ -212,8 +219,8 @@ export default function AlgsPage() {
                 onClick={() => setSelectedSubGroup(sg)}
                 className={`text-[0.7rem] font-medium uppercase tracking-[0.15em] transition-colors ${
                   selectedSubGroup === sg
-                    ? "font-semibold text-neutral-800 dark:text-neutral-200"
-                    : "text-neutral-400 hover:text-neutral-600 dark:text-neutral-500 dark:hover:text-neutral-400"
+                    ? "font-semibold text-neutral-800"
+                    : "text-neutral-400 hover:text-neutral-600"
                 }`}
               >
                 {sg}
@@ -229,10 +236,10 @@ export default function AlgsPage() {
               <section key={section.group}>
                 {/* Group header (subCategory) */}
                 <div className="mb-5 flex items-baseline gap-3">
-                  <h2 className="text-base font-semibold uppercase tracking-[0.25em] text-neutral-800 dark:text-neutral-200">
+                  <h2 className="text-base font-semibold uppercase tracking-[0.25em] text-neutral-800">
                     {section.group}
                   </h2>
-                  <span className="text-xs tracking-[0.15em] text-neutral-400 dark:text-neutral-500">
+                  <span className="text-xs tracking-[0.15em] text-neutral-400">
                     {section.items.length} {section.items.length === 1 ? "case" : "cases"}
                   </span>
                 </div>
@@ -242,7 +249,7 @@ export default function AlgsPage() {
                     <div
                       key={alg.id}
                       onClick={() => setSelectedAlg(alg)}
-                      className="group relative flex min-h-[130px] h-auto cursor-pointer items-center gap-5 rounded-2xl border border-[#E8E8E4] bg-white p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#D0D0CA] hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] dark:border-white/8 dark:bg-zinc-900 dark:shadow-[0_2px_8px_rgba(0,0,0,0.3)] dark:hover:border-white/15 dark:hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)]"
+                      className="group relative flex min-h-[130px] h-auto cursor-pointer items-center gap-5 rounded-2xl border border-[#EAE2D5] bg-white/80 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#D8CBB0] hover:bg-white hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
                     >
                       {/* Inkan-style badge: TCLL+ / TCLL- (only for TCLL set) */}
                       {alg.set === "TCLL" && (
@@ -258,10 +265,10 @@ export default function AlgsPage() {
                       )}
                       {/* Left: cube + case name */}
                       <div className="flex w-24 flex-shrink-0 flex-col items-center gap-2.5">
-                        <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-xl border border-[#F0F0EE] bg-[#FBFBFA] p-1.5 shadow-[0_1px_4px_rgba(0,0,0,0.03)] dark:border-white/5 dark:bg-white/5 dark:shadow-[0_1px_4px_rgba(0,0,0,0.3)]">
+                        <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-xl border border-[#F0F0EE] bg-[#F5F0E6] p-1.5 shadow-[0_1px_4px_rgba(0,0,0,0.03)]">
                           <AlgCardCube alg={alg} className="h-full w-full" />
                         </div>
-                        <h3 className="text-center text-sm font-semibold leading-tight tracking-wide text-neutral-800 dark:text-neutral-200">
+                        <h3 className="text-center text-sm font-semibold leading-tight tracking-wide text-neutral-800">
                           {alg.name}
                         </h3>
                       </div>
@@ -270,7 +277,7 @@ export default function AlgsPage() {
                           Elastic height — long formulas gracefully expand the
                           card, never overlapping the case name on the left. */}
                       <div className="flex min-w-0 flex-1 items-center">
-                        <code className="block min-w-0 flex-1 font-[family-name:var(--font-geist-mono)] text-[0.8rem] font-semibold leading-relaxed tracking-wide text-neutral-800 dark:text-neutral-200">
+                        <code className="block min-w-0 flex-1 font-[family-name:var(--font-geist-mono)] text-[0.8rem] font-semibold leading-relaxed tracking-wide text-neutral-800">
                           {alg.recommended}
                         </code>
                       </div>
@@ -282,7 +289,7 @@ export default function AlgsPage() {
           </div>
         ) : (
           <div className="mt-10 py-20 text-center">
-            <p className="text-sm tracking-[0.2em] text-neutral-400 dark:text-neutral-500">
+            <p className="text-sm tracking-[0.2em] text-neutral-400">
               NO ALGORITHMS FOUND IN THIS CATEGORY.
             </p>
           </div>

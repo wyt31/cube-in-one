@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { formatTime, finalTime, type Solve } from "@/lib/timer-types";
@@ -91,7 +91,7 @@ export default function AverageDetailModal({ open, solves, type, kind, onClose }
     display: open ? "flex" : "none",
     alignItems: "center",
     justifyContent: "center",
-    background: "rgba(0,0,0,0.18)",
+    background: "rgba(0,0,0,0.2)",
     backdropFilter: "blur(2px)",
   };
 
@@ -108,7 +108,7 @@ export default function AverageDetailModal({ open, solves, type, kind, onClose }
     >
       <div
         onMouseDown={(e) => e.stopPropagation()}
-        className="relative flex h-[min(80vh,720px)] w-[min(680px,92vw)] min-h-[400px] min-h-0 flex-col overflow-hidden rounded-3xl border border-black/[0.06] bg-white shadow-[0_30px_80px_-30px_rgba(0,0,0,0.35)]"
+        className="relative flex h-[min(80vh,720px)] w-[min(680px,92vw)] min-h-[400px] min-h-0 flex-col overflow-hidden rounded-3xl border border-[#EAE2D5] bg-[#FDFBF5] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.35)]"
         style={{ animation: "tabEnter 180ms cubic-bezier(0.16, 1, 0.3, 1) both" }}
       >
         {/* ---------- Header ---------- */}
@@ -125,7 +125,7 @@ export default function AverageDetailModal({ open, solves, type, kind, onClose }
             <button
               type="button"
               onClick={handleCopy}
-              className="flex h-8 items-center gap-1.5 rounded-full border border-black/[0.08] bg-white px-3 text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-neutral-500 transition-colors hover:border-neutral-800/50 hover:text-neutral-800"
+              className="flex h-8 items-center gap-1.5 rounded-full border border-[#EAE2D5] bg-white px-3 text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-neutral-500 transition-colors hover:border-neutral-800/50 hover:text-neutral-800"
             >
               {copied ? (
                 <>
@@ -168,7 +168,7 @@ export default function AverageDetailModal({ open, solves, type, kind, onClose }
                 return (
                   <li
                     key={s.id ?? i}
-                    className="flex items-center gap-3 rounded-xl border border-black/[0.03] px-3 py-2.5 transition-colors hover:bg-black/[0.015]"
+                    className="flex items-center gap-3 rounded-xl border border-[#EAE2D5] px-3 py-2.5 transition-colors hover:bg-black/[0.015]"
                   >
                     <span className="w-6 text-right text-[0.6rem] font-medium text-neutral-400">
                       {i + 1}

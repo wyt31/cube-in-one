@@ -24,24 +24,19 @@ const TIER_STYLES: Record<
   S: {
     wrapper:
       "bg-gradient-to-b from-amber-50 to-amber-100/70 text-amber-700 border-amber-200/80 " +
-      "dark:from-amber-950 dark:to-amber-900/60 dark:text-amber-300 dark:border-amber-800/70 " +
       "shadow-[0_1px_2px_rgba(217,119,6,0.18)]",
     label: "S",
-    dot: "bg-amber-400 dark:bg-amber-500",
+    dot: "bg-amber-400",
   },
   A: {
-    wrapper:
-      "bg-sky-50 text-sky-700 border-sky-200 " +
-      "dark:bg-sky-950 dark:text-sky-300 dark:border-sky-800/70",
+    wrapper: "bg-sky-50 text-sky-700 border-sky-200",
     label: "A",
-    dot: "bg-sky-400 dark:bg-sky-500",
+    dot: "bg-sky-400",
   },
   B: {
-    wrapper:
-      "bg-zinc-100 text-zinc-600 border-zinc-200 " +
-      "dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700",
+    wrapper: "bg-zinc-100 text-zinc-600 border-zinc-200",
     label: "B",
-    dot: "bg-zinc-400 dark:bg-zinc-500",
+    dot: "bg-zinc-400",
   },
 };
 

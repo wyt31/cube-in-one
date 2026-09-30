@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef, useState } from "react";
 import type { AlgCase } from "@/data/algs";
@@ -64,12 +64,12 @@ export default function CaseFilterModal({
     >
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/30"
+        className="absolute inset-0 bg-black/20"
         onClick={onClose}
       />
 
       {/* Modal */}
-      <div className="relative flex h-[80vh] min-h-[500px] w-[min(680px,92vw)] flex-col overflow-hidden rounded-3xl border border-black/[0.06] bg-white shadow-[0_30px_80px_-30px_rgba(0,0,0,0.35)]">
+      <div className="relative flex h-[80vh] min-h-[500px] w-[min(680px,92vw)] flex-col overflow-hidden rounded-3xl border border-[#EAE2D5] bg-[#FDFBF5] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.35)]">
         {/* Header */}
         <div className="flex flex-shrink-0 items-center justify-between border-b border-black/[0.06] px-6 py-4">
           <div className="flex flex-col gap-0.5">
@@ -98,14 +98,14 @@ export default function CaseFilterModal({
           <button
             type="button"
             onClick={selectAll}
-            className="rounded-full border border-[#E8E8E4] bg-white px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.15em] text-neutral-500 transition-colors hover:border-neutral-800 hover:text-neutral-800"
+            className="rounded-full border border-[#EAE2D5] bg-white px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.15em] text-neutral-500 transition-colors hover:border-neutral-800 hover:text-neutral-800"
           >
             Select All
           </button>
           <button
             type="button"
             onClick={deselectAll}
-            className="rounded-full border border-[#E8E8E4] bg-white px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.15em] text-neutral-500 transition-colors hover:border-neutral-800 hover:text-neutral-800"
+            className="rounded-full border border-[#EAE2D5] bg-white px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.15em] text-neutral-500 transition-colors hover:border-neutral-800 hover:text-neutral-800"
           >
             Deselect All
           </button>
@@ -140,7 +140,7 @@ export default function CaseFilterModal({
                     className={`flex aspect-square flex-col items-center justify-center gap-1 rounded-xl border text-center transition-all ${
                       isSelected
                         ? "border-neutral-800 bg-[#FAFAF3] ring-1 ring-[#2C2C2C]/10"
-                        : "border-[#EEE] bg-white opacity-50 hover:border-[#CCC] hover:opacity-80"
+                        : "border-[#EAE2D5] bg-white opacity-50 hover:border-[#CCC] hover:opacity-80"
                     }`}
                   >
                     {isSelected && (

@@ -26,7 +26,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U') R' U2' R U R' U R",
         tier: "A"
       }
-    ]
+    ],
+    trainerBaseAlg: "R U R' U R U2 R'"
   },
   {
     id: "cll-sune-2",
@@ -46,7 +47,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U2) L' U2 L F' L F L' U L' U L",
         tier: "A"
       }
-    ]
+    ],
+    trainerBaseAlg: "U' R' F R2 F' U' R' U' R2 U R'"
   },
   {
     id: "cll-sune-3",
@@ -62,7 +64,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "R U' R2' U R U F R' F' R U R'",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "F R' F' R U2 R U2 R'"
   },
   {
     id: "cll-sune-4",
@@ -82,7 +85,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U) L' F' L F L' U' L' U L2",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "R U' R' F R' F' R"
   },
   {
     id: "cll-sune-5",
@@ -106,7 +110,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "R U2' R' F R U2' R' U R U' R' F",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "R U R' U' R' F R F' R U R' U R U2 R'"
   },
   {
     id: "cll-sune-6",
@@ -118,7 +123,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "R' F2 R U2 R U' R' F",
         tier: "S"
       }
-    ]
+    ],
+    trainerBaseAlg: "R' F2 R U2 R U' R' F"
   },
   {
     id: "cll-anti-sune-1",
@@ -142,7 +148,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U') L U2 L' U' L U' L'",
         tier: "A"
       }
-    ]
+    ],
+    trainerBaseAlg: "R' U' R U' R' U2 R"
   },
   {
     id: "cll-anti-sune-2",
@@ -166,7 +173,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U2) R' U R U' R2' F R F' R U R' U' R",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "R U2 R' F R' F' R U' R U' R'"
   },
   {
     id: "cll-anti-sune-3",
@@ -186,7 +194,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U2) R' F R2 F' U' R' U' R F R' F' R",
         tier: "B"
       },
-    ]
+    ],
+    trainerBaseAlg: "U2 F' R U R' U' R' F2 R"
   },
   {
     id: "cll-anti-sune-4",
@@ -206,7 +215,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "L2' U' L U L F' L' F L",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 R' F R F' R U R'"
   },
   {
     id: "cll-anti-sune-5",
@@ -226,7 +236,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "F R F' U R U' R U R' U R'",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 R' F2 R F' R' F2 R U' R' F R F'"
   },
   {
     id: "cll-anti-sune-6",
@@ -242,7 +253,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U') R U' R' F R F' U' R' U' R2 U R'",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 R U2 R' U2 R' F R F'"
   },
   {
     id: "cll-pi-1",
@@ -298,7 +310,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U2) L' U2 L U' L' U2 L U L' U2 L",
         tier: "B"
       },
-    ]
+    ],
+    trainerBaseAlg: "R' U R2 U' R2 U' R2 U R'"
   },
   {
     id: "cll-pi-2",
@@ -330,7 +343,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U) R' U2' R U R' F R' F' R U R",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "U' R' U' R' F R F' R U' R' U2 R"
   },
   {
     id: "cll-pi-3",
@@ -346,7 +360,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "L F' L' F L' U L U L' U L",
         tier: "S"
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 R' F R F' R U' R' U' R U' R'"
   },
   {
     id: "cll-pi-4",
@@ -366,7 +381,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U) F R2 U' R2' U R2 U R2' F'",
         tier: "A"
       }
-    ]
+    ],
+    trainerBaseAlg: "U' F R' F' R U' R U R' U R' F R F'"
   },
   {
     id: "cll-pi-5",
@@ -386,7 +402,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U') R' U2' R U R' U R2 U' R' F R' F' R",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "R U2 R' U' R U R' U2 R' F R F'"
   },
   {
     id: "cll-pi-6",
@@ -406,7 +423,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "R U' R' F R' F' R U' R U' R' F R' F' R",
         tier: "B"
       },
-    ]
+    ],
+    trainerBaseAlg: "U F R' F' R U2 R U' R' U R U2 R'"
   },
   {
     id: "cll-u-1",
@@ -438,7 +456,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U') R' U' F' U F R",
         tier: "A"
       }
-    ]
+    ],
+    trainerBaseAlg: "F R U R' U' F'"
   },
   {
     id: "cll-u-2",
@@ -478,7 +497,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U') R U R2 U' R U2 R' U2 R U' R",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "R' F R F' R' F R F' R U R' U' R U R'"
   },
   {
     id: "cll-u-3",
@@ -510,7 +530,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "R' F R F' R U2' B U' B' R'",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "R U2 R U' R' F R' F2 U' F"
   },
   {
     id: "cll-u-4",
@@ -519,7 +540,7 @@ export const cllData: TwoByTwoAlg[] = [
     subCategory: "U",
     algs: [
       {
-        alg: "F R' F' R U' R U' R' U2 R U' R' ",
+        alg: "F R' F' R U' R U' R' U2 R U' R'",
         tier: "S"
       },
       {
@@ -538,7 +559,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U2) F' R U R' U R' F R U2' R' F R",
         tier: "S"
       }
-    ]
+    ],
+    trainerBaseAlg: "F R' F' R U' R U' R' U2 R U' R'"
   },
   {
     id: "cll-u-5",
@@ -562,7 +584,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "R U R2 U R U2 R' F R2 F'",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "U R U' R2 F R F' R U R' U' R U R'"
   },
   {
     id: "cll-u-6",
@@ -586,7 +609,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U2) F' R U R' U' R' F R2 U' R' F R' F' R",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "U R' F R2 U' R' F R' F' R U R' F' R"
   },
   {
     id: "cll-l-1",
@@ -610,7 +634,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "F R U' R' F R' F' R U F'",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "U F' R U R' U' R' F R"
   },
   {
     id: "cll-l-2",
@@ -630,7 +655,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U) F' R' F R F' R U R' U' F",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "F R' F' R U R U' R'"
   },
   {
     id: "cll-l-3",
@@ -639,7 +665,7 @@ export const cllData: TwoByTwoAlg[] = [
     subCategory: "L",
     algs: [
       {
-        alg: "R U2 R2 F R F' R U2 R'",
+        alg: "R U2 R2' F R F' R U2 R'",
         tier: "S"
       },
       {
@@ -658,7 +684,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U2) R' U' R U R' F' R U R' U' R' F R2",
         tier: "A"
       }
-    ]
+    ],
+    trainerBaseAlg: "R U2 R2 F R F' R U2 R'"
   },
   {
     id: "cll-l-4",
@@ -690,7 +717,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U2) R U' R2 F R2 U' R' U R U' R2 F R2 U' R'",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "U R' U R' U2 R U' R' U R U' R2"
   },
   {
     id: "cll-l-5",
@@ -710,7 +738,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U') R' F R U' R U' R' F U2 R U' R' F",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "U' R U' R' U R U' R' F R' F' R2 U R'"
   },
   {
     id: "cll-l-6",
@@ -734,7 +763,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U2) R U R' U R' F R F' U2 R' F R F'",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 R' F R U' R' F R F' R U R2 F' R"
   },
   {
     id: "cll-t-1",
@@ -743,14 +773,15 @@ export const cllData: TwoByTwoAlg[] = [
     subCategory: "T",
     algs: [
       {
-        alg: " R U R' U' R' F R F' ",
+        alg: "R U R' U' R' F R F'",
         tier: "S"
       },
       {
         alg: "(U') R' U' R U F R F'",
         tier: "A"
       }
-    ]
+    ],
+    trainerBaseAlg: "R U R' U' R' F R F'"
   },
   {
     id: "cll-t-2",
@@ -770,7 +801,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "F R U' R' U R U R' F'",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 R' F' R U R U' R' F"
   },
   {
     id: "cll-t-3",
@@ -780,11 +812,8 @@ export const cllData: TwoByTwoAlg[] = [
     algs: [
       {
         alg: "(U') R U F R' F' R U2 R U2' R2",
-        tier: "S"
-      },
-      {
-        alg: "(U') R U F R' F' R U2 R' U2' R2",
-        tier: "S"
+        tier: "S",
+        note: "Alternative finish: (U') R U F R' F' R U2 R' U2' R2"
       },
       {
         alg: "(U2) R U2 R2 F R F' R U' R' U R U2 R'",
@@ -802,7 +831,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U') R U' R' U' R2 F R F' R U' R2",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "U' R U F R' F' R U2 R U2 R2"
   },
   {
     id: "cll-t-4",
@@ -834,7 +864,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U) R' F R F' R U R' U' R U R' U' R' F R F'",
         tier: "A"
       }
-    ]
+    ],
+    trainerBaseAlg: "U R U' R' U R U' R' F R' F' R F R' F' R"
   },
   {
     id: "cll-t-5",
@@ -862,7 +893,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U') R U2' R' U' R U' R2' F' R U R U' R' F",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 R U R' U2 R U R' U R' F R F'"
   },
   {
     id: "cll-t-6",
@@ -894,7 +926,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "R U2 R' U' R2 U' R' F R' F' ",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "U R' U R U2 R2 F R F' R"
   },
   {
     id: "cll-h-1",
@@ -926,7 +959,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "R U2' R' U' R U R' U' R U' R'",
         tier: "A"
       }
-    ]
+    ],
+    trainerBaseAlg: "R2 U2 R U2 R2"
   },
   {
     id: "cll-h-2",
@@ -946,7 +980,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "x' U2 R' F2 R2 U2 R' U2",
         tier: "A"
       }
-    ]
+    ],
+    trainerBaseAlg: "U R' F R F' R U R2 F R F' R U R'"
   },
   {
     id: "cll-h-3",
@@ -982,7 +1017,8 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U2) R U' R' F R' F' R2 U R' U R U2 R'",
         tier: "B"
       }
-    ]
+    ],
+    trainerBaseAlg: "R U R' U R U R' F R' F' R"
   },
   {
     id: "cll-h-4",
@@ -1006,6 +1042,7 @@ export const cllData: TwoByTwoAlg[] = [
         alg: "(U') F' R U R' U R' F R U' R U' R' F",
         tier: "A"
       },
-    ]
+    ],
+    trainerBaseAlg: "U F R2 U' R2 U' R2 U R2 F'"
   },
 ];

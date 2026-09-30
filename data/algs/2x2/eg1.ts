@@ -11,7 +11,7 @@ export const eg1Data: TwoByTwoAlg[] = [
     subCategory: "Sune",
     algs: [
       {
-        alg: "(U2) R U R' U F R U' R2 F' R ",
+        alg: "(U2) R U R' U F R U' R2 F' R",
         tier: "S",
       },
       {
@@ -26,7 +26,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "(U') B' U L2 F2 U F'",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 R U R' U F R U' R2 F' R"
   },
   {
     id: "eg1-sune-2",
@@ -35,14 +36,15 @@ export const eg1Data: TwoByTwoAlg[] = [
     subCategory: "Sune",
     algs: [
       {
-        alg: "R U R' F2 U F R U R' ",
+        alg: "R U R' F2 U F R U R'",
         tier: "S",
       },
       {
         alg: "(U) F R' F' R F R U' R' U R' F' R",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "R U R' F2 U F R U R'"
   },
   {
     id: "eg1-sune-3",
@@ -51,14 +53,15 @@ export const eg1Data: TwoByTwoAlg[] = [
     subCategory: "Sune",
     algs: [
       {
-        alg: "(U2) F R' F' R U R' F' R2 U R' ",
+        alg: "(U2) F R' F' R U R' F' R2 U R'",
         tier: "S",
       },
       {
         alg: "(U') R' F R U2 R U' R2 F2 R F'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 F R' F' R U R' F' R2 U R'"
   },
   {
     id: "eg1-sune-4",
@@ -82,7 +85,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "F' U R U' R' U F R U R' ",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "U F' R' F R2 U R' U' F R' F' R"
   },
   {
     id: "eg1-sune-5",
@@ -110,7 +114,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "(U') R' F' R F U R' F' R U R' F' R",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "U R U' R' U R U' R' U F R U' R'"
   },
   {
     id: "eg1-sune-6",
@@ -119,10 +124,11 @@ export const eg1Data: TwoByTwoAlg[] = [
     subCategory: "Sune",
     algs: [
       {
-        alg: "R' F R2 U' R' U R U' R' F ",
+        alg: "R' F R2 U' R' U R U' R' F",
         tier: "S",
       },
-    ]
+    ],
+    trainerBaseAlg: "R' F R2 U' R' U R U' R' F"
   },
   {
     id: "eg1-anti-sune-1",
@@ -142,7 +148,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "(U') B U' R2 F2 U' F",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "U R' F R2 U R' F' U' R U' R'"
   },
   {
     id: "eg1-anti-sune-2",
@@ -158,7 +165,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "(U) R U' R' F' U' F2 R U' R' ",
         tier: "S",
       }
-    ]
+    ],
+    trainerBaseAlg: "R' F R U' R U R' F' R' F R F'"
   },
   {
     id: "eg1-anti-sune-3",
@@ -167,10 +175,11 @@ export const eg1Data: TwoByTwoAlg[] = [
     subCategory: "Anti-Sune",
     algs: [
       {
-        alg: "F' R U R' U' R U R2 F' R ",
+        alg: "F' R U R' U' R U R2 F' R",
         tier: "S",
       }
-    ]
+    ],
+    trainerBaseAlg: "F' R U R' U' R U R2 F' R"
   },
   {
     id: "eg1-anti-sune-4",
@@ -194,7 +203,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "(U') R U R' F R U' R' U2 R' F R",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "U F R U' R2 F' R U F' R U R'"
   },
   {
     id: "eg1-anti-sune-5",
@@ -218,7 +228,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "(U) F' R' F R U R U R' U' R U R'",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "U' R U R' F' U' R U R' U' R U R'"
   },
   {
     id: "eg1-anti-sune-6",
@@ -227,10 +238,11 @@ export const eg1Data: TwoByTwoAlg[] = [
     subCategory: "Anti-Sune",
     algs: [
       {
-        alg: "(U2) R U' R2 F R U' R' F R F' ",
+        alg: "(U2) R U' R2 F R U' R' F R F'",
         tier: "S",
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 R U' R2 F R U' R' F R F'"
   },
   {
     id: "eg1-pi-1",
@@ -250,7 +262,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "(U2) R2 B2 R' U R' U' R U2 R U' R2",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "R U2 R2 F R F' R U' R2 F' R2 U R'"
   },
   {
     id: "eg1-pi-2",
@@ -259,7 +272,7 @@ export const eg1Data: TwoByTwoAlg[] = [
     subCategory: "Pi",
     algs: [
       {
-        alg: "(U') R U R2 F' R2 U R' ",
+        alg: "(U') R U R2 F' R2 U R'",
         tier: "S",
       },
       {
@@ -274,7 +287,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "(U') R U' R2 F R2 U' R'",
         tier: "S",
       }
-    ]
+    ],
+    trainerBaseAlg: "U' R U R2 F' R2 U R'"
   },
   {
     id: "eg1-pi-3",
@@ -283,14 +297,15 @@ export const eg1Data: TwoByTwoAlg[] = [
     subCategory: "Pi",
     algs: [
       {
-        alg: "(U') F R' F U' F2 R U R ",
+        alg: "(U') F R' F U' F2 R U R",
         tier: "S",
       },
       {
         alg: "(U') F' R U2 R' F' U2 F R' F' R",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "U' F R' F U' F2 R U R"
   },
   {
     id: "eg1-pi-4",
@@ -314,7 +329,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "(U') F' R U R' U' R U R' F' R U R'",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "U' R U' R' U R U' R' F R U' R'"
   },
   {
     id: "eg1-pi-5",
@@ -338,7 +354,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "(U2) F' R' F R F' R' F2 R U' F",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U' R U R' U R U' R2 F' R F R' F' R"
   },
   {
     id: "eg1-pi-6",
@@ -362,7 +379,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "R U R' F' U' F R' F' R2 U R'",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "U' R' F' R U' R' F R2 U R' F' R U R'"
   },
   {
     id: "eg1-u-1",
@@ -386,7 +404,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "(U2) R' F R2 U' R2' F' R U R' F R",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "R U R' U R U' R2 F' R2 U R'"
   },
   {
     id: "eg1-u-2",
@@ -410,7 +429,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "R U R' F' U' R U R' U' F R' F' R",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 R U' R' U R U' R' F R U2 R' F R' F' R"
   },
   {
     id: "eg1-u-3",
@@ -446,7 +466,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "F R U2 R' F2 R U2 R' F'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U' R U' R2 F2 R F' U R U R'"
   },
   {
     id: "eg1-u-4",
@@ -462,7 +483,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "R U' R' F R U' R2 F R",
         tier: "S",
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 R' F R F' R' F R2 U' R'"
   },
   {
     id: "eg1-u-5",
@@ -490,7 +512,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: " (U) F U' R' F2 R F' U2 F'",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "U' R U' R' U R U' R' U R' F' R F"
   },
   {
     id: "eg1-u-6",
@@ -518,7 +541,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "(U) F' U R U2 R' F U2 F",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "U' R' F R U' R' F R U' R U R' F'"
   },
   {
     id: "eg1-l-1",
@@ -550,7 +574,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "(U) R U' R' F R U R' F' R U2 R'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "R U' R' U R U' R2 F' R F"
   },
   {
     id: "eg1-l-2",
@@ -578,7 +603,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "R' F' R F R' F2 R U2 R' F' R ",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U R' F R U' R' F R2 U R' F'"
   },
   {
     id: "eg1-l-3",
@@ -587,14 +613,15 @@ export const eg1Data: TwoByTwoAlg[] = [
     subCategory: "L",
     algs: [
       {
-        alg: "R' U R2 U' R2 U' F R2 U' R' ",
+        alg: "R' U R2 U' R2 U' F R2 U' R'",
         tier: "S",
       },
       {
         alg: "(U2) F' R' F R2 U R' U F' U R' F R F",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "R' U R2 U' R2 U' F R2 U' R'"
   },
   {
     id: "eg1-l-4",
@@ -622,7 +649,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "(U2) F U2 R' F2 R2 U' R' U2 F'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "R U2 R' F R U' R2 F' R"
   },
   {
     id: "eg1-l-5",
@@ -631,7 +659,7 @@ export const eg1Data: TwoByTwoAlg[] = [
     subCategory: "L",
     algs: [
       {
-        alg: "(U) R U R' F' R U R' U' F R' F' R ",
+        alg: "(U) R U R' F' R U R' U' F R' F' R",
         tier: "S",
       },
       {
@@ -642,7 +670,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "R U R' F' U R U R' U' R U R'",
         tier: "S",
       }
-    ]
+    ],
+    trainerBaseAlg: "U R U R' F' R U R' U' F R' F' R"
   },
   {
     id: "eg1-l-6",
@@ -666,7 +695,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "(U) R' F' R F U' R' F' R U R' F' R",
         tier: "S",
       }
-    ]
+    ],
+    trainerBaseAlg: "R' F' R F R' F' R U F' R U R'"
   },
   {
     id: "eg1-t-1",
@@ -698,7 +728,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "R U R' U R U R2 F R U' R' F R F'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U F R U' R2 F' R U R' F' R"
   },
   {
     id: "eg1-t-2",
@@ -730,7 +761,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "(U') R U R' F' U2 R U R' U' R U R'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U F' R' F R2 U R' U' R U R'"
   },
   {
     id: "eg1-t-3",
@@ -754,7 +786,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "R' F2 R U R U R2 F' R",
         tier: "S",
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 R U' R2 F R U R U2 R'"
   },
   {
     id: "eg1-t-4",
@@ -782,7 +815,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "R2 B2 U' R' U' R U' R' U R'",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "U' R U' R' F' U' F R' F' R F"
   },
   {
     id: "eg1-t-5",
@@ -802,7 +836,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "R U2 R2' F R2 U' R' F' R U R'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 R U R2 F' R F R' F' R"
   },
   {
     id: "eg1-t-6",
@@ -826,7 +861,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "(U2) R U R' U F R U' R' F' R U R'",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "U' R U' R' U2 F R U2 R' F"
   },
   {
     id: "eg1-h-1",
@@ -858,7 +894,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "(U/U') R U R' F R U' R' U' R U' R' F",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "R' F R2 U' R2 U' F U R"
   },
   {
     id: "eg1-h-2",
@@ -874,7 +911,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "(U/U') F R U' R2 F U' F2 U R",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "F' U R U' R2 F2 R U' F"
   },
   {
     id: "eg1-h-3",
@@ -890,7 +928,8 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "R' U' R' F2 U F' R F'",
         tier: "A"
       }
-    ]
+    ],
+    trainerBaseAlg: "U R' F R F' U2 F R U2 R' F"
   },
   {
     id: "eg1-h-4",
@@ -910,6 +949,7 @@ export const eg1Data: TwoByTwoAlg[] = [
         alg: "(U) R' F R F' R' F R U' R' F R F'",
         tier: "S",
       }
-    ]
+    ],
+    trainerBaseAlg: "R U R' F' R U R' U' R U R'"
   },
 ];

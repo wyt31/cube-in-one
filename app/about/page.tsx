@@ -1,8 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
-import ThemeToggle from "@/components/ThemeToggle";
+import CreditsGrid, {
+  isDirectDependency,
+  type LicenseEntry,
+} from "@/components/CreditsGrid";
+import licenses from "@/data/licenses.json";
 
 // ============================================================================
 // /about — 4-tab architecture: About Us · Credits · Blog · Feedback
@@ -31,7 +35,7 @@ const TEAM: CreditEntry[] = [
     role: "Product & UI Design",
     positions: [
       "Product & UI Design",
-      "Idea Maker & Builder",
+      "Product Thinker & Builder",
     ],
   },
   {
@@ -44,25 +48,7 @@ const TEAM: CreditEntry[] = [
   },
 ];
 
-const CREDITS: { group: string; entries: CreditEntry[] }[] = [
-  {
-    group: "Open Source Community",
-    entries: [
-      { name: "cubing.js", role: "Background cube state calculation" },
-      { name: "Geist Font", role: "Typography stack" },
-      { name: "Tailwind CSS", role: "Styling engine" },
-      { name: "Next.js", role: "App Router framework" },
-    ],
-  },
-  {
-    group: "WCA / Cubing Community",
-    entries: [
-      { name: "WCA Regulations", role: "Official scramble & notation reference" },
-      { name: "AlgDB / SpeedSolving Wiki", role: "Public algorithm datasets" },
-      { name: "Early Testers", role: "Feedback & bug reports" },
-    ],
-  },
-];
+
 
 // ---------- Team avatars (DiceBear Clay) --------------------------------
 function FreddieAvatar() {
@@ -133,9 +119,9 @@ function TeamAvatar({ name }: { name: string }) {
 // ---------- Small UI atoms ---------------------------------------------
 function VersionBadge() {
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-neutral-800/15 bg-neutral-800/[0.04] px-3 py-1 text-[0.6rem] font-medium uppercase tracking-[0.2em] text-neutral-800 dark:text-neutral-200">
+    <span className="inline-flex items-center gap-2 rounded-full border border-neutral-800/15 bg-neutral-800/[0.04] px-3 py-1 text-[0.6rem] font-medium uppercase tracking-[0.2em] text-neutral-800">
       <span className="h-1.5 w-1.5 rounded-full bg-neutral-800 animate-breathe" />
-      v0.1.0 · Beta
+      v0.1.0 · Alpha
     </span>
   );
 }
@@ -154,12 +140,12 @@ function CreditModal({
       onClick={onClose}
     >
       <div
-        className="relative w-[min(420px,92vw)] rounded-3xl border border-black/[0.06] bg-white p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.3)] animate-tab-enter dark:bg-zinc-900"
+        className="relative w-[min(420px,92vw)] rounded-3xl border border-black/[0.06] bg-white p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.3)] animate-tab-enter"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
-          className="absolute right-5 top-5 flex h-7 w-7 items-center justify-center rounded-full text-neutral-400 transition-colors hover:bg-[#F5F5F2] hover:text-neutral-800 dark:text-neutral-500 dark:hover:text-neutral-200"
+          className="absolute right-5 top-5 flex h-7 w-7 items-center justify-center rounded-full text-neutral-400 transition-colors hover:bg-[#F5F5F2] hover:text-neutral-800"
           aria-label="Close"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -171,7 +157,7 @@ function CreditModal({
           <TeamAvatar name={entry.name} />
         </div>
 
-        <h3 className="mt-4 text-center text-lg font-medium tracking-wide text-neutral-800 dark:text-neutral-200">
+        <h3 className="mt-4 text-center text-lg font-medium tracking-wide text-neutral-800">
           {entry.name}
         </h3>
 
@@ -181,7 +167,7 @@ function CreditModal({
               key={i}
               className="flex items-center gap-2.5 text-[0.8rem] tracking-wide text-neutral-500"
             >
-              <span className="star-blink text-neutral-800 dark:text-neutral-200" style={{ animationDelay: `${i * 0.4}s` }}>
+              <span className="star-blink text-neutral-800" style={{ animationDelay: `${i * 0.4}s` }}>
                 ✦
               </span>
               {pos}
@@ -212,13 +198,13 @@ function AboutView({ onCreditClick }: { onCreditClick: (entry: CreditEntry) => v
       </section>
 
       {/* Vision */}
-      <section className="rounded-2xl border border-[#E8E8E4] bg-white p-6 dark:border-white/8 dark:bg-zinc-900">
+      <section className="rounded-2xl border border-[#EAE2D5] bg-white/80 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
         <h3 className="text-[0.6rem] font-medium uppercase tracking-[0.3em] text-[#A0A09A]">
-          Our Vision
+          Why Cube In One
         </h3>
         <p className="mt-3 text-[0.8rem] leading-relaxed tracking-wide text-neutral-500">
-          Cube in One is an all-in-one toolkit for speedcubers.
-          Built to be minimalist, fast, and useful.
+          Cube In One is an all-in-one toolkit for speedcubers.
+          Built to be useful and enjoyable.
           Hope you enjoy using it! :)
         </p>
       </section>
@@ -226,7 +212,7 @@ function AboutView({ onCreditClick }: { onCreditClick: (entry: CreditEntry) => v
       {/* Team */}
       <section>
         <h3 className="text-[0.6rem] font-medium uppercase tracking-[0.3em] text-[#A0A09A]">
-          Cube in One Team
+          Cube In One Team
         </h3>
         <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {TEAM.map((entry) => {
@@ -237,29 +223,29 @@ function AboutView({ onCreditClick }: { onCreditClick: (entry: CreditEntry) => v
                 onClick={isInteractive ? () => onCreditClick(entry) : undefined}
                 className={
                   isInteractive
-                    ? "running-light-card group cursor-pointer rounded-2xl border border-[#E8E8E4] bg-white p-4 transition-all duration-200 hover:border-neutral-400 hover:bg-black/[0.03] hover:shadow-[0_2px_8px_rgba(0,0,0,0.04)] dark:border-white/5 dark:bg-zinc-900 dark:hover:border-neutral-500 dark:hover:bg-white/[0.04]"
-                    : "group rounded-2xl border border-[#E8E8E4] bg-white p-4 transition-all duration-200 hover:border-neutral-400 hover:bg-black/[0.03] hover:shadow-[0_2px_8px_rgba(0,0,0,0.04)] dark:border-white/5 dark:bg-zinc-900 dark:hover:border-neutral-500 dark:hover:bg-white/[0.04]"
+                    ? "running-light-card group cursor-pointer rounded-2xl border border-[#EAE2D5] bg-white/80 p-4 shadow-[0_1px_3px_rgba(0,0,0,0.03)] transition-all duration-200 hover:border-[#D8CBB0] hover:bg-white hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
+                    : "group rounded-2xl border border-[#EAE2D5] bg-white/80 p-4 shadow-[0_1px_3px_rgba(0,0,0,0.03)] transition-all duration-200 hover:border-[#D8CBB0] hover:bg-white hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
                 }
               >
                 <div className="relative z-[2] flex items-start justify-between gap-3">
                   <div className="flex min-w-0 flex-1 items-center gap-3">
                     <TeamAvatar name={entry.name} />
                     <div>
-                      <p className="text-sm font-medium tracking-wide text-neutral-800 dark:text-neutral-200">
+                      <p className="text-sm font-medium tracking-wide text-neutral-800">
                         {entry.name}
                       </p>
-                      <p className="mt-1 text-[0.7rem] tracking-wide text-neutral-400 dark:text-neutral-500">
+                      <p className="mt-1 text-[0.7rem] tracking-wide text-neutral-400">
                         {entry.role}
                       </p>
                     </div>
                   </div>
                   {entry.note && (
-                    <span className="flex-shrink-0 rounded-full bg-[#FAFAF8] px-2 py-0.5 text-[0.55rem] uppercase tracking-[0.15em] text-[#9A9A94] dark:bg-white/[0.04]">
+                    <span className="flex-shrink-0 rounded-full bg-[#FAFAF8] px-2 py-0.5 text-[0.55rem] uppercase tracking-[0.15em] text-[#9A9A94]">
                       {entry.note}
                     </span>
                   )}
                   {isInteractive && (
-                    <span className="flex-shrink-0 text-neutral-400 transition-all duration-200 group-hover:translate-x-1 group-hover:text-neutral-800 dark:text-neutral-500 dark:group-hover:text-neutral-200">
+                    <span className="flex-shrink-0 text-neutral-400 transition-all duration-200 group-hover:translate-x-1 group-hover:text-neutral-800">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M9 18l6-6-6-6" />
                       </svg>
@@ -309,64 +295,161 @@ function AboutView({ onCreditClick }: { onCreditClick: (entry: CreditEntry) => v
   );
 }
 
-function CreditsView({ onCreditClick }: { onCreditClick: (entry: CreditEntry) => void }) {
+function CreditsView() {
+  const allPackages = useMemo<LicenseEntry[]>(
+    () =>
+      (licenses as LicenseEntry[]).filter(
+        (p) => p && p.license && p.license !== "UNLICENSED",
+      ),
+    [],
+  );
+  const direct = useMemo(
+    () => allPackages.filter((p) => isDirectDependency(p)),
+    [allPackages],
+  );
+  const transitive = useMemo(
+    () => allPackages.filter((p) => !isDirectDependency(p)),
+    [allPackages],
+  );
 
   return (
     <div className="flex flex-col gap-10">
-      {CREDITS.map((section) => (
-        <section key={section.group}>
-          <h3 className="text-[0.6rem] font-medium uppercase tracking-[0.3em] text-[#A0A09A]">
-            {section.group}
-          </h3>
-          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {section.entries.map((entry) => {
-              const isInteractive = !!entry.positions;
-              return (
-                <article
-                  key={`${section.group}-${entry.name}`}
-                  onClick={isInteractive ? () => onCreditClick(entry) : undefined}
-                  className={
-                    isInteractive
-                      ? "running-light-card group cursor-pointer rounded-2xl border border-[#E8E8E4] bg-white p-4 transition-all duration-200 hover:border-neutral-400 hover:bg-black/[0.03] hover:shadow-[0_2px_8px_rgba(0,0,0,0.04)] dark:border-white/5 dark:bg-zinc-900 dark:hover:border-neutral-500 dark:hover:bg-white/[0.04]"
-                      : "group rounded-2xl border border-[#E8E8E4] bg-white p-4 transition-all duration-200 hover:border-neutral-400 hover:bg-black/[0.03] hover:shadow-[0_2px_8px_rgba(0,0,0,0.04)] dark:border-white/5 dark:bg-zinc-900 dark:hover:border-neutral-500 dark:hover:bg-white/[0.04]"
-                  }
-                >
-                  <div className="relative z-[2] flex items-start justify-between gap-3">
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium tracking-wide text-neutral-800 dark:text-neutral-200">
-                        {entry.name}
-                      </p>
-                      <p className="mt-1 text-[0.7rem] tracking-wide text-neutral-400 dark:text-neutral-500">
-                        {entry.role}
-                      </p>
-                    </div>
-                    {entry.note && (
-                      <span className="flex-shrink-0 rounded-full bg-[#FAFAF8] px-2 py-0.5 text-[0.55rem] uppercase tracking-[0.15em] text-[#9A9A94] dark:bg-white/[0.04]">
-                        {entry.note}
-                      </span>
-                    )}
-                    {isInteractive && (
-                      <span className="flex-shrink-0 text-neutral-400 transition-all duration-200 group-hover:translate-x-1 group-hover:text-neutral-800 dark:text-neutral-500 dark:group-hover:text-neutral-200">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M9 18l6-6-6-6" />
-                        </svg>
-                      </span>
-                    )}
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        </section>
-      ))}
+      {/* 1. Early Testers */}
+      <EarlyTesters />
 
-      <section className="rounded-2xl border border-dashed border-[#E8E8E4] bg-[#FAFAF8] p-6 text-center dark:border-white/8 dark:bg-white/[0.04]">
-        <p className="text-[0.7rem] leading-relaxed tracking-wide text-neutral-400 dark:text-neutral-500">
-          Thank you to everyone who has tested early builds, reported bugs, and
-          shared algorithm corrections. CIO is shaped by your quiet feedback.
-        </p>
+      {/* 2. 2x2 Algorithms */}
+      <TwoByTwoAlgs />
+
+      {/* 3. AI assistance */}
+      <AiAssistance />
+
+      {/* 4. Open-source Dependencies */}
+      <section className="flex flex-col gap-8">
+        <div className="rounded-2xl border border-[#EAE2D5] bg-white/80 p-6 text-center shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+          <p className="text-[0.7rem] leading-relaxed tracking-wide text-neutral-400">
+            Cube In One is built on the shoulders of {allPackages.length}{" "}
+            open-source packages. Tap any package below to view its license
+            details.
+          </p>
+        </div>
+
+        {/* Direct Dependencies */}
+        <div className="flex flex-col gap-4">
+          <h3 className="text-[0.6rem] font-medium uppercase tracking-[0.3em] text-[#A0A09A]">
+            Direct Dependencies
+          </h3>
+          <CreditsGrid list={direct} />
+        </div>
+
+        {/* Transitive Dependencies */}
+        <div className="flex flex-col gap-4">
+          <h3 className="flex items-center gap-3 text-[0.6rem] font-medium uppercase tracking-[0.3em] text-[#A0A09A]">
+            Transitive Dependencies
+            <span className="rounded-full border border-[#EAE2D5] bg-white/60 px-2.5 py-0.5 text-[0.55rem] font-medium normal-case tracking-normal text-[#8A7A55]">
+              {transitive.length}
+            </span>
+          </h3>
+          <CreditsGrid list={transitive} />
+        </div>
       </section>
     </div>
+  );
+}
+
+// 1. Early Testers — placeholder until names are gathered.
+function EarlyTesters() {
+  return (
+    <section className="flex flex-col gap-4">
+      <h3 className="text-[0.6rem] font-medium uppercase tracking-[0.3em] text-[#A0A09A]">
+        Early Testers
+      </h3>
+      <div className="rounded-2xl border border-dashed border-[#D8CBB0] bg-white/60 p-6 text-center">
+        <p className="text-[0.7rem] text-neutral-400">
+          Names of early testers will appear here soon.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+// 2. 2x2 Algorithms — thanks to the Best 2x2 Algs spreadsheet editors.
+const TWO_BY_TWO_EDITORS = [
+  "Will Callan",
+  "Antonie Paterakis",
+  "Jacob Mcgruddy",
+  "Elias Malomgré",
+  "Jack Pan",
+  "Charles Jerome",
+  "Advay Sant",
+  "Ram Thakkar",
+  "Vilius Ribinskas",
+  "Owen Widdis",
+  "Luke Van Laningham",
+  "Christopher Chi",
+  "Thibaud Ou",
+  "Steven Lai (Yan-Hung Lai)",
+  "Kael Hitchcock",
+  "Zayn Khanani",
+  "Yuki Gao",
+  "Roman Rudakov",
+  "Nicholas Mouratidis",
+  "Tan Kyle Xuan",
+  "Emanuel Schelin",
+  "Rowan Stough",
+  "Sophie Nasol",
+  "Nathan Fares",
+];
+
+function TwoByTwoAlgs() {
+  return (
+    <section className="flex flex-col gap-4">
+      <h3 className="text-[0.6rem] font-medium uppercase tracking-[0.3em] text-[#A0A09A]">
+        2x2 Algorithms
+      </h3>
+      <div className="rounded-2xl border border-[#EAE2D5] bg-white/80 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+        <p className="text-[0.8rem] leading-relaxed tracking-wide text-neutral-600">
+          Most of 2x2 algs are from{" "}
+          <a
+            href="http://best2x2algs.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-[#C9BFA4] underline-offset-2 transition-colors hover:text-neutral-800"
+          >
+            Best 2x2 Algs
+          </a>
+          .
+        </p>
+        <p className="mt-5 text-[0.6rem] font-medium uppercase tracking-[0.25em] text-[#A79B7D]">
+          Thank you to the spreadsheet editors:
+        </p>
+        <ul className="mt-3 flex flex-wrap gap-x-2 gap-y-1">
+          {TWO_BY_TWO_EDITORS.map((name) => (
+            <li
+              key={name}
+              className="rounded-[3px] border border-[#EAE2D5] bg-white/60 px-2 py-0.5 text-[0.7rem] tracking-wide text-neutral-600"
+            >
+              {name}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+// 3. AI assistance — kept low-key.
+function AiAssistance() {
+  return (
+    <section className="flex flex-col gap-4">
+      <h3 className="text-[0.6rem] font-medium uppercase tracking-[0.3em] text-[#A0A09A]">
+        AI assistance
+      </h3>
+      <div className="rounded-2xl border border-[#EAE2D5] bg-white/80 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+        <p className="text-[0.8rem] leading-relaxed tracking-wide text-neutral-600">
+          Built with help from ChatGPT and Trae.
+        </p>
+      </div>
+    </section>
   );
 }
 
@@ -404,26 +487,26 @@ function FeedbackView() {
 
   return (
     <div className="flex flex-col gap-6">
-      <section className="rounded-2xl border border-[#E8E8E4] bg-white p-6 dark:border-white/8 dark:bg-zinc-900">
-        <h3 className="text-sm font-medium tracking-wide text-neutral-800 dark:text-neutral-200">
+      <section className="rounded-2xl border border-[#EAE2D5] bg-white/80 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+        <h3 className="text-sm font-medium tracking-wide text-neutral-800">
           Leave a Comment or Suggestion
         </h3>
-        <p className="mt-2 text-[0.75rem] leading-relaxed tracking-wide text-neutral-400 dark:text-neutral-500">
-          Found a typo in an algorithm? Have an idea for a new feature? Drop a
-          note below — every piece of feedback shapes the roadmap above.
+        <p className="mt-2 text-[0.75rem] leading-relaxed tracking-wide text-neutral-400">
+          Found a typo in an alg? Spotted something weird? Have a cool idea? 
+          Drop it below — every little bit helps shape Cube In One. Thanks for helping us build it! :)
         </p>
 
         {/* Giscus / GitHub Discussions embed */}
         <div ref={giscusRef} className="mt-6 giscus" />
       </section>
 
-      <section className="rounded-2xl border border-[#E8E8E4] bg-white p-6 dark:border-white/8 dark:bg-zinc-900">
+      <section className="rounded-2xl border border-[#EAE2D5] bg-white/80 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
         <h3 className="text-[0.6rem] font-medium uppercase tracking-[0.3em] text-[#A0A09A]">
           Other Channels
         </h3>
         <ul className="mt-4 flex flex-col gap-2 text-[0.75rem] tracking-wide text-neutral-500">
-          <li>· Email — <a href="mailto:freddiewang@cubeinone.com" className="underline hover:text-neutral-800 transition-colors dark:hover:text-neutral-200">freddiewang@cubeinone.com</a></li>
-          <li>· GitHub Issues — <a href="https://github.com/wyt31/cube-in-one/issues" target="_blank" rel="noopener noreferrer" className="underline hover:text-neutral-800 transition-colors dark:hover:text-neutral-200">https://github.com/wyt31/cube-in-one/issues</a></li>
+          <li>· Email — <a href="mailto:freddiewang@cubeinone.com" className="underline hover:text-neutral-800 transition-colors">freddiewang@cubeinone.com</a></li>
+          <li>· GitHub Issues — <a href="https://github.com/wyt31/cube-in-one/issues" target="_blank" rel="noopener noreferrer" className="underline hover:text-neutral-800 transition-colors">https://github.com/wyt31/cube-in-one/issues</a></li>
         </ul>
       </section>
     </div>
@@ -437,22 +520,30 @@ export default function AboutPage() {
   const [selectedCredit, setSelectedCredit] = useState<CreditEntry | null>(null);
 
   return (
-    <div className="min-h-screen bg-[#FBFBFA] font-[family-name:var(--font-geist-sans)] text-neutral-800 dark:bg-[#0A0B0D] dark:text-neutral-200">
+    <div className="min-h-screen bg-[#F5F0E6] font-[family-name:var(--font-geist-sans)] text-neutral-800">
       {/* ---------- Header ---------- */}
       <header className="flex items-center justify-between px-6 pb-10 pt-14 sm:px-12">
-        <Link
+<Link
           href="/"
-          className="text-[0.65rem] font-medium uppercase tracking-[0.3em] text-neutral-400 transition-colors hover:text-neutral-800 dark:text-neutral-500 dark:hover:text-neutral-200"
+          className="group text-neutral-400 transition-all duration-300 ease-out hover:text-neutral-800"
+          aria-label="Back to home"
         >
-          &lt; Cube in One
+          <svg
+            width="26"
+            height="26"
+            viewBox="0 0 48 48"
+            fill="none"
+            className="-rotate-90 transition-all duration-300 ease-out group-hover:-translate-x-1.5 group-hover:text-neutral-800"
+          >
+            <path fill="currentColor" d="M17.5 3.5c1.37 0 2.627.512 3.542 1.458c.915.947 1.458 2.299 1.458 3.93c0 1.623-.536 3.252-1.41 4.485c-.87 1.227-2.13 2.127-3.59 2.127s-2.72-.9-3.59-2.127c-.874-1.233-1.41-2.862-1.41-4.484c0-1.632.543-2.984 1.459-3.931C14.873 4.012 16.13 3.5 17.5 3.5m-11 9c1.37 0 2.627.512 3.542 1.458c.915.947 1.458 2.299 1.458 3.93c0 1.623-.536 3.252-1.41 4.485C9.22 23.6 7.96 24.5 6.5 24.5s-2.72-.9-3.59-2.127C2.036 21.14 1.5 19.51 1.5 17.889c0-1.632.543-2.984 1.459-3.931C3.873 13.012 5.13 12.5 6.5 12.5m17.5 7c-7.124 0-13.026 6.065-14.884 13.67c-.824 3.374.433 6.993 3.533 8.708c2.463 1.364 6.149 2.622 11.35 2.622c5.202 0 8.888-1.258 11.352-2.622c3.099-1.715 4.356-5.334 3.532-8.707C37.026 25.565 31.123 19.5 24 19.5m17.5-7c-1.37 0-2.627.512-3.541 1.458c-.916.947-1.459 2.299-1.459 3.93c0 1.623.536 3.252 1.41 4.485c.87 1.227 2.13 2.127 3.59 2.127s2.72-.9 3.59-2.127c.874-1.233 1.41-2.862 1.41-4.484c0-1.632-.543-2.984-1.458-3.931c-.915-.946-2.172-1.458-3.542-1.458m-11-9c-1.37 0-2.627.512-3.541 1.458c-.916.947-1.459 2.299-1.459 3.93c0 1.623.536 3.252 1.41 4.485c.87 1.227 2.13 2.127 3.59 2.127s2.72-.9 3.59-2.127c.874-1.233 1.41-2.862 1.41-4.484c0-1.632-.543-2.984-1.458-3.931C33.127 4.012 31.87 3.5 30.5 3.5" />
+          </svg>
         </Link>
-        <ThemeToggle />
       </header>
 
       <main className="mx-auto w-full max-w-4xl px-6 pb-24 sm:px-12">
         {/* ---------- Tab navigation ---------- */}
         <nav
-          className="flex items-center justify-center gap-1 rounded-full border border-[#E8E8E4] bg-white p-1 dark:border-white/8 dark:bg-zinc-900"
+          className="flex items-center justify-center gap-1 rounded-full border border-[#E8E8E4] bg-white p-1"
           role="tablist"
           aria-label="About sections"
         >
@@ -467,7 +558,7 @@ export default function AboutPage() {
                 className={`relative flex-1 rounded-full px-5 py-2 text-[0.7rem] font-medium uppercase tracking-[0.2em] transition-all duration-300 ${
                   active
                     ? "bg-neutral-800 text-white shadow-[0_2px_12px_rgba(44,44,44,0.12)]"
-                    : "text-neutral-400 hover:text-neutral-800 dark:text-neutral-500 dark:hover:text-neutral-200"
+                    : "text-neutral-400 hover:text-neutral-800"
                 }`}
               >
                 {tab.label}
@@ -479,7 +570,7 @@ export default function AboutPage() {
         {/* ---------- Tab content (animated via remount key) ---------- */}
         <div key={activeTab} className="mt-12 animate-tab-enter">
           {activeTab === "about" && <AboutView onCreditClick={setSelectedCredit} />}
-          {activeTab === "credits" && <CreditsView onCreditClick={setSelectedCredit} />}
+          {activeTab === "credits" && <CreditsView />}
           {activeTab === "feedback" && <FeedbackView />}
         </div>
 

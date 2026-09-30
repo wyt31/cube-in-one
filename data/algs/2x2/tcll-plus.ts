@@ -27,7 +27,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         tier: "B",
         note: "Alternative finish: (U) R U2 R' U2 R U' R' U2 R U R'"
       }
-    ]
+    ],
+    trainerBaseAlg: "R' F R F' R' F R F'"
   },
   {
     id: "tcll-plus-hammer-2",
@@ -55,7 +56,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "(U) R' F R U' R2 U R2 U' R2 F",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U F R' F' R U R U2 R' U R U' R'"
   },
   {
     id: "tcll-plus-hammer-3",
@@ -83,7 +85,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "F2 R' F2 R2 U' R' U2 F",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "F R' F' R2 U' R' U2 R U R'"
   },
   {
     id: "tcll-plus-hammer-4",
@@ -111,7 +114,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "y (U2) F R U R' U R' F R F2",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "R U R' F R' F' R U F R' F' R"
   },
   {
     id: "tcll-plus-hammer-5",
@@ -151,7 +155,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "(U) R2 U' R2 U2 R U R' F R2 F'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "F R' F' R2 U2 R' U' F R' F' R"
   },
   {
     id: "tcll-plus-hammer-6",
@@ -179,7 +184,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "(U) R U R' F R U R' y' R U' R'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U' R U' R' U2 R' F R F' R U2 R'"
   },
   {
     id: "tcll-plus-spaceship-1",
@@ -203,7 +209,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "(U2) R2 U R' U R' U2 R' U R'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 R2 U R' U R' U2 R' U R'"
   },
   {
     id: "tcll-plus-spaceship-2",
@@ -223,7 +230,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "(U) R' F R F' R' F R U R U' R' F'",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 F' U R' F' R U' R' F' R F"
   },
   {
     id: "tcll-plus-spaceship-3",
@@ -243,7 +251,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "y' (U') R U2 R' F R F' R' U2 R'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U R U' R' U R2 U' R' F R' F'"
   },
   {
     id: "tcll-plus-spaceship-4",
@@ -267,7 +276,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "y (U') R U' R' F U' R' F2 R2 U' R' F",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "U R U' R2 F R U R U' R' F'"
   },
   {
     id: "tcll-plus-spaceship-5",
@@ -283,7 +293,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "y (U) F2 R' F R U2 R U' R'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U R U2 R' U R' F R F' R U' R'"
   },
   {
     id: "tcll-plus-spaceship-6",
@@ -311,7 +322,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "(U) R' F' R U2 R' F' R2 U R' F2",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 R U' R' F R F' R U R2 U' R U' R'"
   },
   {
     id: "tcll-plus-stollery-1",
@@ -335,7 +347,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "(U') R U R' U R2 U2 R' U' R U' R2",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 R' U2 R U2 R' U R2 U' R2"
   },
   {
     id: "tcll-plus-stollery-2",
@@ -363,7 +376,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "R U F R' F' U' R' U R U' R'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 R' F R U' F' R U2 R' F2"
   },
   {
     id: "tcll-plus-stollery-3",
@@ -395,7 +409,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "R U R' U F R F' R U R2",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "F R' F' R2 U2 R' U' R U R'"
   },
   {
     id: "tcll-plus-stollery-4",
@@ -419,7 +434,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "R U R' F R' F' U' R U R",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "R U R' F R' F' R U R U R'"
   },
   {
     id: "tcll-plus-stollery-5",
@@ -447,7 +463,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "R U' R2 F2 R F2 R' F2 R",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U' R2 F R F' U R U' R U' R2"
   },
   {
     id: "tcll-plus-stollery-6",
@@ -475,7 +492,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "y' F' U F U' R2 U' R2 U R'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U' R' U R2 U' R2 U' F R F'"
   },
   {
     id: "tcll-plus-pinwheel-1",
@@ -503,7 +521,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "F' U R U' R2 F2 R y' R U R'",
         tier: "B",
       },
-    ]
+    ],
+    trainerBaseAlg: "R' U2 R U2 R' U2 R U' R U' R2"
   },
   {
     id: "tcll-plus-pinwheel-2",
@@ -531,7 +550,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "R' F' U' F R2 U' R U2 R",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "R F R F' R2 U2 R U2 R"
   },
   {
     id: "tcll-plus-pinwheel-3",
@@ -559,7 +579,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "F U F2 R' F R2 U' R' F'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "F R F' U2 R U' R2 F R2 F'"
   },
   {
     id: "tcll-plus-two-face-1",
@@ -579,7 +600,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "(U/U') R U R' U' R2 U R2 U' R2",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "U R U R' U' R U' R' U2 R U R'"
   },
   {
     id: "tcll-plus-two-face-2",
@@ -599,7 +621,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "R' F2 R U' R U R' F2",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "R' F2 R U' R U R' F2"
   },
   {
     id: "tcll-plus-two-face-3",
@@ -615,7 +638,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "y' R' F' U' F R U R' U' R",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "R U' R' U F' R' F' R F"
   },
   {
     id: "tcll-plus-two-face-4",
@@ -635,7 +659,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "(U') R' U R F R' F' R U' R2",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U R U R' U2 R' F R F' U R U2 R'"
   },
   {
     id: "tcll-plus-turtle-1",
@@ -655,7 +680,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "y' R' U R' U2 R' U R' U R2",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "R U' R' U R U' R'"
   },
   {
     id: "tcll-plus-turtle-2",
@@ -699,7 +725,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "(U') R' U2 F2 R U R U' R2 F U' F'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "F R' F' R U F R' F' R U R U R'"
   },
   {
     id: "tcll-plus-turtle-3",
@@ -723,7 +750,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "R' F R F' R' U2 R' U2 R",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U F R' F' R U' R' F R F' R U' R'"
   },
   {
     id: "tcll-plus-turtle-4",
@@ -743,7 +771,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "(U2) R' U R' F' U F U' R U2 R U2 R'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 R' U R' F' U F U' R U2 R U2 R'"
   },
   {
     id: "tcll-plus-turtle-5",
@@ -779,7 +808,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "y' F U' R' U R U R2 F'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 R' F R F' U2 R U2 R'"
   },
   {
     id: "tcll-plus-turtle-6",
@@ -811,7 +841,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "(U2) F' R U2 R' F2 U2 R' F R",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 R U R2 F R F' U2 R U' R'"
   },
   {
     id: "tcll-plus-pinwheel-poser-1",
@@ -839,7 +870,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "(U2) R U R' F R U R' F U' R U R' U' F'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U' R2 F R2 F' R' U' F R F'"
   },
   {
     id: "tcll-plus-pinwheel-poser-2",
@@ -864,7 +896,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "(U') R' F R F' R' F R2 U R' U' F'",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "U' R' F R F' R' F R2 U R' U' F'"
   },
   {
     id: "tcll-plus-pinwheel-poser-3",
@@ -892,7 +925,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "(U') R' U2 R2 U' F R F' U2 R",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "R U R' U2 R' F R F' R U' R'"
   },
   {
     id: "tcll-plus-pinwheel-poser-4",
@@ -916,7 +950,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "(U2) R' F R F2 U' F",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U' F2 R U R' U2 F"
   },
   {
     id: "tcll-plus-pinwheel-poser-5",
@@ -932,7 +967,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "y F U2 R' F R F2",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "R U' R2 F R F'"
   },
   {
     id: "tcll-plus-pinwheel-poser-6",
@@ -956,7 +992,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "(U') R F R2 F' U R'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 F' U R' F2 R F"
   },
   {
     id: "tcll-plus-gun-1",
@@ -992,7 +1029,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "R2 U' R2 U2 R2 U R' U R'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "R U' R' U2 R U2 R'"
   },
   {
     id: "tcll-plus-gun-2",
@@ -1016,7 +1054,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "(U2) R' F' R2 U R' F' R U2 R' F'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U F R' F' R2 U R' F R' F' R2 U R'"
   },
   {
     id: "tcll-plus-gun-3",
@@ -1036,7 +1075,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "(U) R U' R' F' U' F",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "R' F R F' U R U' R'"
   },
   {
     id: "tcll-plus-gun-4",
@@ -1052,7 +1092,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "y (U) F' R U R2 F' R2 U R' U' R' F R F'",
         tier: "A",
       }
-    ]
+    ],
+    trainerBaseAlg: "R U' R' U R U2 R' F R' F' R"
   },
   {
     id: "tcll-plus-gun-5",
@@ -1080,7 +1121,8 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "(U2) R U' R2 F R2 U R' U' F'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U2 R U R' U R U R2 F R F'"
   },
   {
     id: "tcll-plus-gun-6",
@@ -1108,6 +1150,7 @@ export const tcllPlusData: TwoByTwoAlg[] = [
         alg: "(U2) R F' U F R' U2 R'",
         tier: "B",
       }
-    ]
+    ],
+    trainerBaseAlg: "U R U2 R' F R F' R U R2"
   },
 ];

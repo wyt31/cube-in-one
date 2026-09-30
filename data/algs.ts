@@ -31,6 +31,7 @@ export interface AlgCase {
   subGroup?: string; // Tier 3 (TCLL only): "Hammer", "Spaceship", ...
   setup: string;
   recommended: string;       // top-ranked alg (highest tier) — card preview
+  trainerBaseAlg?: string;   // 2x2 only: URF-only alg for the case trainer solver
   recommendedTier?: Tier;    // tier of the recommended alg
   others?: string[];         // 3x3 legacy plain alt list (kept for 3x3 compat)
   altAlgs?: AlgVariant[];    // remaining candidate algs with tier (2x2)
@@ -199,6 +200,7 @@ function twoByTwoToAlgCase(a: TwoByTwoAlg): AlgCase {
     subGroup,
     setup: invertCubeAlg(top.alg),
     recommended: top.alg,
+    trainerBaseAlg: a.trainerBaseAlg,
     recommendedTier: top.tier,
     altAlgs: rest.map((item) => ({
       alg: item.alg,

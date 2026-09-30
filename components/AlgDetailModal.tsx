@@ -53,7 +53,7 @@ function CopyButton({ text }: { text: string }) {
   return (
     <button
       onClick={handleCopy}
-      className="flex flex-shrink-0 items-center gap-1.5 rounded-md px-2 py-1.5 text-[0.65rem] font-medium text-neutral-400 transition-all hover:bg-black/5 hover:text-neutral-700 active:scale-95 dark:text-zinc-500 dark:hover:bg-white/5 dark:hover:text-zinc-200"
+      className="flex flex-shrink-0 items-center gap-1.5 rounded-md px-2 py-1.5 text-[0.65rem] font-medium text-neutral-400 transition-all hover:bg-black/5 hover:text-neutral-700 active:scale-95"
     >
       {copied ? (
         <>
@@ -326,7 +326,7 @@ function FormulaText({
     if (!highlightLen || highlightLen <= 0) {
       return parts.map((p, i) =>
         p.paren ? (
-          <span key={i} className="text-zinc-400 dark:text-zinc-500">
+          <span key={i} className="text-zinc-400">
             {p.text}
           </span>
         ) : (
@@ -339,7 +339,7 @@ function FormulaText({
     return parts.map((p, i) => {
       if (p.paren) {
         return (
-          <span key={i} className="text-zinc-400 dark:text-zinc-500">
+          <span key={i} className="text-zinc-400">
             {p.text}
           </span>
         );
@@ -351,7 +351,7 @@ function FormulaText({
       return (
         <span key={i}>
           {head && (
-            <span className="rounded-sm bg-amber-200/60 px-0.5 text-[#1A1A1A] dark:bg-amber-400/30 dark:text-zinc-50">
+            <span className="rounded-sm bg-amber-200/60 px-0.5 text-[#1A1A1A]">
               {head}
             </span>
           )}
@@ -364,7 +364,7 @@ function FormulaText({
   return (
     <code className={className}>
       {aufText && (
-        <span className="text-zinc-400 dark:text-zinc-500">{aufText} </span>
+        <span className="text-zinc-400">{aufText} </span>
       )}
       {renderParts()}
     </code>
@@ -383,7 +383,7 @@ type PopoverVariant = "tier" | "search";
 // inside the search popover. Light neutral chip with mono font.
 function Code({ children }: { children: React.ReactNode }) {
   return (
-    <code className="rounded-md bg-neutral-100 px-1.5 py-0.5 font-[family-name:var(--font-geist-mono)] text-[0.7rem] font-medium text-neutral-800 dark:bg-zinc-800 dark:text-zinc-200">
+    <code className="rounded-md bg-neutral-100 px-1.5 py-0.5 font-[family-name:var(--font-geist-mono)] text-[0.7rem] font-medium text-neutral-800">
       {children}
     </code>
   );
@@ -469,7 +469,7 @@ function InfoPopover({
           computed from the chosen placement so the panel always fits the
           viewport; max-h-[calc(100vh-64px)] is a CSS-level fallback. */}
       <div
-        className={`fixed z-[210] w-96 max-h-[calc(100vh-64px)] overflow-y-auto rounded-xl border border-zinc-200/80 bg-white/90 p-4 shadow-xl shadow-black/10 backdrop-blur-md dark:border-zinc-800/80 dark:bg-zinc-900/90 ${
+        className={`fixed z-[210] w-96 max-h-[calc(100vh-64px)] overflow-y-auto rounded-xl border border-zinc-200/80 bg-white/90 p-4 shadow-xl shadow-black/10 backdrop-blur-md ${
           placement === "top" ? "origin-bottom" : "origin-top"
         }`}
         style={{ top, left, maxHeight }}
@@ -478,12 +478,12 @@ function InfoPopover({
       >
         {variant === "tier" ? (
           <>
-            <h3 className="mb-3 text-sm font-bold text-neutral-800 dark:text-zinc-100">
+            <h3 className="mb-3 text-sm font-bold text-neutral-800">
               About the Tiers
             </h3>
-            <div className="flex flex-col gap-2.5 text-xs leading-relaxed text-neutral-500 dark:text-zinc-400">
+            <div className="flex flex-col gap-2.5 text-xs leading-relaxed text-neutral-500">
               <div>
-                <span className="font-semibold text-amber-600 dark:text-amber-400">
+                <span className="font-semibold text-amber-600">
                   S Tier · OUR PICKS
                 </span>
                 <p className="mt-0.5">
@@ -492,7 +492,7 @@ function InfoPopover({
                 </p>
               </div>
               <div>
-                <span className="font-semibold text-[#5a7d65] dark:text-[#7a9d85]">
+                <span className="font-semibold text-[#5a7d65]">
                   A Tier · NOT BAD
                 </span>
                 <p className="mt-0.5">
@@ -500,7 +500,7 @@ function InfoPopover({
                 </p>
               </div>
               <div>
-                <span className="font-semibold text-zinc-500 dark:text-zinc-400">
+                <span className="font-semibold text-zinc-500">
                   B Tier · ALTERNATIVES
                 </span>
                 <p className="mt-0.5">
@@ -509,14 +509,14 @@ function InfoPopover({
                 </p>
               </div>
               {/* Divider — adds breathing room between tiers and the note */}
-              <div className="mt-2 border-t border-neutral-200/60 pt-3 dark:border-zinc-700/60">
-                <p className="text-neutral-500 dark:text-zinc-500">
+              <div className="mt-2 border-t border-neutral-200/60 pt-3">
+                <p className="text-neutral-500">
                   <span className="font-medium">A Quick Note:</span> Algorithm
                   tiers are 100% subjective. Everyone&apos;s hands, fingertricks,
                   and habits are different. If an S-Tier alg feels weird to you,
                   or a B-Tier one fits you perfectly, that&apos;s totally normal.
                 </p>
-                <p className="mt-1.5 text-neutral-500 dark:text-zinc-500">
+                <p className="mt-1.5 text-neutral-500">
                   Just pick what makes you fastest, and hope you enjoy the
                   site! :)
                 </p>
@@ -527,49 +527,49 @@ function InfoPopover({
           <div className="flex flex-col gap-4">
             {/* Module 1 — Rotational Equivalent Search */}
             <section>
-              <h3 className="mb-1.5 text-sm font-bold text-neutral-800 dark:text-zinc-100">
+              <h3 className="mb-1.5 text-sm font-bold text-neutral-800">
                 Rotational Equivalent Search
               </h3>
-              <p className="text-xs leading-relaxed text-neutral-500 dark:text-zinc-400">
-                This is our <em className="not-italic font-semibold text-neutral-800 dark:text-zinc-200">signature feature</em>! Let me show you how it works:
+              <p className="text-xs leading-relaxed text-neutral-500">
+                This is our <em className="not-italic font-semibold text-neutral-800">signature feature</em>! Let me show you how it works:
               </p>
-              <p className="mt-1 text-xs leading-relaxed text-neutral-500 dark:text-zinc-400">
+              <p className="mt-1 text-xs leading-relaxed text-neutral-500">
                 Type any move prefix (e.g. <Code>R U R&apos;</Code>). Our smart search engine will automatically match equivalents across all 4 viewing angles (<Code>y</Code>, <Code>y2</Code>, <Code>y&apos;</Code>) to help you with cancellations.
               </p>
             </section>
 
             {/* Module 2 — Quick Aliases */}
             <section>
-              <h3 className="mb-1.5 text-sm font-bold text-neutral-800 dark:text-zinc-100">
+              <h3 className="mb-1.5 text-sm font-bold text-neutral-800">
                 Quick Aliases
               </h3>
-              <p className="mb-2 text-xs leading-relaxed text-neutral-500 dark:text-zinc-400">
+              <p className="mb-2 text-xs leading-relaxed text-neutral-500">
                 If you&apos;re feeling a bit lazy… you can use shortcuts:
               </p>
-              <ul className="flex flex-col gap-1.5 text-xs text-neutral-500 dark:text-zinc-400">
+              <ul className="flex flex-col gap-1.5 text-xs text-neutral-500">
                 <li className="flex flex-wrap items-center gap-1">
                   <Code>se</Code> / <Code>sexy</Code>
-                  <span className="text-neutral-400 dark:text-neutral-500">→</span>
+                  <span className="text-neutral-400">→</span>
                   <Code>R U R&apos; U&apos;</Code>
                 </li>
                 <li className="flex flex-wrap items-center gap-1">
                   <Code>as</Code> / <Code>ase</Code> / <Code>antisexy</Code>
-                  <span className="text-neutral-400 dark:text-neutral-500">→</span>
+                  <span className="text-neutral-400">→</span>
                   <Code>R&apos; U&apos; R U</Code>
                 </li>
                 <li className="flex flex-wrap items-center gap-1">
                   <Code>sl</Code> / <Code>sledge</Code>
-                  <span className="text-neutral-400 dark:text-neutral-500">→</span>
+                  <span className="text-neutral-400">→</span>
                   <Code>R&apos; F R F&apos;</Code>
                 </li>
                 <li className="flex flex-wrap items-center gap-1">
                   <Code>he</Code> / <Code>hedge</Code>
-                  <span className="text-neutral-400 dark:text-neutral-500">→</span>
+                  <span className="text-neutral-400">→</span>
                   <Code>F R&apos; F&apos; R</Code>
                 </li>
                 <li className="flex flex-wrap items-center gap-1">
                   <Code>su</Code>
-                  <span className="text-neutral-400 dark:text-neutral-500">→</span>
+                  <span className="text-neutral-400">→</span>
                   <Code>R U R&apos; U</Code>
                 </li>
               </ul>
@@ -577,19 +577,19 @@ function InfoPopover({
 
             {/* Module 3 — Lazy Input */}
             <section>
-              <h3 className="mb-1.5 text-sm font-bold text-neutral-800 dark:text-zinc-100">
+              <h3 className="mb-1.5 text-sm font-bold text-neutral-800">
                 Lazy Input
               </h3>
-              <p className="text-xs leading-relaxed text-neutral-500 dark:text-zinc-400">
-                Oh, and <em className="not-italic font-semibold text-neutral-800 dark:text-zinc-200">one more thing…</em> we also support &quot;Lazy Input&quot;!
+              <p className="text-xs leading-relaxed text-neutral-500">
+                Oh, and <em className="not-italic font-semibold text-neutral-800">one more thing…</em> we also support &quot;Lazy Input&quot;!
               </p>
-              <p className="mt-1 text-xs leading-relaxed text-neutral-500 dark:text-zinc-400">
+              <p className="mt-1 text-xs leading-relaxed text-neutral-500">
                 You can simply type <Code>r u rp</Code> for <Code>R U R&apos;</Code>. The engine automatically converts lowercase to uppercase, and <Code>p</Code> stands for prime. You don&apos;t even need to touch the spacebar—just type <Code>rurp</Code> and you&apos;re good to go!
               </p>
             </section>
 
             {/* Self-deprecating punchline */}
-            <p className="border-t border-neutral-200/60 pt-3 text-[0.7rem] italic leading-relaxed text-neutral-400 dark:border-zinc-700/60 dark:text-zinc-500">
+            <p className="border-t border-neutral-200/60 pt-3 text-[0.7rem] italic leading-relaxed text-neutral-400">
               As we all know, 3x3 actually has lowercases… so yes, this is only for 2x2.
             </p>
           </div>
@@ -604,9 +604,9 @@ function InfoPopover({
 // Tier section header with `?` icon for tooltip toggle.
 // -------------------------------------------------------------------------
 const TIER_HEADER_STYLES: Record<string, string> = {
-  S: "text-[#9E684B] dark:text-[#C4906E]",
-  A: "text-[#5a7d65] dark:text-[#7a9d85]",
-  B: "text-zinc-500 dark:text-zinc-400",
+  S: "text-[#9E684B]",
+  A: "text-[#5a7d65]",
+  B: "text-zinc-500",
 };
 
 function TierSectionHeader({
@@ -618,7 +618,7 @@ function TierSectionHeader({
   onToggleTooltip?: (rect: DOMRect) => void;
   isTooltipActive: boolean;
 }) {
-  const color = TIER_HEADER_STYLES[tier] ?? "text-[#A0A09A] dark:text-zinc-500";
+  const color = TIER_HEADER_STYLES[tier] ?? "text-[#A0A09A]";
   const showInfo = tier !== "*" && onToggleTooltip !== undefined;
 
   return (
@@ -637,8 +637,8 @@ function TierSectionHeader({
           }}
           className={`flex h-3.5 w-3.5 items-center justify-center transition-colors ${
             isTooltipActive
-              ? "text-zinc-600 dark:text-zinc-300"
-              : "text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+              ? "text-zinc-600"
+              : "text-zinc-400 hover:text-zinc-600"
           }`}
           aria-label="Tier standards info"
         >
@@ -658,7 +658,7 @@ function TierSectionHeader({
           </svg>
         </button>
       )}
-      <span className="h-px flex-1 bg-[#F0F0EE] dark:bg-zinc-800" />
+      <span className="h-px flex-1 bg-[#F0F0EE]" />
     </div>
   );
 }
@@ -743,7 +743,7 @@ function SearchInput({
   };
 
   return (
-    <div className="flex h-9 min-h-[36px] flex-1 items-center gap-2 rounded-full border border-black/5 bg-neutral-100/80 px-3.5 py-1.5 transition-colors hover:bg-neutral-100 focus-within:ring-2 focus-within:ring-neutral-200 focus-within:bg-white focus-within:border-transparent dark:border-white/5 dark:bg-zinc-800/80 dark:hover:bg-zinc-800 dark:focus-within:ring-zinc-600 dark:focus-within:bg-zinc-900">
+    <div className="flex h-9 min-h-[36px] flex-1 items-center gap-2 rounded-full border border-black/5 bg-neutral-100/80 px-3.5 py-1.5 transition-colors hover:bg-neutral-100 focus-within:ring-2 focus-within:ring-neutral-200 focus-within:bg-white focus-within:border-transparent">
       <svg
         width="18"
         height="18"
@@ -753,7 +753,7 @@ function SearchInput({
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="flex-shrink-0 text-neutral-400 dark:text-zinc-500"
+        className="flex-shrink-0 text-neutral-400"
       >
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -765,7 +765,7 @@ function SearchInput({
         onKeyDown={handleKeyDown}
         onClick={(e) => e.stopPropagation()}
         placeholder="Search algs starting with..."
-        className="min-w-0 flex-1 bg-transparent pr-8 font-[family-name:var(--font-geist-mono)] text-sm text-neutral-800 placeholder:text-neutral-400 focus:outline-none dark:text-zinc-200 dark:placeholder:text-zinc-500"
+        className="min-w-0 flex-1 bg-transparent pr-8 font-[family-name:var(--font-geist-mono)] text-sm text-neutral-800 placeholder:text-neutral-400 focus:outline-none"
       />
       {/* Right-side cluster: Clear button (if input) + Info icon */}
       <div className="flex flex-shrink-0 items-center gap-1">
@@ -775,7 +775,7 @@ function SearchInput({
               e.stopPropagation();
               onChange("");
             }}
-            className="flex h-5 w-5 items-center justify-center rounded-full text-neutral-400 transition-colors hover:bg-black/5 hover:text-neutral-700 dark:text-zinc-500 dark:hover:bg-white/5 dark:hover:text-zinc-300"
+            className="flex h-5 w-5 items-center justify-center rounded-full text-neutral-400 transition-colors hover:bg-black/5 hover:text-neutral-700"
             aria-label="Clear search"
           >
             <svg
@@ -802,8 +802,8 @@ function SearchInput({
             }}
             className={`flex h-4 w-4 items-center justify-center transition-colors ${
               isInfoTooltipActive
-                ? "text-neutral-600 dark:text-zinc-300"
-                : "text-neutral-400 dark:text-neutral-500 hover:text-neutral-600 dark:hover:text-zinc-300"
+                ? "text-neutral-600"
+                : "text-neutral-400 hover:text-neutral-600"
             }`}
             aria-label="Rotational equivalent search info"
           >
@@ -853,26 +853,26 @@ function FormulaRowView({
   if (tier === "S") {
     // Warm bronze metallic — hairline edge, soft radial wash, bright metallic side line.
     wrapperCls =
-      "flex items-start justify-between gap-3 rounded-xl border-[1px] border-[#9E684B]/15 bg-[radial-gradient(ellipse_at_left_top,rgba(158,104,75,0.05),transparent_70%)] border-l-[1.5px] border-l-[#9E684B] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.8)] p-4 dark:border-[#9E684B]/20 dark:bg-[radial-gradient(ellipse_at_left_top,rgba(158,104,75,0.08),transparent_70%)] dark:border-l-[#9E684B] dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]";
+      "flex items-start justify-between gap-3 rounded-xl border-[1px] border-[#9E684B]/15 bg-[radial-gradient(ellipse_at_left_top,rgba(158,104,75,0.05),transparent_70%)] border-l-[1.5px] border-l-[#9E684B] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.8)] p-4";
     formulaCls =
-      "font-[family-name:var(--font-geist-mono)] text-base font-bold leading-relaxed tracking-wide text-[#1A1A1A] dark:text-zinc-50";
+      "font-[family-name:var(--font-geist-mono)] text-base font-bold leading-relaxed tracking-wide text-[#1A1A1A]";
   } else if (tier === "A") {
     // Muted moss green — hairline edge, 3px moss side line, 6% wash.
     wrapperCls =
-      "flex items-start justify-between gap-3 rounded-xl border-[1px] border-[#5a7d65]/15 bg-[#5a7d65]/[0.06] border-l-[3px] border-l-[#5a7d65] p-3.5 dark:border-[#5a7d65]/25 dark:bg-[#5a7d65]/[0.08] dark:border-l-[#5a7d65]";
+      "flex items-start justify-between gap-3 rounded-xl border-[1px] border-[#5a7d65]/15 bg-[#5a7d65]/[0.06] border-l-[3px] border-l-[#5a7d65] p-3.5";
     formulaCls =
-      "font-[family-name:var(--font-geist-mono)] text-sm font-medium leading-relaxed tracking-wide text-neutral-700 dark:text-zinc-300";
+      "font-[family-name:var(--font-geist-mono)] text-sm font-medium leading-relaxed tracking-wide text-neutral-700";
   } else if (tier === "B") {
     wrapperCls =
-      "flex items-start justify-between gap-3 rounded-xl border-[1px] border-black/5 bg-black/[0.01] p-3.5 dark:border-white/5 dark:bg-zinc-900";
+      "flex items-start justify-between gap-3 rounded-xl border-[1px] border-black/5 bg-black/[0.01] p-3.5";
     formulaCls =
-      "font-[family-name:var(--font-geist-mono)] text-sm font-normal leading-relaxed tracking-wide text-neutral-800 dark:text-zinc-200";
+      "font-[family-name:var(--font-geist-mono)] text-sm font-normal leading-relaxed tracking-wide text-neutral-800";
   } else {
     // Untiered (3x3 fallback)
     wrapperCls =
-      "flex items-start justify-between gap-3 rounded-xl border-[1px] border-black/5 bg-black/[0.01] p-3.5 dark:border-white/5 dark:bg-zinc-900";
+      "flex items-start justify-between gap-3 rounded-xl border-[1px] border-black/5 bg-black/[0.01] p-3.5";
     formulaCls =
-      "font-[family-name:var(--font-geist-mono)] text-sm font-medium leading-relaxed tracking-wide text-neutral-800 dark:text-zinc-200";
+      "font-[family-name:var(--font-geist-mono)] text-sm font-medium leading-relaxed tracking-wide text-neutral-800";
   }
 
   return (
@@ -884,7 +884,7 @@ function FormulaRowView({
           highlightLen={highlightLen}
         />
         {row.note && (
-          <p className="text-[0.65rem] leading-relaxed text-[#A0A09A] dark:text-zinc-500">
+          <p className="text-[0.65rem] leading-relaxed text-[#A0A09A]">
             {row.note}
           </p>
         )}
@@ -1016,26 +1016,26 @@ export default function AlgDetailModal({
       className="fixed inset-0 z-[100] flex items-center justify-center px-6"
       onClick={onClose}
     >
-      <div className="absolute inset-0 bg-black/5 backdrop-blur-sm transition-opacity" />
+      <div className="absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity" />
 
       <div
-        className="relative flex max-h-[85vh] w-full max-w-xl flex-col overflow-hidden rounded-3xl border-[1px] border-black/5 bg-[#fbfbf9] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.8),0_20px_60px_rgba(0,0,0,0.08)] dark:border-white/5 dark:bg-zinc-900 dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04),0_20px_60px_rgba(0,0,0,0.4)]"
+        className="relative flex max-h-[85vh] w-full max-w-xl flex-col overflow-hidden rounded-3xl border-[1px] border-[#EAE2D5] bg-[#FDFBF5] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.8),0_20px_60px_rgba(0,0,0,0.12)]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header — enlarged cube (left) + title/tags/search (right) */}
-        <div className="flex flex-shrink-0 flex-col gap-4 border-b border-black/5 p-6 pr-12 dark:border-white/5">
+        <div className="flex flex-shrink-0 flex-col gap-4 border-b border-black/5 p-6 pr-12">
           <div className="flex items-start gap-5">
-            <div className="flex h-28 w-28 flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1px] border-black/5 bg-[#fbfbf9] p-2.5 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6)] dark:border-white/5 dark:bg-zinc-800 dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)]">
+            <div className="flex h-28 w-28 flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl border-[1px] border-[#EAE2D5] bg-white/80 p-2.5 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6)]">
               <AlgCardCube alg={alg} className="h-full w-full" />
             </div>
 
             {/* Right column: title + tags row, then prefix search */}
             <div className="flex min-w-0 flex-1 flex-col gap-3 pt-1">
               <div>
-                <h2 className="text-xl font-light tracking-wide text-neutral-800 dark:text-zinc-100">
+                <h2 className="text-xl font-light tracking-wide text-neutral-800">
                   {alg.name}
                 </h2>
-                <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#A0A09A] dark:text-zinc-500">
+                <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#A0A09A]">
                   {alg.cube} · {alg.set} · {alg.group}
                 </p>
               </div>
@@ -1051,7 +1051,7 @@ export default function AlgDetailModal({
 
             <button
               onClick={onClose}
-              className="absolute right-6 top-6 text-neutral-400 transition-colors hover:bg-black/5 hover:text-neutral-700 dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-neutral-200"
+              className="absolute right-6 top-6 text-neutral-400 transition-colors hover:bg-black/5 hover:text-neutral-700"
               aria-label="Close"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1063,12 +1063,12 @@ export default function AlgDetailModal({
 
           {/* Setup scramble — light gray box to distinguish from formulas */}
           {alg.setup && (
-            <div className="flex items-center justify-between gap-3 rounded-lg border-[1px] border-black/5 bg-black/[0.02] px-3 py-2 dark:border-white/5 dark:bg-white/[0.02]">
+            <div className="flex items-center justify-between gap-3 rounded-lg border-[1px] border-black/5 bg-black/[0.02] px-3 py-2">
               <div className="flex min-w-0 items-baseline gap-2">
-                <span className="flex-shrink-0 text-[10px] font-bold uppercase tracking-[0.18em] text-[#A0A09A] dark:text-zinc-500">
+                <span className="flex-shrink-0 text-[10px] font-bold uppercase tracking-[0.18em] text-[#A0A09A]">
                   Setup
                 </span>
-                <code className="block truncate font-[family-name:var(--font-geist-mono)] text-xs text-neutral-500 dark:text-zinc-400">
+                <code className="block truncate font-[family-name:var(--font-geist-mono)] text-xs text-neutral-500">
                   {alg.setup}
                 </code>
               </div>
@@ -1081,7 +1081,7 @@ export default function AlgDetailModal({
         <div className="flex-1 overflow-y-auto p-6 pr-2">
           {noResults ? (
             <div className="flex flex-col items-center gap-3 py-10 text-center">
-              <p className="text-xs text-[#A0A09A] dark:text-zinc-500">
+              <p className="text-xs text-[#A0A09A]">
                 No algorithms start with this sequence.
               </p>
               <button
@@ -1089,7 +1089,7 @@ export default function AlgDetailModal({
                   e.stopPropagation();
                   setSearchQuery("");
                 }}
-                className="rounded-lg border border-[#E8E8E4] bg-white px-3 py-1.5 text-[0.65rem] font-medium text-neutral-500 transition-all hover:border-neutral-800 hover:text-neutral-800 dark:border-white/8 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:border-zinc-500"
+                className="rounded-lg border border-[#E8E8E4] bg-white px-3 py-1.5 text-[0.65rem] font-medium text-neutral-500 transition-all hover:border-neutral-800 hover:text-neutral-800"
               >
                 Clear
               </button>

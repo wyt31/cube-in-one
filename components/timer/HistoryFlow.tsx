@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useMemo, useState } from "react";
 import { formatTime, type Solve } from "@/lib/timer-types";
@@ -115,8 +115,8 @@ export default function HistoryFlow({
             confirming
               ? "border-[#C44] bg-[#C44] text-white"
               : anySelected
-              ? "border-[#E8E8E4] bg-white text-[#C44] hover:border-[#C44]"
-              : "border-[#F0F0EE] bg-[#FBFBFA] text-neutral-300"
+              ? "border-[#EAE2D5] bg-white text-[#C44] hover:border-[#C44]"
+              : "border-[#EAE2D5] bg-white/80 text-neutral-300"
           }`}
         >
           {confirming
@@ -159,7 +159,7 @@ export default function HistoryFlow({
                       className={`flex h-4 w-4 flex-shrink-0 items-center justify-center rounded border transition-all ${
                         isSelected
                           ? "border-neutral-800 bg-neutral-800 text-white"
-                          : "border-[#D0D0CB] bg-white text-transparent hover:border-neutral-800/60"
+                          : "border-[#EAE2D5] bg-white text-transparent hover:border-neutral-800/60"
                       }`}
                     >
                       {CHECKBOX}
