@@ -7,6 +7,7 @@ import CreditsGrid, {
   type LicenseEntry,
 } from "@/components/CreditsGrid";
 import licenses from "@/data/licenses.json";
+import packageJson from "@/package.json";
 
 // ============================================================================
 // /about — 4-tab architecture: About Us · Credits · Blog · Feedback
@@ -121,7 +122,7 @@ function VersionBadge() {
   return (
     <span className="inline-flex items-center gap-2 rounded-full border border-neutral-800/15 bg-neutral-800/[0.04] px-3 py-1 text-[0.6rem] font-medium uppercase tracking-[0.2em] text-neutral-800">
       <span className="h-1.5 w-1.5 rounded-full bg-neutral-800 animate-breathe" />
-      v0.1.0 · Alpha
+      v{packageJson.version} · Alpha
     </span>
   );
 }
