@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useMemo, useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
@@ -116,13 +116,7 @@ export default function SearchHome() {
 
   const navigateToAlg = useCallback(
     (alg: AlgCase) => {
-      const params = new URLSearchParams();
-      params.set("cube", alg.cube);
-      params.set("set", alg.set);
-      if (alg.set === "TCLL" && alg.group) {
-        params.set("group", alg.group);
-      }
-      router.push(`/algs?${params.toString()}`);
+      router.push(`/algs/${alg.cube}/${alg.set.toLowerCase()}`);
     },
     [router],
   );
@@ -291,7 +285,7 @@ export default function SearchHome() {
 
             {/* Algs */}
             <Link
-              href="/algs"
+              href="/algs/2x2/pbl"
               className="group flex items-center gap-5 px-6 py-5 rounded-2xl border border-[#D3CCB8] bg-[#E6DFC8]/70 shadow-[0_8px_24px_rgba(180,160,140,0.08)] transition-all duration-200 hover:-translate-y-0.5 hover:border-black/10 hover:bg-white hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)]"
             >
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-[#2D5A3F] transition-colors group-hover:text-[#2D5A3F]" aria-hidden>

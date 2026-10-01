@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { type AlgCase, type AlgVariant } from "@/data/algs";
 import AlgCardCube from "@/components/AlgCardCube";
+import { applyAlgTransforms } from "@/lib/algTransforms";
 
 // ==========================================================================
 // AlgDetailModal
@@ -53,24 +54,74 @@ function CopyButton({ text }: { text: string }) {
   return (
     <button
       onClick={handleCopy}
-      className="flex flex-shrink-0 items-center gap-1.5 rounded-md px-2 py-1.5 text-[0.65rem] font-medium text-neutral-400 transition-all hover:bg-black/5 hover:text-neutral-700 active:scale-95"
+      aria-label="Copy algorithm"
+      title="Copy"
+      className={`flex flex-shrink-0 items-center justify-center rounded-md p-1.5 transition-all active:scale-95 ${
+        copied
+          ? "text-green-600"
+          : "text-neutral-400 hover:bg-black/5 hover:text-neutral-700"
+      }`}
     >
       {copied ? (
-        <>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-green-600">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-          <span className="text-green-600">Copied!</span>
-        </>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
       ) : (
-        <>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-          </svg>
-          <span>Copy</span>
-        </>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
       )}
+    </button>
+  );
+}
+
+// Reverse — a single full-turn circular arrow.
+function ReverseIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+      <polyline points="21 3 21 9 15 9" />
+    </svg>
+  );
+}
+
+// Mirror — custom L | R icon (letters flanking the mirror axis).
+function MirrorIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <text x="3.5" y="16.5" fontSize="11" fontWeight="700" fill="currentColor" fontFamily="var(--font-geist-sans)">L</text>
+      <line x1="12" y1="4" x2="12" y2="20" stroke="currentColor" strokeWidth="1.2" strokeDasharray="2 2" />
+      <text x="14.5" y="16.5" fontSize="11" fontWeight="700" fill="currentColor" fontFamily="var(--font-geist-sans)">R</text>
+    </svg>
+  );
+}
+
+// Per-row toggle button (Reverse / Mirror). Independent, so both can be active.
+function ToggleButton({
+  active,
+  label,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  label: string;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      aria-label={label}
+      aria-pressed={active}
+      title={label}
+      className={`flex flex-shrink-0 items-center justify-center rounded-md p-1.5 transition-all active:scale-95 ${
+        active
+          ? "bg-[#EAE2D5]/70 text-neutral-700"
+          : "text-neutral-400 hover:bg-black/5 hover:text-neutral-700"
+      }`}
+    >
+      {children}
     </button>
   );
 }
@@ -298,10 +349,12 @@ function FormulaText({
   alg,
   className,
   highlightLen,
+  style,
 }: {
   alg: string;
   className?: string;
   highlightLen?: number;
+  style?: React.CSSProperties;
 }) {
   // Split into AUF vs core boundary.
   const aufMatch = alg.match(/^\s*(\([^)]*\))\s*/);
@@ -362,7 +415,7 @@ function FormulaText({
   };
 
   return (
-    <code className={className}>
+    <code className={className} style={style}>
       {aufText && (
         <span className="text-zinc-400">{aufText} </span>
       )}
@@ -847,6 +900,26 @@ function FormulaRowView({
 }) {
   const tier = row.tier ?? "*";
 
+  // Independent per-row toggles — both can be active at once. The transformed
+  // text is what the row displays and what Copy copies.
+  const [reverse, setReverse] = useState(false);
+  const [mirror, setMirror] = useState(false);
+  const displayAlg = useMemo(
+    () => applyAlgTransforms(row.alg, { reverse, mirror }),
+    [row.alg, reverse, mirror]
+  );
+
+  // Transformation cue: tint the formula text only. When both toggles are off
+  // this is undefined and the existing tier colors render untouched.
+  const transformColor =
+    reverse && mirror
+      ? "#B58A3A" // both — low-saturation warm amber
+      : reverse
+        ? "#4F7FA3" // reverse only — low-saturation blue
+        : mirror
+          ? "#5F8F68" // mirror only — low-saturation green
+          : undefined;
+
   let wrapperCls: string;
   let formulaCls: string;
 
@@ -879,9 +952,10 @@ function FormulaRowView({
     <div className={wrapperCls}>
       <div className="flex min-w-0 flex-1 flex-col gap-1.5">
         <FormulaText
-          alg={row.alg}
+          alg={displayAlg}
           className={`block break-all ${formulaCls}`}
           highlightLen={highlightLen}
+          style={transformColor ? { color: transformColor } : undefined}
         />
         {row.note && (
           <p className="text-[0.65rem] leading-relaxed text-[#A0A09A]">
@@ -889,7 +963,23 @@ function FormulaRowView({
           </p>
         )}
       </div>
-      <CopyButton text={row.alg} />
+      <div className="flex flex-shrink-0 items-center gap-0.5">
+        <ToggleButton
+          active={reverse}
+          label="Reverse"
+          onClick={() => setReverse((v) => !v)}
+        >
+          <ReverseIcon />
+        </ToggleButton>
+        <ToggleButton
+          active={mirror}
+          label="Mirror"
+          onClick={() => setMirror((v) => !v)}
+        >
+          <MirrorIcon />
+        </ToggleButton>
+        <CopyButton text={displayAlg} />
+      </div>
     </div>
   );
 }

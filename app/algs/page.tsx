@@ -1,6 +1,6 @@
-﻿"use client";
+"use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   CUBES,
@@ -12,6 +12,18 @@ import {
 } from "@/data/algs";
 import AlgCardCube from "@/components/AlgCardCube";
 import AlgDetailModal from "@/components/AlgDetailModal";
+import { useRouter, usePathname } from "next/navigation";
+
+// Build the canonical URL path for a given cube / category / alg.
+//   /algs/2x2
+//   /algs/2x2/cll
+//   /algs/2x2/cll/<algId>
+const algPath = (cube: string, category?: string, algId?: string) => {
+  let p = `/algs/${cube}`;
+  if (category) p += `/${category.toLowerCase()}`;
+  if (category && algId) p += `/${algId}`;
+  return p;
+};
 
 function categoryNames(cube: CubeType): string[] {
   return CATEGORIES[cube].map((c) => c.name);
@@ -22,29 +34,70 @@ function findCategory(cube: CubeType, name: string): CategorySpec | undefined {
 }
 
 export default function AlgsPage() {
-  const [selectedCube, setSelectedCube] = useState<CubeType>("2x2");
-  const [selectedCategory, setSelectedCategory] = useState<string>(
-    CATEGORIES["2x2"][0].name
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Cube / category / open-alg are DERIVED from the URL during render — the URL
+  // is the single source of truth. Nothing is cleared-and-refilled on
+  // navigation, so there is no flicker (even if the route remounts).
+  //   /algs/2x2/pbl
+  //   /algs/2x2/cll
+  //   /algs/2x2/cll/<algId>   (opens the existing modal)
+  const segs = useMemo(
+    () => pathname.split("/").filter(Boolean).slice(1),
+    [pathname]
   );
+  const cubeSeg = segs[0];
+  const catSeg = segs[1];
+  const algSeg = segs[2];
+
+  const selectedCube: CubeType =
+    cubeSeg && (CUBES as string[]).includes(cubeSeg)
+      ? (cubeSeg as CubeType)
+      : "2x2";
+
+  const matchedCat = catSeg
+    ? CATEGORIES[selectedCube].find(
+        (c) => c.name.toLowerCase() === catSeg.toLowerCase()
+      )
+    : undefined;
+  const selectedCategory = matchedCat
+    ? matchedCat.name
+    : CATEGORIES[selectedCube][0].name;
+
+  const selectedAlg: AlgCase | null = algSeg
+    ? algData.find(
+        (a) =>
+          a.id === algSeg &&
+          a.cube === selectedCube &&
+          a.set === selectedCategory
+      ) ?? null
+    : null;
+
+  // Group / sub-group filters are not part of the URL, so they stay local. They
+  // reset only when cube + category actually change — never when the alg
+  // segment (modal) appears or disappears.
   const [selectedGroup, setSelectedGroup] = useState<string>("All");
   const [selectedSubGroup, setSelectedSubGroup] = useState<string>("All");
-  const [selectedAlg, setSelectedAlg] = useState<AlgCase | null>(null);
-
-  // Read URL params on mount (from home page search navigation)
+  const lastKeyRef = useRef<string>("");
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const cube = params.get("cube") as CubeType | null;
-    const set = params.get("set");
-    const group = params.get("group");
-    if (cube && CUBES.includes(cube)) {
-      setSelectedCube(cube);
-      const cat = CATEGORIES[cube].find((c) => c.name === set);
-      if (cat) {
-        setSelectedCategory(set!);
-        if (group) setSelectedGroup(group);
-      }
+    const key = `${selectedCube}|${selectedCategory}`;
+    if (lastKeyRef.current !== key) {
+      lastKeyRef.current = key;
+      setSelectedGroup("All");
+      setSelectedSubGroup("All");
     }
-  }, []);
+  }, [selectedCube, selectedCategory]);
+
+  // Normalize URLs that omit (or carry an invalid) category to the canonical
+  // shape — /algs -> /algs/2x2/pbl, /algs/2x2 -> /algs/2x2/pbl. The default
+  // category is read from CATEGORIES (never hardcoded), so 3x3 -> /algs/3x3/f2l.
+  // `replace` keeps it out of history; `scroll: false` leaves the viewport put.
+  useEffect(() => {
+    if (!catSeg || !matchedCat) {
+      router.replace(algPath(selectedCube, selectedCategory), { scroll: false });
+    }
+  }, [catSeg, matchedCat, selectedCube, selectedCategory, router]);
 
   const availableGroups = useMemo(() => {
     const cat = findCategory(selectedCube, selectedCategory);
@@ -112,22 +165,32 @@ export default function AlgsPage() {
     return sections;
   }, [filteredAlgs]);
 
+  // Handlers only navigate — they never write cube/category/alg state, so the
+  // URL stays the single source of truth (no URL ↔ state double updates).
+  // `scroll: false` preserves the user's scroll position through navigation.
   const handleCubeChange = (cube: CubeType) => {
-    setSelectedCube(cube);
-    setSelectedCategory(CATEGORIES[cube][0].name);
-    setSelectedGroup("All");
-    setSelectedSubGroup("All");
+    router.push(algPath(cube, CATEGORIES[cube][0].name), { scroll: false });
   };
 
   const handleCategoryChange = (cat: string) => {
-    setSelectedCategory(cat);
-    setSelectedGroup("All");
-    setSelectedSubGroup("All");
+    router.push(algPath(selectedCube, cat), { scroll: false });
   };
 
   const handleGroupChange = (group: string) => {
     setSelectedGroup(group);
     setSelectedSubGroup("All");
+  };
+
+  // Open an alg's existing modal by navigating to its URL — the render above
+  // derives `selectedAlg` from the segment, so refresh/deep-link and in-app
+  // clicks share one code path.
+  const openAlg = (alg: AlgCase) => {
+    router.push(algPath(alg.cube, alg.set, alg.id), { scroll: false });
+  };
+
+  // Closing the modal drops the alg segment, keeping cube + category intact.
+  const closeAlg = () => {
+    router.push(algPath(selectedCube, selectedCategory), { scroll: false });
   };
 
   return (
@@ -248,7 +311,7 @@ export default function AlgsPage() {
                   {section.items.map((alg) => (
                     <div
                       key={alg.id}
-                      onClick={() => setSelectedAlg(alg)}
+                      onClick={() => openAlg(alg)}
                       className="group relative flex min-h-[130px] h-auto cursor-pointer items-center gap-5 rounded-2xl border border-[#EAE2D5] bg-white/80 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#D8CBB0] hover:bg-white hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
                     >
                       {/* Inkan-style badge: TCLL+ / TCLL- (only for TCLL set) */}
@@ -300,7 +363,7 @@ export default function AlgsPage() {
       {selectedAlg && (
         <AlgDetailModal
           alg={selectedAlg}
-          onClose={() => setSelectedAlg(null)}
+          onClose={closeAlg}
         />
       )}
     </div>
